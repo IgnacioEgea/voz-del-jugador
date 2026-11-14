@@ -248,6 +248,10 @@ select, input[type="search"] { width: 100%; font: 500 15px Inter, sans-serif; co
 .resena { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 16px 18px; animation: entrar .35s ease both; }
 .resena header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font: 500 13px var(--mono); color: var(--tenue); margin-bottom: 8px; }
 .resena p { margin-bottom: 10px; }
+details { margin: 0 0 10px; font-size: 14px; color: var(--tenue); }
+details summary { cursor: pointer; font: 500 12px var(--mono); }
+details summary:hover { color: var(--suave); }
+details p { margin: 6px 0 0; font-style: normal; color: var(--suave); }
 mark { background: rgba(255, 201, 60, .3); color: var(--texto); border-radius: 3px; padding: 0 2px; }
 .cargando { animation: latir 1s ease-in-out infinite; }
 @keyframes latir { 50% { opacity: .4; } }

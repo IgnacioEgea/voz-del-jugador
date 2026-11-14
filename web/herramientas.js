@@ -88,7 +88,7 @@ function vistaExplorar(s) {
   const opciones = (obj, elegido) => Object.entries(obj).map(([k, t]) => `<option value="${k}" ${k === elegido ? "selected" : ""}>${t}</option>`).join("");
   const juegos = Object.fromEntries(datos.juegos.map((j) => [slug(j.juego), j.juego]));
   return `<header class="cabecera"><p class="etiqueta">// Base de datos</p><h1>Explorar reseñas</h1>
-    <p class="subtitulo">Las reseñas más votadas como útiles de cada juego, ya clasificadas por la IA. Filtra y busca lo que quieras (las reseñas están en inglés).</p></header>
+    <p class="subtitulo">Las reseñas más votadas como útiles de cada juego, ya clasificadas por la IA. Filtra y busca lo que quieras: se buscan tanto en español (traducción con IA) como en el inglés original.</p></header>
     <div class="filtros">
       <input id="q" type="search" placeholder="Buscar: lag, skins, ranked…" aria-label="Buscar en las reseñas">
       <select id="fj" aria-label="Juego"><option value="">Todos los juegos</option>${opciones(juegos, s)}</select>
@@ -103,9 +103,10 @@ function vistaExplorar(s) {
 function tarjeta(r, q) {
   const j = datos.juegos.find((x) => x.juego === r.j);
   // Resaltamos lo que se ha buscado dentro del texto
-  const texto = q ? seguro(r.t).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), "<mark>$1</mark>") : seguro(r.t);
+  const original = r.e ?? r.t;
+  const texto = q ? seguro(original).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), "<mark>$1</mark>") : seguro(original);
   return `<article class="resena"><header><span class="chip ${j?.rareza}">${r.j}</span>
-    <span>${r.r ? "👍" : "👎"} · ${miles(r.h)} h · ${miles(r.v)} votos útiles</span></header><p>${texto}</p>
+    <span>${r.r ? "👍" : "👎"} · ${miles(r.h)} h · ${miles(r.v)} votos útiles</span></header><p>${texto}</p>${r.e ? `<details><summary>Ver original en inglés</summary><p>${seguro(r.t)}</p></details>` : ""}
     <footer>${Object.entries(r.a).map(([k, t]) => `<span class="tag ${t}">${ICONOS[k]} ${NOMBRES[k]} · ${TONOS[t] ?? t}</span>`).join("")}</footer></article>`;
 }
 
@@ -117,7 +118,7 @@ async function activarExplorar() {
     if (reiniciar) mostradas = 20;
     const [q, fj, fa, ft, fo] = ["q", "fj", "fa", "ft", "fo"].map((id) => $(id).value.trim());
     const res = baseResenas.filter((r) => (!fj || slug(r.j) === fj) && (!fa || r.a[fa]) && (!fo || String(r.r) === fo)
-      && (!ft || (fa ? r.a[fa] === ft : Object.values(r.a).includes(ft))) && (!q || r.t.toLowerCase().includes(q.toLowerCase())));
+      && (!ft || (fa ? r.a[fa] === ft : Object.values(r.a).includes(ft))) && (!q || `${r.e ?? ""} ${r.t}`.toLowerCase().includes(q.toLowerCase())));
     $("cuenta").textContent = `${miles(res.length)} reseñas encontradas`;
     $("lista").innerHTML = res.slice(0, mostradas).map((r) => tarjeta(r, q)).join("") || `<p class="nota">Ninguna reseña coincide. Prueba con menos filtros.</p>`;
     $("mas").hidden = res.length <= mostradas;

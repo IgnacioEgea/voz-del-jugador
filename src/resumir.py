@@ -13,11 +13,15 @@ from clasificar import ASPECTOS
 RAIZ = Path(__file__).resolve().parent.parent
 RAREZAS = [(80, "legendaria"), (65, "epica"), (50, "rara"), (0, "comun")]
 MIN_MENCIONES = 20  # Con menos menciones, el porcentaje no es fiable y no lo enseñamos
+CACHE = RAIZ / "data" / "traducciones.json"  # Traducciones al español que guarda traducir.py
 
 
 def pct(condicion):
     # Porcentaje de casos que cumplen algo, sin decimales
     return int(round(condicion.mean() * 100))
+
+
+TRADUCCIONES = {}
 
 
 def recortar(texto, limite=240):
@@ -36,7 +40,8 @@ def resumir_aspecto(resenas, aspecto):
     voz = hablan.sort_values("votos_util", ascending=False).iloc[0]
     return {"menciones": len(hablan), "pos": pct(hablan[aspecto] == "pos"),
             "neg": pct(hablan[aspecto] == "neg"),
-            "voz": {"texto": recortar(voz["texto"]), "recomienda": bool(voz["recomienda"]),
+            "voz": {"texto": recortar(voz["texto"]), "es": TRADUCCIONES.get(recortar(voz["texto"])),
+                    "recomienda": bool(voz["recomienda"]),
                     "horas": float(voz["horas"])}}
 
 
@@ -53,12 +58,16 @@ def resumir_juego(nombre, todas, clasificadas):
 def muestra_resenas(clasificadas, por_juego=150):
     # Para el explorador de la web: las reseñas más votadas como útiles de cada juego, con sus aspectos
     muestra = clasificadas.sort_values("votos_util", ascending=False).groupby("juego").head(por_juego)
-    return [{"j": r["juego"], "t": recortar(r["texto"], 320), "r": bool(r["recomienda"]),
+    return [{"j": r["juego"], "t": recortar(r["texto"], 320), "e": TRADUCCIONES.get(recortar(r["texto"], 320)),
+             "r": bool(r["recomienda"]),
              "h": round(float(r["horas"])), "v": int(r["votos_util"]),
              "a": {a: r[a] for a in ASPECTOS if r[a]}} for _, r in muestra.iterrows()]
 
 
 def resumir():
+    # Cargamos las traducciones que ya existan (si no hay, la web enseña el texto en inglés)
+    global TRADUCCIONES
+    TRADUCCIONES = json.loads(CACHE.read_text(encoding="utf-8")) if CACHE.exists() else {}
     resenas = pd.read_csv(RAIZ / "data" / "resenas.csv", dtype={"id": str})
     ia = pd.read_csv(RAIZ / "data" / "resenas_clasificadas.csv", dtype=str).fillna("")
     clasificadas = resenas.merge(ia, on="id")

@@ -65,9 +65,10 @@ function vistaJuego(s) {
   </section>
 
   ${aspectos.length ? `<section aria-labelledby="t-voces"><h2 id="t-voces">Voces reales</h2>
-    <p class="nota">La reseña más votada como útil sobre cada tema (en su idioma original).</p>
+    <p class="nota">La reseña más votada como útil sobre cada tema. Traducidas al español con IA: puedes ver el original en inglés.</p>
     <div class="voces">${aspectos.map((a) => `<figure class="voz-card">
-      <blockquote>“${seguro(a.voz.texto)}”</blockquote>
+      <blockquote>“${seguro(a.voz.es ?? a.voz.texto)}”</blockquote>
+      ${a.voz.es ? `<details><summary>Ver original en inglés</summary><p>${seguro(a.voz.texto)}</p></details>` : ""}
       <figcaption>${a.voz.recomienda ? "👍 Lo recomienda" : "👎 No lo recomienda"} · ${Math.round(a.voz.horas)} h · ${ICONOS[a.clave]} ${NOMBRES[a.clave]}</figcaption>
     </figure>`).join("")}</div></section>` : ""}
 
