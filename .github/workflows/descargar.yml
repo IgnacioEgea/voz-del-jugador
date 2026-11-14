@@ -1,0 +1,34 @@
+# Robot de GitHub: descarga las reseñas de Steam y las limpia en los servidores de GitHub.
+# Se lanza con un botón: pestaña "Actions" → "Descargar reseñas" → "Run workflow".
+
+name: Descargar reseñas
+on: workflow_dispatch
+
+# Le damos permiso al robot para guardar el resultado en el repositorio
+permissions:
+  contents: write
+
+jobs:
+  datos:
+    runs-on: ubuntu-latest
+    steps:
+      # Copiamos el repositorio en el ordenador de GitHub
+      - uses: actions/checkout@v4
+
+      # Instalamos Python y las librerías del proyecto
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      # Descargamos y limpiamos (el resumen de cada juego aparece en el registro)
+      - run: python src/descargar.py && python src/limpiar.py
+
+      # Guardamos el CSV limpio en el repositorio
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/resenas.csv
+          git commit -m "Datos: reseñas descargadas y limpias" || echo "Sin cambios"
+          git push
