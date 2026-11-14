@@ -31,12 +31,16 @@ def preguntar_ia(lote):
     cuerpo = {"contents": [{"parts": [{"text": PROMPT + resenas.to_json(orient="records")}]}],
               "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
     while True:
-        respuesta = requests.post(URL, json=cuerpo, timeout=120,
-                                  headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]})
-        if respuesta.status_code != 429:
+        try:
+            respuesta = requests.post(URL, json=cuerpo, timeout=300,
+                                      headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+        except requests.Timeout:
+            continue  # Gemini se ha quedado pensando demasiado: se lo pedimos otra vez
+        if respuesta.status_code not in (429, 503):
             break
-        time.sleep(60)  # Nos hemos pasado del límite: esperamos un minuto y repetimos
-    respuesta.raise_for_status()
+        time.sleep(60)  # Límite superado o Gemini saturado: esperamos un minuto y repetimos
+    if not respuesta.ok:
+        sys.exit(f"Gemini respondió {respuesta.status_code}: {respuesta.text[:500]}")
     return json.loads(respuesta.json()["candidates"][0]["content"]["parts"][0]["text"])
 
 
