@@ -1,0 +1,50 @@
+# Robot de GitHub: crea data.json con los últimos resultados y publica la carpeta web/ en GitHub Pages.
+# Se lanza solo cuando cambia la web o cuando termina una tanda de clasificación.
+
+name: Publicar web
+on:
+  push:
+    branches: [main]
+    paths: ["web/**", "src/resumir.py"]
+  workflow_run:
+    workflows: ["Clasificar reseñas"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan dos publicaciones a la vez, se queda solo la más nueva
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      # Copiamos el repositorio con los datos más recientes
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      # Resumimos las reseñas en data.json
+      - run: python src/resumir.py
+
+      # Subimos la carpeta web/ a GitHub Pages
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - id: despliegue
+        uses: actions/deploy-pages@v4

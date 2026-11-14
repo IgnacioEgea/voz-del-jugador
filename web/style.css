@@ -1,0 +1,85 @@
+/* Estilo de la web: cartas coleccionables sobre fondo grafito, con barras tipo HUD de videojuego. */
+
+/* Colores y tipos que se usan en toda la web */
+:root {
+  --fondo: #17141F;
+  --superficie: #1F1B2A;
+  --linea: #2E2840;
+  --texto: #F1ECF7;
+  --suave: #A89FB8;
+  --bien: #3DDC97;
+  --medio: #C9C0D6;
+  --mal: #FF6B6B;
+  --legendaria: #FFC93C;
+  --epica: #B58CFF;
+  --rara: #4FB3FF;
+  --comun: #8A8398;
+  --titulo: "Bricolage Grotesque", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 400 16px/1.6 Inter, system-ui, sans-serif;
+}
+main { max-width: 960px; margin: 0 auto; padding: 48px 20px; }
+h1, h2, h3 { font-family: var(--titulo); font-weight: 700; line-height: 1.15; margin: 0 0 12px; }
+h1 { font-size: clamp(30px, 6vw, 52px); max-width: 16ch; }
+h2 { font-size: 24px; margin-top: 56px; }
+a { color: var(--rara); }
+.etiqueta, .nota { color: var(--suave); font-size: 14px; margin: 0 0 12px; }
+.subtitulo { color: var(--suave); max-width: 60ch; }
+
+/* Hallazgos de la portada: número grande + frase corta */
+.hallazgos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 24px; }
+.hallazgo { background: var(--superficie); border-radius: 12px; padding: 16px; }
+.hallazgo strong { display: block; font: 700 36px/1 var(--titulo); margin-bottom: 8px; }
+
+/* Cartas de los juegos: el borde lleva el color de su rareza */
+.cartas { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.carta {
+  --r: var(--comun);
+  position: relative; text-align: left; cursor: pointer;
+  background: var(--superficie); color: inherit; font: inherit;
+  border: 2px solid var(--r); border-radius: 14px; padding: 14px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.carta:hover, .carta:focus-visible { transform: translateY(-4px); box-shadow: 0 10px 24px -12px var(--r); outline: none; }
+.carta[aria-pressed="true"] { outline: 2px solid var(--r); outline-offset: 3px; }
+.carta h3 { font-size: 18px; margin-bottom: 8px; }
+.rareza { display: inline-block; background: var(--r); color: var(--fondo); font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+.carta small { display: block; color: var(--suave); margin-top: 8px; }
+.legendaria { --r: var(--legendaria); }
+.epica { --r: var(--epica); }
+.rara { --r: var(--rara); }
+
+/* Brillo holográfico que recorre las cartas legendarias */
+.legendaria::after {
+  content: ""; position: absolute; inset: 0; border-radius: 12px; pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 220, 120, .18) 50%, transparent 60%) 0 0 / 250% 100%;
+  animation: brillo 4s linear infinite;
+}
+@keyframes brillo { to { background-position: -250% 0; } }
+
+/* Ficha del juego: una barra de "stats" por aspecto */
+.ficha { margin-top: 32px; background: var(--superficie); border: 2px solid var(--r, var(--linea)); border-radius: 16px; padding: 24px; }
+.ficha:empty { display: none; }
+.stat { margin-bottom: 14px; }
+.stat-nombre { display: flex; justify-content: space-between; font-size: 14px; }
+.barra { height: 10px; background: var(--linea); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.barra i { display: block; height: 100%; width: 0; border-radius: 3px; transition: width .8s cubic-bezier(.2, .8, .2, 1); }
+.voz { border-left: 3px solid var(--r); margin: 24px 0 0; padding: 4px 0 4px 16px; color: var(--suave); font-style: italic; }
+
+/* Las secciones aparecen suavemente al cargar */
+.aparece { animation: aparecer .6s ease both; }
+.aparece:nth-child(2) { animation-delay: .15s; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(12px); } }
+
+footer { text-align: center; color: var(--suave); font-size: 14px; padding: 32px 20px 48px; }
+
+/* Si la persona prefiere menos movimiento, quitamos las animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *, *::after { animation: none !important; transition: none !important; }
+}
