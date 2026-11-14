@@ -1,27 +1,50 @@
 <!DOCTYPE html>
-<!-- La voz del jugador: dashboard de reseñas de Steam de shooters free-to-play analizadas con IA.
-     El contenido lo dibuja app.js a partir de data.json. -->
+<!-- La voz del jugador: reseñas de Steam de shooters free-to-play analizadas con IA, para jugadores y estudios.
+     El contenido lo dibujan app.js, selector.js y extras.js a partir de data.json. -->
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>La voz del jugador · Reseñas de Steam analizadas con IA</title>
-  <meta name="description" content="Miles de reseñas de Steam de shooters free-to-play, analizadas con IA para diseño y marketing.">
+  <meta name="description" content="Miles de reseñas de Steam de shooters free-to-play, analizadas con IA: encuentra tu juego y descubre qué aman y qué odian sus jugadores.">
+  <meta property="og:title" content="La voz del jugador">
+  <meta property="og:description" content="Miles de reseñas de Steam de shooters free-to-play, analizadas con IA.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#17141F">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Barra de experiencia: se llena según lo que llevas leído -->
+  <div class="xp" aria-hidden="true"><i id="xp"></i></div>
+
+  <!-- Menú tipo HUD, siempre a mano -->
+  <nav class="hud" aria-label="Secciones">
+    <a href="#inicio" class="logo">🃏 La voz del jugador</a>
+    <a href="#titulo-selector">Encuentra</a>
+    <a href="#titulo-cartas">Cartas</a>
+    <a href="#titulo-parches">Patch notes</a>
+    <a href="#titulo-perfiles">Veteranos</a>
+  </nav>
+
   <main>
     <!-- Portada: la pregunta y los hallazgos principales -->
-    <header class="portada aparece">
-      <p class="etiqueta">La voz del jugador · Reseñas de Steam analizadas con IA</p>
+    <header class="portada aparece" id="inicio">
+      <p class="etiqueta">// Reseñas de Steam analizadas con IA</p>
       <h1>¿Por qué los jugadores recomiendan o abandonan un free‑to‑play?</h1>
       <p class="subtitulo" id="resumen"></p>
       <p class="aviso" id="aviso" hidden></p>
       <div class="hallazgos" id="hallazgos"></div>
+      <a class="empezar" href="#titulo-selector">Empezar <span aria-hidden="true">▼</span></a>
     </header>
+
+    <!-- Kill feed: frases reales de jugadores, como el registro de bajas de un shooter -->
+    <section class="feed" aria-label="Frases reales de jugadores">
+      <div class="feed-pista" id="feed"></div>
+    </section>
 
     <!-- Encuentra tu shooter: herramienta para jugadores -->
     <section class="aparece" aria-labelledby="titulo-selector">
@@ -34,12 +57,20 @@
     <!-- Selección de personaje: una carta por juego -->
     <section class="aparece" aria-labelledby="titulo-cartas">
       <h2 id="titulo-cartas">Elige tu juego</h2>
-      <p class="nota">La rareza de cada carta depende del % de jugadores que lo recomiendan.</p>
+      <p class="nota">La rareza de cada carta depende del % de jugadores que lo recomiendan. Pulsa una carta para girarla.</p>
       <div class="cartas" id="cartas"></div>
     </section>
 
     <!-- Ficha del juego elegido -->
     <section class="ficha aparece" id="ficha" aria-live="polite"></section>
+
+    <!-- Patch notes: recomendaciones para diseño y marketing -->
+    <section aria-labelledby="titulo-parches">
+      <h2 id="titulo-parches">Patch notes</h2>
+      <p class="nota">Lo que cambiaríamos en cada juego según sus propios jugadores:
+        🔧 <b>Hotfix</b> para el equipo de diseño y ⬆️ <b>Buff</b> para marketing (qué destacar en la tienda).</p>
+      <div class="parches" id="parches"></div>
+    </section>
 
     <!-- Novatos vs. veteranos: cómo cambia la opinión con las horas jugadas -->
     <section aria-labelledby="titulo-perfiles">
@@ -56,5 +87,6 @@
   </footer>
   <script src="app.js"></script>
   <script src="selector.js"></script>
+  <script src="extras.js"></script>
 </body>
 </html>

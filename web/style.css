@@ -15,7 +15,9 @@
   --rara: #4FB3FF;
   --comun: #8A8398;
   --titulo: "Bricolage Grotesque", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
 }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
 
 * { box-sizing: border-box; }
 body {
@@ -26,15 +28,76 @@ body {
 }
 main { max-width: 960px; margin: 0 auto; padding: 48px 20px; }
 h1, h2, h3 { font-family: var(--titulo); font-weight: 700; line-height: 1.15; margin: 0 0 12px; }
-h1 { font-size: clamp(30px, 6vw, 52px); max-width: 16ch; }
-h2 { font-size: 24px; margin-top: 56px; }
+h1 { font-size: clamp(34px, 7vw, 64px); max-width: 15ch; letter-spacing: -.02em; }
+h2 { font-size: 28px; margin-top: 72px; }
+h2::before { content: "▸ "; color: var(--epica); }
 a { color: var(--rara); }
 .etiqueta, .nota { color: var(--suave); font-size: 14px; margin: 0 0 12px; }
+.etiqueta { font-family: var(--mono); color: var(--epica); letter-spacing: .04em; }
+::selection { background: var(--epica); color: var(--fondo); }
+
+/* Barra de experiencia arriba del todo: se llena al hacer scroll */
+.xp { position: fixed; inset: 0 0 auto; height: 3px; background: var(--linea); z-index: 20; }
+.xp i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--rara), var(--epica), var(--legendaria)); }
+
+/* Menú tipo HUD: pegado arriba, con fondo translúcido */
+.hud {
+  position: sticky; top: 3px; z-index: 10; display: flex; gap: 20px; align-items: center; overflow-x: auto;
+  padding: 12px 20px; background: rgba(23, 20, 31, .8); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linea); font: 500 13px var(--mono); white-space: nowrap;
+}
+.hud a { color: var(--suave); text-decoration: none; transition: color .15s; }
+.hud a:hover, .hud a:focus-visible { color: var(--texto); }
+.hud .logo { color: var(--texto); margin-right: auto; }
+
+/* Portada: rejilla de fondo y un brillo de neón detrás del título */
+.portada { position: relative; padding: 40px 0 8px; isolation: isolate; }
+.portada::before {
+  content: ""; position: absolute; inset: -48px -40vw 0; z-index: -1;
+  background:
+    radial-gradient(ellipse 50% 60% at 30% 30%, rgba(181, 140, 255, .18), transparent 70%),
+    linear-gradient(var(--linea) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, var(--linea) 1px, transparent 1px) 0 0 / 40px 40px;
+  mask-image: radial-gradient(ellipse 70% 80% at 40% 30%, #000 30%, transparent 75%);
+  opacity: .7;
+}
+.empezar {
+  display: inline-flex; gap: 10px; align-items: center; margin-top: 28px; padding: 12px 22px;
+  background: var(--texto); color: var(--fondo); border-radius: 999px; font-weight: 500; text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.empezar:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -10px var(--epica); }
+.empezar span { animation: rebote 1.4s ease-in-out infinite; }
+@keyframes rebote { 50% { transform: translateY(4px); } }
+
+/* Kill feed: tira de frases reales que desfila sin parar (se para al pasar el ratón) */
+.feed {
+  margin: 40px -20px 0; padding: 12px 0; overflow: hidden; border-block: 1px solid var(--linea);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.feed-pista { display: flex; gap: 32px; width: max-content; animation: desfilar 120s linear infinite; }
+.feed:hover .feed-pista { animation-play-state: paused; }
+@keyframes desfilar { to { transform: translateX(-50%); } }
+.baja { white-space: nowrap; font-size: 14px; color: var(--suave); }
+.baja b { color: var(--r); font: 500 13px var(--mono); margin-right: 6px; }
+.baja small { font-family: var(--mono); font-size: 11px; margin-left: 6px; opacity: .7; }
+
+/* Patch notes: una nota de parche por juego */
+.parches { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.parche { background: var(--superficie); border-top: 3px solid var(--r); border-radius: 0 0 12px 12px; padding: 16px; }
+.parche header { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+.parche header img { border-radius: 8px; }
+.parche h3 { font-size: 18px; margin: 0; }
+.parche small { font: 500 11px var(--mono); color: var(--suave); }
+.parche ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
+.tag { font: 500 11px var(--mono); padding: 2px 6px; border-radius: 4px; margin-right: 4px; }
+.tag.hotfix { background: rgba(255, 107, 107, .15); color: var(--mal); }
+.tag.buff { background: rgba(61, 220, 151, .15); color: var(--bien); }
 .subtitulo { color: var(--suave); max-width: 60ch; }
 
 /* Hallazgos de la portada: número grande + frase corta */
 .hallazgos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 24px; }
-.hallazgo { background: var(--superficie); border-radius: 12px; padding: 16px; }
+.hallazgo { background: rgba(31, 27, 42, .85); border: 1px solid var(--linea); border-radius: 12px; padding: 16px; backdrop-filter: blur(6px); }
 .hallazgo strong { display: block; font: 700 36px/1 var(--titulo); margin-bottom: 8px; }
 
 /* Cartas coleccionables: se inclinan siguiendo el ratón y se giran al pulsarlas */
@@ -133,5 +196,7 @@ footer { text-align: center; color: var(--suave); font-size: 14px; padding: 32px
 
 /* Si la persona prefiere menos movimiento, quitamos las animaciones */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .feed { overflow-x: auto; }
   *, *::after { animation: none !important; transition: none !important; }
 }
