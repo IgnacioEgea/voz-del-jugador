@@ -48,9 +48,11 @@ def preguntar_ia(lote):
 
 
 def a_tabla(clasificadas):
-    # Una fila por reseña y una columna por aspecto (vacía si la reseña no habla de él)
-    return pd.DataFrame([{"id": str(c["id"]), **{a: c["aspectos"].get(a, "") for a in ASPECTOS}}
-                         for c in clasificadas])
+    # Una fila por reseña y una columna por aspecto (vacía si la reseña no habla de él).
+    # Si la IA se olvida de algún campo, lo tratamos como "sin aspectos" en vez de rompernos
+    return pd.DataFrame([{"id": str(c["id"]), **{a: (c.get("aspectos") or {}).get(a, "")
+                                                  for a in ASPECTOS}}
+                         for c in clasificadas if "id" in c])
 
 
 def clasificar(limite=None):
