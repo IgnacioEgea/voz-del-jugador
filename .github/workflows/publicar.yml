@@ -41,6 +41,9 @@ jobs:
       # Resumimos las reseñas en data.json
       - run: python src/resumir.py
 
+      # Ponemos una "versión" a los archivos CSS y JS para que los navegadores no usen copias viejas
+      - run: sed -i -E "s/\.(css|js)\"/.\1?v=${GITHUB_SHA::7}-${{ github.run_number }}\"/g" web/index.html
+
       # Subimos la carpeta web/ a GitHub Pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
