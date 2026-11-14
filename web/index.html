@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- La voz del jugador: reseñas de Steam de shooters free-to-play analizadas con IA, para jugadores y estudios.
+<!-- La voz del jugador: reseñas de Steam de juegos free-to-play analizadas con IA, para jugadores y estudios.
      Es una "app" de una sola página: app.js cambia de pantalla según el enlace (#/juegos, #/comparar…)
      y vistas.js, herramientas.js y textos.js dibujan cada pantalla a partir de data.json. -->
 <html lang="es">
@@ -7,9 +7,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>La voz del jugador · Reseñas de Steam analizadas con IA</title>
-  <meta name="description" content="Miles de reseñas de Steam de shooters free-to-play, analizadas con IA: encuentra tu juego y descubre qué aman y qué odian sus jugadores.">
+  <meta name="description" content="Miles de reseñas de Steam de juegos free-to-play, analizadas con IA: encuentra tu juego y descubre qué aman y qué odian sus jugadores.">
   <meta property="og:title" content="La voz del jugador">
-  <meta property="og:description" content="Miles de reseñas de Steam de shooters free-to-play, analizadas con IA.">
+  <meta property="og:description" content="Miles de reseñas de Steam de juegos free-to-play, analizadas con IA.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ignacioegea.github.io/voz-del-jugador/">
   <meta property="og:image" content="https://ignacioegea.github.io/voz-del-jugador/img/og.jpg">
@@ -48,6 +48,8 @@
     <a href="#/explorar" data-ruta="explorar">Explorar</a>
     <a href="#/conclusiones" data-ruta="conclusiones">Conclusiones</a>
     <a href="#/metodo" data-ruta="metodo">Método</a>
+    <button class="hud-boton" id="abrir-buscar" aria-label="Buscar (atajo: /)">🔎 <kbd>/</kbd></button>
+    <button class="hud-boton" id="abrir-logros" aria-label="Ver tus logros">🏆 <span id="cuenta-logros">0/6</span></button>
   </nav>
 
   <!-- Aquí se dibuja la pantalla en la que estás -->
@@ -57,8 +59,9 @@
     <p>Hecho por <a href="https://www.linkedin.com/in/nacho-egea/">Ignacio Egea Villalba</a> ·
       <a href="https://github.com/IgnacioEgea/voz-del-jugador">Código y datos en GitHub</a> ·
       <a href="#/metodo">Cómo está hecho</a></p>
-    <p class="nota">Proyecto independiente. No está afiliado a Valve ni a los estudios de los juegos.
-      Los emblemas son ilustraciones originales, no arte oficial.</p>
+    <p class="nota">Proyecto independiente y sin ánimo de lucro, no afiliado a Valve ni a los estudios.
+      Las portadas son el arte oficial de cada juego, © de sus respectivos estudios, y se muestran directamente
+      desde la tienda de Steam. Las insignias de logros son ilustraciones originales.</p>
   </footer>
 
   <script src="app.js"></script>
@@ -66,5 +69,6 @@
   <script src="ficha.js"></script>
   <script src="herramientas.js"></script>
   <script src="textos.js"></script>
+  <script src="logros.js"></script>
 </body>
 </html>

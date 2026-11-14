@@ -32,14 +32,16 @@ function vistaJuego(s) {
 
   return `<a class="volver" href="#/juegos">← Todos los juegos</a>
   <header class="ficha-cabecera ${j.rareza}">
-    <img class="ficha-emblema" src="${emblema(j.juego)}" alt="Emblema de ${j.juego}" width="512" height="512">
+    ${portada(j, "ficha-emblema")}
     <div>
-      <span class="rareza">${RAREZAS[j.rareza]}</span>
+      <span class="rareza">${RAREZAS[j.rareza]}</span> <span class="chip">${j.genero}</span>
       <h1>${j.juego}</h1>
       <p class="gran-cifra"><b>${j.recomienda} %</b> de ${miles(j.resenas)} jugadores lo recomienda</p>
       <div class="botones">
         <a class="boton principal" href="#/comparar/${s}">⚔️ Comparar</a>
         <a class="boton" href="#/explorar/${s}">🔍 Leer sus reseñas</a>
+        <button class="boton" data-compartir="${j.juego}">📤 Compartir</button>
+        <a class="boton" href="https://store.steampowered.com/app/${j.appid}" target="_blank" rel="noopener">🛒 Ver en Steam</a>
       </div>
     </div>
   </header>

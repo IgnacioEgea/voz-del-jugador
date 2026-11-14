@@ -11,9 +11,8 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-# Los juegos que estudiamos: su número en Steam (appid) y su nombre
-JUEGOS = {2767030: "Marvel Rivals", 2357570: "Overwatch 2", 1172470: "Apex Legends",
-          2073850: "THE FINALS", 440: "Team Fortress 2", 444090: "Paladins"}
+from juegos import JUEGOS  # Lista de juegos: appid → (nombre, género)
+
 OBJETIVO = 1800       # Cuántas reseñas queremos de cada juego
 IDIOMA = "english"
 CARPETA = Path(__file__).resolve().parent.parent / "data" / "raw"
@@ -32,7 +31,7 @@ def pedir_pagina(appid, cursor):
 
 def a_filas(appid, resenas):
     # De cada reseña nos quedamos solo con lo que vamos a usar
-    return [{"id": r["recommendationid"], "juego": JUEGOS[appid], "texto": r["review"],
+    return [{"id": r["recommendationid"], "juego": JUEGOS[appid][0], "texto": r["review"],
              "recomienda": r["voted_up"],
              "minutos_jugados": r["author"].get("playtime_at_review", 0),
              "fecha": r["timestamp_created"], "votos_util": r["votes_up"]}
@@ -60,7 +59,7 @@ def descargar(appid):
         marca.write_text(cursor)
         time.sleep(1)  # Pausa corta para ser amables con Steam
 
-    print(f"{JUEGOS[appid]}: {hechas} reseñas")
+    print(f"{JUEGOS[appid][0]}: {hechas} reseñas")
 
 
 if __name__ == "__main__":

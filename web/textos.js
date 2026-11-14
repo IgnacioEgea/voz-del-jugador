@@ -33,7 +33,7 @@ function vistaConclusiones() {
   ];
 
   return `<header class="cabecera"><p class="etiqueta">// Informe</p><h1>Conclusiones</h1>
-    <p class="subtitulo">Qué hace que un jugador recomiende o abandone un shooter gratuito, contado con datos.
+    <p class="subtitulo">Qué hace que un jugador recomiende o abandone un juego gratuito, contado con datos.
     ${terminado() ? "" : `<br><b>Provisional:</b> basado en ${miles(datos.clasificadas)} de ${miles(datos.total)} reseñas.`}</p></header>
   <ol class="ideas">${ideas.map(([cifra, titulo, texto], i) => `<li><span class="idea-num">0${i + 1}</span>
     <strong>${cifra}</strong><h3>${titulo}</h3><p>${texto}</p></li>`).join("")}</ol>
@@ -56,12 +56,12 @@ function vistaConclusiones() {
 
   <section class="cta-final"><h2>¿Y si solo quieres jugar?</h2>
     <p>Usa el recomendador: marca lo que te importa y te decimos qué juego encaja contigo.</p>
-    <a class="boton principal" href="#/encuentra">🎯 Encuentra tu shooter</a></section>`;
+    <a class="boton principal" href="#/encuentra">🎯 Encuentra tu juego</a></section>`;
 }
 
 function vistaMetodo() {
   const pasos = [
-    ["📥", "Datos", `${miles(datos.total)} reseñas recientes en inglés de ${datos.juegos.length} shooters gratuitos, descargadas de la API oficial de Steam (sin scraping).`],
+    ["📥", "Datos", `${miles(datos.total)} reseñas recientes en inglés de ${datos.juegos.length} juegos gratuitos, descargadas de la API oficial de Steam (sin scraping).`],
     ["🧹", "Limpieza", "Fuera duplicados, textos de menos de 20 caracteres y spam (dibujos con símbolos o palabras repetidas). Horas jugadas al escribir la reseña."],
     ["🤖", "IA", "Gemini clasifica cada reseña en 7 temas con su tono (positivo, negativo o neutro), en lotes de 20 y con temperatura 0 para respuestas estables."],
     ["✅", "Validación", "200 reseñas al azar se etiquetan a mano para medir cuánto acierta la IA. Resultado: pendiente de publicar."],

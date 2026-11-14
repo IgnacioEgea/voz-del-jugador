@@ -1,6 +1,6 @@
-// Herramientas interactivas: "Encuentra tu shooter", el comparador "versus" y el explorador de reseñas.
+// Herramientas interactivas: "Encuentra tu juego", el comparador "versus" y el explorador de reseñas.
 
-// ——— Encuentra tu shooter: marcas lo que te importa y ordenamos los juegos ———
+// ——— Encuentra tu juego: marcas lo que te importa y ordenamos los juegos ———
 const DESEOS = {
   jugabilidad: "🎮 Que sea divertido", matchmaking_balance: "⚖️ Partidas justas", monetizacion: "💸 Sin pay-to-win",
   bugs_rendimiento: "🛠️ Que vaya fino", comunidad_toxicidad: "🤝 Comunidad sana",
@@ -8,7 +8,7 @@ const DESEOS = {
 };
 
 function vistaEncuentra() {
-  return `<header class="cabecera"><p class="etiqueta">// Recomendador</p><h1>Encuentra tu shooter</h1>
+  return `<header class="cabecera"><p class="etiqueta">// Recomendador</p><h1>Encuentra tu juego</h1>
     <p class="subtitulo">Marca lo que más te importa. Ordenamos los juegos según lo que opinan miles de jugadores sobre esas cosas.</p></header>
     <div class="deseos" id="deseos">${Object.entries(DESEOS).map(([k, t]) =>
       `<button class="deseo" data-clave="${k}" aria-pressed="${k === "jugabilidad" || k === "matchmaking_balance"}">${t}</button>`).join("")}</div>
@@ -28,7 +28,7 @@ function activarEncuentra() {
     $("recomendados").innerHTML = ranking.map(({ j, afinidad, peor }, i) => `
       <a class="recomendado ${j.rareza}" href="#/juego/${slug(j.juego)}" style="animation-delay:${i * 60}ms">
         <span class="puesto">${["🥇", "🥈", "🥉"][i] ?? `#${i + 1}`}</span>
-        <img src="${emblema(j.juego)}" alt="" width="64" height="64">
+        ${portada(j, "mini", 64)}
         <div><h3>${j.juego}</h3><small>Ojo con: ${NOMBRES[peor].toLowerCase()} (${j.aspectos[peor].pos} % positivo)</small></div>
         <strong>${afinidad} %<small>afinidad</small></strong>
       </a>`).join("") + (faltan ? `<p class="nota">${faltan} juego(s) aún sin datos suficientes: la IA sigue leyendo.</p>` : "");
@@ -66,7 +66,7 @@ function duelo(a, b) {
     return `<div class="fila-vs"><div class="izq">${lado(x, ganaA)}</div><span>${ICONOS[k]}<br>${NOMBRES[k]}</span><div class="der">${lado(y, ganaB)}</div></div>`;
   }).join("");
   const luchador = (j, puntos) => `<a class="luchador ${j.rareza}" href="#/juego/${slug(j.juego)}">
-    <img src="${emblema(j.juego)}" alt="" width="120" height="120"><h3>${j.juego}</h3>
+    ${portada(j, "luchador-img", 160)}<h3>${j.juego}</h3>
     <small>${j.recomienda} % lo recomienda</small><strong>${puntos}</strong></a>`;
   return `<div class="marcador">${luchador(a, puntosA)}<span class="vs">VS</span>${luchador(b, puntosB)}</div>${filas}`;
 }

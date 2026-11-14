@@ -19,6 +19,10 @@ const $ = (id) => document.getElementById(id);
 const miles = (n) => n.toLocaleString("es-ES");
 const slug = (juego) => juego.toLowerCase().replace(/ /g, "-");
 const emblema = (juego) => `img/${slug(juego)}.webp`;
+// Portada oficial del juego, servida desde la tienda de Steam; si falla, enseñamos nuestra ilustración
+const portada = (j, clase = "", ancho = 600) => `<img class="${clase}" src="${j.portada}" alt="Portada de ${j.juego}"
+  width="${ancho}" height="${ancho * 1.5}" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+  onerror="this.onerror=null;this.src='img/portada-800.webp'">`;
 const nivel = (pos) => Math.max(1, Math.round(pos / 10));
 const juegoPorSlug = (s) => datos.juegos.find((j) => slug(j.juego) === s);
 const colorBarra = (pos) => (pos >= 55 ? "var(--bien)" : pos >= 35 ? "var(--medio)" : "var(--mal)");
@@ -60,6 +64,7 @@ function navegar() {
   const pintar = () => {
     $("vista").innerHTML = window[`vista${nombre}`](parametro);
     window[`activar${nombre}`]?.(parametro);
+    window.logro?.(ruta, parametro);  // Logros por visitar secciones (logros.js)
     crecer($("vista"));
     // Marcamos en el menú la sección en la que estás
     document.querySelectorAll(".hud a").forEach((a) =>
@@ -80,6 +85,7 @@ addEventListener("scroll", () => {
 // Pantalla de carga con consejos, como al entrar en una partida
 const CONSEJOS = [
   "Consejo: en «Encuentra» marca lo que te importa y te recomendamos un juego.",
+  "Consejo: pulsa / para buscar cualquier juego o sección al instante.",
   "Consejo: pasa el ratón por una carta para ver su punto fuerte y su punto débil.",
   "¿Sabías que…? La rareza de cada carta sale del % de jugadores que lo recomiendan.",
   "Consejo: en «Comparar» puedes enfrentar dos juegos aspecto por aspecto.",

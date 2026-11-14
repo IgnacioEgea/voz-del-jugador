@@ -10,12 +10,12 @@ function carta(j) {
        <small>Punto débil</small><p class="nivel">${ICONOS[peor.clave]} ${NOMBRES[peor.clave]} <b class="rojo">Lv. ${nivel(peor.pos)}</b></p>
        <span class="ver">Ver ficha →</span>`
     : `<small>La IA aún está leyendo sus reseñas…</small><span class="ver">Ver ficha →</span>`;
-  return `<a class="carta ${j.rareza}" href="#/juego/${slug(j.juego)}" aria-label="${j.juego}: carta ${RAREZAS[j.rareza]}, ${j.recomienda} % lo recomienda">
+  return `<a class="carta ${j.rareza}" data-genero="${j.genero}" href="#/juego/${slug(j.juego)}" aria-label="${j.juego}: carta ${RAREZAS[j.rareza]}, ${j.recomienda} % lo recomienda">
     <div class="carta-int">
       <div class="cara frente">
-        <img src="${emblema(j.juego)}" alt="" width="512" height="512" decoding="async">
-        <h3>${j.juego}</h3>
-        <span class="rareza">${RAREZAS[j.rareza]} · ${j.recomienda} %</span>
+        ${portada(j, "carta-portada")}
+        <div class="carta-info"><h3>${j.juego}</h3>
+          <span class="rareza">${RAREZAS[j.rareza]} · ${j.recomienda} %</span></div>
       </div>
       <div class="cara dorso">${dorso}</div>
     </div></a>`;
@@ -53,15 +53,15 @@ function vistaInicio() {
   <header class="portada">
     <img class="portada-arte" src="img/portada-1600.webp" srcset="img/portada-800.webp 800w, img/portada-1600.webp 1600w"
       sizes="(max-width: 700px) 100vw, 900px" alt="" fetchpriority="high">
-    <p class="etiqueta">// ${miles(datos.total)} reseñas de Steam · ${datos.juegos.length} shooters free-to-play · analizadas con IA</p>
-    <h1>¿Por qué los jugadores recomiendan o abandonan un free‑to‑play?</h1>
+    <p class="etiqueta">// ${miles(datos.total)} reseñas de Steam · ${datos.juegos.length} juegos free-to-play · analizadas con IA</p>
+    <h1>¿Por qué los jugadores recomiendan o abandonan un juego free‑to‑play?</h1>
     <p class="subtitulo">Leímos lo que escriben los jugadores en Steam y una IA lo separó por temas: jugabilidad, monetización,
       bugs, matchmaking… El resultado sirve para elegir a qué jugar y para que los estudios sepan qué arreglar.</p>
     ${terminado() ? "" : `<p class="aviso">⏳ Datos provisionales: la IA lleva el ${Math.round(datos.clasificadas / datos.total * 100)} % de las reseñas. La web se actualiza sola.</p>`}
     <div class="hallazgos">${h.map(([num, frase, color]) =>
       `<div class="hallazgo"><strong style="color:${color}" data-contar>${num}</strong><p>${frase}</p></div>`).join("")}</div>
     <div class="botones">
-      <a class="boton principal" href="#/encuentra">🎯 Encuentra tu shooter</a>
+      <a class="boton principal" href="#/encuentra">🎯 Encuentra tu juego</a>
       <a class="boton" href="#/conclusiones">📊 Ver conclusiones</a>
     </div>
   </header>
@@ -69,7 +69,7 @@ function vistaInicio() {
   <section aria-labelledby="t-pasos">
     <h2 id="t-pasos">Cómo funciona</h2>
     <ol class="pasos">
-      <li><b>01 · Escuchamos</b><p>Descargamos ${miles(datos.total)} reseñas recientes de Steam de ${datos.juegos.length} shooters gratuitos.</p></li>
+      <li><b>01 · Escuchamos</b><p>Descargamos ${miles(datos.total)} reseñas recientes de Steam de ${datos.juegos.length} juegos gratuitos.</p></li>
       <li><b>02 · La IA lee</b><p>Cada reseña se separa en 7 temas y se marca si habla bien o mal de cada uno.</p></li>
       <li><b>03 · Tú decides</b><p>Elige juego como jugador, o descubre qué arreglar si trabajas en un estudio.</p></li>
     </ol>
@@ -116,8 +116,18 @@ function vistaJuegos() {
     <p class="subtitulo">Cada juego es una carta. Su rareza depende del % de jugadores que lo recomiendan:
       <span class="chip legendaria">Legendaria ≥ 80 %</span> <span class="chip epica">Épica ≥ 65 %</span>
       <span class="chip rara">Rara ≥ 50 %</span> <span class="chip comun">Común &lt; 50 %</span></p></header>
+    <div class="deseos" id="generos" role="group" aria-label="Filtrar por género">${["Todos", ...new Set(datos.juegos.map((j) => j.genero))]
+      .map((g, i) => `<button class="deseo" data-genero="${g}" aria-pressed="${i === 0}">${g}</button>`).join("")}</div>
     <div class="cartas grandes" id="cartas">${datos.juegos.map(carta).join("")}</div>`;
 }
 function activarJuegos() {
   inclinar($("cartas"));
+  // Filtro por género: escondemos las cartas que no son de ese tipo de juego
+  $("generos").addEventListener("click", (e) => {
+    const boton = e.target.closest(".deseo");
+    if (!boton) return;
+    document.querySelectorAll("#generos .deseo").forEach((b) => b.setAttribute("aria-pressed", b === boton));
+    document.querySelectorAll("#cartas .carta").forEach((c) =>
+      (c.hidden = boton.dataset.genero !== "Todos" && c.dataset.genero !== boton.dataset.genero));
+  });
 }

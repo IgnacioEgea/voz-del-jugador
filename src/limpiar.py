@@ -38,7 +38,13 @@ def limpiar():
     df["perfil"] = pd.cut(df["horas"], [0, 10, 100, float("inf")], right=False,
                           labels=["novato", "medio", "veterano"])
 
-    df.to_csv(RAIZ / "data" / "resenas.csv", index=False)
+    # Si ya teníamos reseñas de otros juegos, las conservamos tal cual (y así no se pierde su clasificación)
+    salida = RAIZ / "data" / "resenas.csv"
+    if salida.exists():
+        previas = pd.read_csv(salida, dtype={"id": str})
+        previas = previas[~previas["juego"].isin(df["juego"].unique())]
+        df = pd.concat([previas, df.astype({"id": str})])
+    df.to_csv(salida, index=False)
     # Resumen: cuántas había y cuántas quedan de cada juego
     print(pd.DataFrame({"antes": antes, "despues": df.groupby("juego").size()}))
 
