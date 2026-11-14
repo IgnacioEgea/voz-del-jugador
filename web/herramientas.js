@@ -112,7 +112,7 @@ function tarjeta(r, q) {
 
 async function activarExplorar() {
   $("lista").innerHTML = `<p class="nota cargando">Cargando la base de reseñas…</p>`;
-  baseResenas ??= await fetch("resenas.json").then((r) => r.json());
+  baseResenas ??= await fetch("resenas.json", { cache: "no-cache" }).then((r) => r.json());
   let mostradas = 20;
   const pintar = (reiniciar) => {
     if (reiniciar) mostradas = 20;

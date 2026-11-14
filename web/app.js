@@ -94,7 +94,7 @@ async function arrancar() {
   let i = 0;
   const rotar = setInterval(() => ($("consejo").textContent = CONSEJOS[i++ % CONSEJOS.length]), 1200);
   try {
-    const [cargados] = await Promise.all([fetch("data.json").then((r) => r.json()), new Promise((r) => setTimeout(r, quieto ? 0 : 900))]);
+    const [cargados] = await Promise.all([fetch("data.json", { cache: "no-cache" }).then((r) => r.json()), new Promise((r) => setTimeout(r, quieto ? 0 : 900))]);
     Object.assign(datos, cargados);
     navegar();
     $("carga").classList.add("fuera");
