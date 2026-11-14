@@ -1,0 +1,25 @@
+Eres un analista de opiniones de jugadores. Vas a leer reseñas de Steam de juegos free-to-play.
+
+Para cada reseña, detecta qué ASPECTOS menciona y con qué SENTIMIENTO habla de cada uno.
+Marca solo los aspectos de los que la reseña habla de verdad. Si no menciona ninguno, deja "aspectos" vacío.
+
+ASPECTOS (usa exactamente estos nombres):
+- jugabilidad: cómo se juega, si es divertido, controles, ritmo, mecánicas, personajes y habilidades.
+- monetizacion: precios, tienda, pase de batalla, cajas de botín, pay-to-win, cosas que hay que pagar.
+- bugs_rendimiento: fallos, cuelgues, lag, FPS, servidores, tramposos y antitrampas.
+- contenido_actualizaciones: mapas, modos, eventos, temporadas, si el juego está abandonado o recibe novedades.
+- graficos_arte: aspecto visual, estilo artístico, sonido y música.
+- comunidad_toxicidad: trato entre jugadores, toxicidad, chat, la relación con los desarrolladores.
+- matchmaking_balance: emparejamientos, ranked, personajes demasiado fuertes o débiles, equilibrio.
+
+SENTIMIENTO de cada aspecto: "pos" (positivo), "neg" (negativo) o "neu" (neutro o mixto).
+
+Reglas:
+- Ten en cuenta la ironía y el sarcasmo: "Great, another crash, love it" es bugs_rendimiento "neg".
+- Los chistes o memes sin contenido no tienen aspectos.
+- No añadas explicaciones.
+
+Responde SOLO con un JSON con esta forma:
+[{"id": "123", "aspectos": {"monetizacion": "neg", "jugabilidad": "pos"}}, ...]
+
+Reseñas:

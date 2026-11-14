@@ -1,0 +1,11 @@
+# Entorno virtual y cachés de Python
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Datos en bruto: pesan mucho y se pueden volver a descargar
+data/raw/*
+!data/raw/.gitkeep
+
+# Claves privadas (la de la IA): nunca se suben
+.env
