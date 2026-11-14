@@ -85,6 +85,41 @@ img { max-width: 100%; height: auto; }
 .directo i { width: 8px; height: 8px; border-radius: 50%; background: var(--mal); box-shadow: 0 0 10px var(--mal); animation: latido 1.2s ease-in-out infinite; }
 @keyframes latido { 50% { transform: scale(.6); opacity: .5; } }
 
+.hud-boton { font: 500 13px var(--mono); color: var(--texto); background: var(--superficie-2); border: 1px solid var(--linea);
+  border-radius: 8px; padding: 6px 10px; cursor: pointer; transition: background .15s; display: inline-flex; align-items: center; gap: 6px; }
+.hud-boton:hover { background: var(--linea); }
+kbd { font: 500 11px var(--mono); border: 1px solid var(--tenue); border-radius: 4px; padding: 0 4px; color: var(--suave); }
+
+/* Avisos emergentes (logro desbloqueado, enlace copiado) */
+.toast {
+  position: fixed; right: 20px; bottom: 20px; z-index: 60; display: flex; gap: 12px; align-items: center; max-width: 340px;
+  background: var(--superficie-2); border: 1px solid var(--legendaria); border-radius: 14px; padding: 12px 16px;
+  box-shadow: 0 20px 50px -15px rgba(255, 201, 60, .45); animation: subir .45s cubic-bezier(.2, 1.3, .4, 1) both;
+  transition: opacity .5s, transform .5s;
+}
+.toast.fuera { opacity: 0; transform: translateY(20px); }
+.toast img { border-radius: 10px; }
+.toast div { display: grid; }
+.toast small { font: 500 11px var(--mono); color: var(--legendaria); }
+.toast span { font-size: 14px; color: var(--suave); }
+@keyframes subir { from { opacity: 0; transform: translateY(40px) scale(.9); } }
+
+/* Ventanas emergentes: logros, buscador rápido y asistente */
+.ventana { width: min(560px, 92vw); max-height: 88vh; background: var(--superficie); color: var(--texto); border: 1px solid var(--linea);
+  border-radius: 18px; padding: 24px; box-shadow: var(--sombra); animation: entrar .3s ease both; }
+.ventana::backdrop { background: rgba(10, 8, 16, .7); backdrop-filter: blur(4px); }
+.ventana h2 { margin-top: 0; }
+.ventana h2::before { content: ""; }
+.cerrar { float: right; background: none; border: 0; color: var(--suave); font-size: 18px; cursor: pointer; }
+.logros { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.logros li { display: grid; justify-items: center; text-align: center; gap: 4px; background: var(--superficie-2); border-radius: 12px; padding: 14px; }
+.logros img { border-radius: 12px; }
+.logros small { color: var(--suave); font-size: 13px; }
+.logros .bloqueado { opacity: .45; filter: grayscale(1); }
+.resultados { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 4px; }
+.resultados a { display: block; padding: 10px 12px; border-radius: 10px; color: var(--texto); text-decoration: none; }
+.resultados a:hover, .resultados li:first-child a { background: var(--superficie-2); }
+
 /* Ranuras del menú: como las casillas de habilidades o inventario de un juego */
 .ranuras { position: sticky; top: 59px; z-index: 19; display: flex; justify-content: center; gap: 8px; padding: 10px 16px;
   background: linear-gradient(rgba(20, 17, 28, .9), rgba(20, 17, 28, .6)); backdrop-filter: blur(10px); overflow-x: auto; scrollbar-width: none; }
