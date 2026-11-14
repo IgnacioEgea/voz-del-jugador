@@ -19,7 +19,7 @@ SALIDA = RAIZ / "data" / "resenas_clasificadas.csv"
 PROMPT = (RAIZ / "src" / "prompt.txt").read_text(encoding="utf-8")
 ASPECTOS = ["jugabilidad", "monetizacion", "bugs_rendimiento", "contenido_actualizaciones",
             "graficos_arte", "comunidad_toxicidad", "matchmaking_balance"]
-MODELO = "gemini-flash-latest"
+MODELO = "gemini-flash-lite-latest"
 URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODELO}:generateContent"
 LOTE = 20
 ESPERA = 6  # Segundos entre llamadas, para no pasarnos del límite gratuito por minuto
@@ -30,15 +30,18 @@ def preguntar_ia(lote):
     resenas = lote[["id", "texto"]].assign(texto=lote["texto"].str[:1500])
     cuerpo = {"contents": [{"parts": [{"text": PROMPT + resenas.to_json(orient="records")}]}],
               "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
-    while True:
+    # Hasta 3 intentos: si Gemini tarda mucho o está saturado, esperamos un minuto y repetimos
+    for _ in range(3):
         try:
-            respuesta = requests.post(URL, json=cuerpo, timeout=300,
+            respuesta = requests.post(URL, json=cuerpo, timeout=180,
                                       headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+            if respuesta.status_code not in (429, 503):
+                break
         except requests.Timeout:
-            continue  # Gemini se ha quedado pensando demasiado: se lo pedimos otra vez
-        if respuesta.status_code not in (429, 503):
-            break
-        time.sleep(60)  # Límite superado o Gemini saturado: esperamos un minuto y repetimos
+            pass
+        time.sleep(60)
+    else:
+        sys.exit("Gemini no responde tras 3 intentos (cuota agotada o servicio saturado)")
     if not respuesta.ok:
         sys.exit(f"Gemini respondió {respuesta.status_code}: {respuesta.text[:500]}")
     return json.loads(respuesta.json()["candidates"][0]["content"]["parts"][0]["text"])
