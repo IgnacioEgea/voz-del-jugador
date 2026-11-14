@@ -49,7 +49,8 @@ img { max-width: 100%; height: auto; }
 
 /* ——— Pantalla de carga, como al entrar en una partida ——— */
 .carga {
-  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--fondo);
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: linear-gradient(rgba(20, 17, 28, .8), rgba(20, 17, 28, .96)), url(img/portada-800.webp) center / cover, var(--fondo);
   transition: opacity .6s ease, visibility .6s;
 }
 .carga.fuera { opacity: 0; visibility: hidden; }
@@ -107,6 +108,15 @@ img { max-width: 100%; height: auto; }
     linear-gradient(90deg, var(--linea) 1px, transparent 1px) 0 0 / 44px 44px;
   mask-image: radial-gradient(ellipse 70% 80% at 40% 30%, #000 30%, transparent 75%);
 }
+/* Ilustración de la portada: a la derecha, fundida con el fondo para que el texto se lea bien */
+.portada-arte {
+  position: absolute; z-index: -1; top: -56px; right: -12%; width: min(900px, 95vw); pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent 5%, #000 50%), linear-gradient(#000 65%, transparent);
+  mask-composite: intersect; -webkit-mask-composite: source-in; opacity: .95;
+  animation: aparecer-arte 1.2s cubic-bezier(.2, .8, .2, 1) both;
+}
+@keyframes aparecer-arte { from { opacity: 0; transform: translateX(40px) scale(1.04); } }
+@media (max-width: 760px) { .portada-arte { opacity: .3; right: -30%; } }
 .aviso { display: inline-block; background: #2B2412; color: var(--legendaria); border: 1px solid #5A4A1A; border-radius: 10px; padding: 9px 14px; font-size: 15px; }
 .hallazgos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 28px; }
 .hallazgo { background: rgba(30, 26, 41, .88); border: 1px solid var(--linea); border-radius: var(--radio); padding: 18px; backdrop-filter: blur(6px); }
