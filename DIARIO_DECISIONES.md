@@ -16,6 +16,7 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 | 14 nov 2026 | Las definiciones de los aspectos del prompt sirven también de guía para etiquetar a mano | La IA y yo usamos el mismo criterio, así que el acierto es justo | Etiquetar "a ojo" |
 | 14 nov 2026 | Migrar a la nueva API de Steam (`IUserReviewsService/GetAppReviews`) | Valve retiró `appreviews` el 22 oct 2026; la nueva es oficial, gratuita y sin clave. Por defecto filtra las "bombas de reseñas" (off-topic) | Seguir con la API antigua (ya no responde) |
 | 14 nov 2026 | Descarga y limpieza en GitHub Actions | Se ejecuta en los servidores de GitHub con un botón, gratis y repetible: el pipeline queda documentado | Ejecutarlo a mano en el PC |
+| 14 nov 2026 | Modelo `gemini-flash-lite-latest` en vez de `gemini-flash-latest` | El modelo "flash" se quedaba pensando más de 2 min por lote; el "lite" responde en segundos, tiene más cuota gratuita y la validación medirá si acierta lo suficiente | Modelo más grande (lento y con menos cuota) |
 | 14 nov 2026 | Concepto visual: "carta coleccionable" con barras de stats tipo HUD | La rareza de la carta sale de los datos (% de reseñas positivas), así que el diseño explica el dato; las barras se leen más rápido que un radar | HUD táctico puro (demasiado parecido a un dashboard típico) y arcade (la letra pixelada se lee mal en el móvil) |
 
 ## Observaciones y hallazgos (ir apuntando)
