@@ -17,6 +17,8 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 | 14 nov 2026 | Migrar a la nueva API de Steam (`IUserReviewsService/GetAppReviews`) | Valve retiró `appreviews` el 22 oct 2026; la nueva es oficial, gratuita y sin clave. Por defecto filtra las "bombas de reseñas" (off-topic) | Seguir con la API antigua (ya no responde) |
 | 14 nov 2026 | Descarga y limpieza en GitHub Actions | Se ejecuta en los servidores de GitHub con un botón, gratis y repetible: el pipeline queda documentado | Ejecutarlo a mano en el PC |
 | 14 nov 2026 | Modelo `gemini-flash-lite-latest` en vez de `gemini-flash-latest` | El modelo "flash" se quedaba pensando más de 2 min por lote; el "lite" responde en segundos, tiene más cuota gratuita y la validación medirá si acierta lo suficiente | Modelo más grande (lento y con menos cuota) |
+| 14 nov 2026 | El robot se pone al día (`git pull --rebase`) antes de guardar | Una tanda perdió ~1.000 reseñas porque subí la web mientras clasificaba y GitHub rechazó su guardado | Prohibir subir cambios mientras clasifica (frágil) |
+| 14 nov 2026 | Web publicada sola con GitHub Actions + Pages tras cada tanda | Los resultados se ven en vivo y el `data.json` nunca se queda viejo | Publicar a mano |
 | 14 nov 2026 | Concepto visual: "carta coleccionable" con barras de stats tipo HUD | La rareza de la carta sale de los datos (% de reseñas positivas), así que el diseño explica el dato; las barras se leen más rápido que un radar | HUD táctico puro (demasiado parecido a un dashboard típico) y arcade (la letra pixelada se lee mal en el móvil) |
 
 ## Observaciones y hallazgos (ir apuntando)

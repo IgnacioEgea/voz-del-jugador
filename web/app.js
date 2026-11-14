@@ -16,6 +16,13 @@ const seguro = (texto) => texto.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": 
 // Color de la barra: verde si hablan bien, gris si está dividido, rojo si hablan mal
 const colorBarra = (pos) => (pos >= 55 ? "var(--bien)" : pos >= 35 ? "var(--medio)" : "var(--mal)");
 
+// Las barras crecen desde cero cuando aparecen en pantalla, como los stats de un personaje
+const crecer = (zona) => new IntersectionObserver((vistas, observador) => vistas.forEach((v) => {
+  if (!v.isIntersecting) return;
+  v.target.querySelectorAll(".barra i").forEach((b) => (b.style.width = `${b.dataset.ancho}%`));
+  observador.disconnect();
+})).observe(zona);
+
 // Los aspectos con datos suficientes de un juego, del mejor al peor valorado
 const aspectosDe = (juego) =>
   Object.entries(juego.aspectos).filter(([, a]) => a).map(([clave, a]) => ({ clave, ...a })).sort((x, y) => y.pos - x.pos);
@@ -23,6 +30,13 @@ const aspectosDe = (juego) =>
 function pintarPortada(datos) {
   $("resumen").textContent = `${miles(datos.total)} reseñas de ${datos.juegos.length} shooters free-to-play. ` +
     `La IA ya ha leído ${miles(datos.clasificadas)} y las ha separado por aspecto: jugabilidad, monetización, bugs…`;
+
+  // Mientras la IA no haya terminado, avisamos de que los datos son provisionales
+  if (datos.clasificadas < datos.total) {
+    $("aviso").hidden = false;
+    $("aviso").textContent = `⏳ Datos provisionales: la IA lleva ${Math.round(datos.clasificadas / datos.total * 100)} % de las reseñas. ` +
+      "La web se actualiza sola cada vez que avanza.";
+  }
 
   // Hallazgo 1: el aspecto peor valorado de todos los juegos
   const peor = datos.juegos.flatMap((j) => aspectosDe(j).map((a) => ({ ...a, juego: j.juego })))
@@ -81,9 +95,24 @@ function pintarFicha(juego) {
       </div>`).join("")}
     <blockquote class="voz">“${seguro(peor.voz.texto)}” — jugador con ${Math.round(peor.voz.horas)} h, sobre ${NOMBRES[peor.clave].toLowerCase()}</blockquote>`;
 
-  // Las barras crecen desde cero, como cuando se cargan los stats de un personaje
-  requestAnimationFrame(() => requestAnimationFrame(() =>
-    ficha.querySelectorAll(".barra i").forEach((b) => (b.style.width = `${b.dataset.ancho}%`))));
+  crecer(ficha);
+}
+
+function pintarPerfiles(datos) {
+  // Para cada juego, tres barras: cuánto lo recomiendan novatos, medios y veteranos
+  const PERFILES = [["novato", "Novatos"], ["medio", "Medios"], ["veterano", "Veteranos"]];
+  $("perfiles").innerHTML = datos.juegos.map((j) => {
+    const caida = j.perfiles.novato - j.perfiles.veterano;
+    const cambio = caida > 0 ? `−${caida} pts` : `+${-caida} pts`;
+    return `<div class="perfil ${j.rareza}">
+      <h3>${j.juego} <small class="nota">${cambio} de novato a veterano</small></h3>
+      ${PERFILES.map(([clave, texto]) => `
+        <div class="fila"><span>${texto}</span>
+          <div class="barra"><i data-ancho="${j.perfiles[clave]}" style="background:var(--r)"></i></div>
+          <span>${j.perfiles[clave]} %</span></div>`).join("")}
+    </div>`;
+  }).join("");
+  crecer($("perfiles"));
 }
 
 // Cargamos los datos y dibujamos todo; abrimos la ficha del primer juego que ya tenga análisis
@@ -92,6 +121,7 @@ fetch("data.json")
   .then((datos) => {
     pintarPortada(datos);
     pintarCartas(datos);
+    pintarPerfiles(datos);
     const primero = datos.juegos.findIndex((j) => j.clasificadas);
     if (primero >= 0) document.querySelector(`.carta[data-i="${primero}"]`).click();
   });

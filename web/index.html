@@ -17,8 +17,9 @@
     <!-- Portada: la pregunta y los hallazgos principales -->
     <header class="portada aparece">
       <p class="etiqueta">La voz del jugador · Reseñas de Steam analizadas con IA</p>
-      <h1>¿Por qué los jugadores recomiendan o abandonan un free-to-play?</h1>
+      <h1>¿Por qué los jugadores recomiendan o abandonan un free‑to‑play?</h1>
       <p class="subtitulo" id="resumen"></p>
+      <p class="aviso" id="aviso" hidden></p>
       <div class="hallazgos" id="hallazgos"></div>
     </header>
 
@@ -31,6 +32,14 @@
 
     <!-- Ficha del juego elegido -->
     <section class="ficha aparece" id="ficha" aria-live="polite"></section>
+
+    <!-- Novatos vs. veteranos: cómo cambia la opinión con las horas jugadas -->
+    <section aria-labelledby="titulo-perfiles">
+      <h2 id="titulo-perfiles">Novatos vs. veteranos</h2>
+      <p class="nota">% de jugadores que recomiendan el juego según lo que habían jugado al escribir la reseña:
+        novatos (menos de 10 h), medios y veteranos (100 h o más).</p>
+      <div class="perfiles" id="perfiles"></div>
+    </section>
   </main>
 
   <footer>

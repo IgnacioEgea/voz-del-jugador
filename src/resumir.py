@@ -19,6 +19,11 @@ def pct(condicion):
     return int(round(condicion.mean() * 100))
 
 
+def recortar(texto, limite=240):
+    # Cortamos la reseña al final de una palabra, para no dejar palabras a medias
+    return texto if len(texto) <= limite else texto[:limite].rsplit(" ", 1)[0] + "…"
+
+
 def resumir_aspecto(resenas, aspecto):
     # De las reseñas que hablan de este aspecto, ¿cuántas lo hacen bien y cuántas mal?
     hablan = resenas[resenas[aspecto] != ""]
@@ -28,7 +33,7 @@ def resumir_aspecto(resenas, aspecto):
     voz = hablan.sort_values("votos_util", ascending=False).iloc[0]
     return {"menciones": len(hablan), "pos": pct(hablan[aspecto] == "pos"),
             "neg": pct(hablan[aspecto] == "neg"),
-            "voz": {"texto": voz["texto"][:240], "recomienda": bool(voz["recomienda"]),
+            "voz": {"texto": recortar(voz["texto"]), "recomienda": bool(voz["recomienda"]),
                     "horas": float(voz["horas"])}}
 
 
