@@ -1,202 +1,277 @@
-/* Estilo de la web: cartas coleccionables sobre fondo grafito, con barras tipo HUD de videojuego. */
+/* Estilo de la web: cartas coleccionables sobre fondo grafito, con detalles de HUD de videojuego.
+   Prioridad: que se lea bien (contraste y tamaños), que vaya rápido y que tenga personalidad. */
 
-/* Colores y tipos que se usan en toda la web */
+/* ——— Colores, tipos y medidas que se usan en toda la web ——— */
 :root {
-  --fondo: #17141F;
-  --superficie: #1F1B2A;
-  --linea: #2E2840;
-  --texto: #F1ECF7;
-  --suave: #A89FB8;
+  --fondo: #14111C;
+  --superficie: #1E1A29;
+  --superficie-2: #272236;
+  --linea: #322B45;
+  --texto: #F4F0FA;
+  --suave: #C3BAD3;
+  --tenue: #8F86A0;
   --bien: #3DDC97;
-  --medio: #C9C0D6;
+  --medio: #CFC6DD;
   --mal: #FF6B6B;
   --legendaria: #FFC93C;
   --epica: #B58CFF;
   --rara: #4FB3FF;
-  --comun: #8A8398;
+  --comun: #9890A8;
   --titulo: "Bricolage Grotesque", system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
+  --radio: 14px;
+  --sombra: 0 18px 40px -20px rgba(0, 0, 0, .7);
 }
-html { scroll-behavior: smooth; scroll-padding-top: 64px; }
-
 * { box-sizing: border-box; }
+html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
 body {
-  margin: 0;
-  background: var(--fondo);
-  color: var(--texto);
-  font: 400 16px/1.6 Inter, system-ui, sans-serif;
+  margin: 0; background: var(--fondo); color: var(--texto);
+  font: 400 17px/1.65 Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
-main { max-width: 960px; margin: 0 auto; padding: 48px 20px; }
-h1, h2, h3 { font-family: var(--titulo); font-weight: 700; line-height: 1.15; margin: 0 0 12px; }
-h1 { font-size: clamp(34px, 7vw, 64px); max-width: 15ch; letter-spacing: -.02em; }
-h2 { font-size: 28px; margin-top: 72px; }
+main { max-width: 1040px; margin: 0 auto; padding: 40px 20px 24px; outline: none; }
+h1, h2, h3 { font-family: var(--titulo); font-weight: 700; line-height: 1.12; margin: 0 0 12px; letter-spacing: -.015em; }
+h1 { font-size: clamp(36px, 6.5vw, 64px); font-weight: 800; max-width: 17ch; }
+h2 { font-size: clamp(24px, 3.5vw, 32px); margin-top: 72px; }
 h2::before { content: "▸ "; color: var(--epica); }
-a { color: var(--rara); }
-.etiqueta, .nota { color: var(--suave); font-size: 14px; margin: 0 0 12px; }
-.etiqueta { font-family: var(--mono); color: var(--epica); letter-spacing: .04em; }
+h3 { font-size: 19px; }
+p { margin: 0 0 12px; }
+a { color: var(--rara); text-underline-offset: 3px; }
+b, strong { font-weight: 600; }
+img { max-width: 100%; height: auto; }
 ::selection { background: var(--epica); color: var(--fondo); }
+:focus-visible { outline: 3px solid var(--rara); outline-offset: 3px; border-radius: 6px; }
+.etiqueta { font: 500 13px var(--mono); color: var(--epica); letter-spacing: .04em; margin-bottom: 14px; }
+.subtitulo { color: var(--suave); font-size: 19px; max-width: 62ch; }
+.nota { color: var(--suave); font-size: 15px; }
+.cabecera { margin-bottom: 32px; }
 
-/* Barra de experiencia arriba del todo: se llena al hacer scroll */
-.xp { position: fixed; inset: 0 0 auto; height: 3px; background: var(--linea); z-index: 20; }
+/* ——— Pantalla de carga, como al entrar en una partida ——— */
+.carga {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--fondo);
+  transition: opacity .6s ease, visibility .6s;
+}
+.carga.fuera { opacity: 0; visibility: hidden; }
+.carga-caja { text-align: center; width: min(360px, 80vw); }
+.carga-logo { font-size: 56px; display: inline-block; animation: flotar 1.6s ease-in-out infinite; }
+.carga-titulo { font: 800 26px var(--titulo); margin: 8px 0 20px; }
+.carga-barra { height: 6px; background: var(--linea); border-radius: 99px; overflow: hidden; }
+.carga-barra i { display: block; height: 100%; width: 40%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--rara), var(--epica), var(--legendaria)); animation: cargar 1.1s ease-in-out infinite; }
+.carga-consejo { font: 500 13px/1.5 var(--mono); color: var(--suave); margin-top: 16px; min-height: 3em; }
+@keyframes cargar { from { transform: translateX(-110%); } to { transform: translateX(260%); } }
+@keyframes flotar { 50% { transform: translateY(-8px) rotate(-6deg); } }
+
+/* ——— Transiciones entre pantallas (navegadores con View Transitions) ——— */
+::view-transition-old(root) { animation: salir .28s ease both; }
+::view-transition-new(root) { animation: entrar .42s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes salir { to { opacity: 0; transform: translateY(-10px) scale(.99); filter: blur(4px); } }
+@keyframes entrar { from { opacity: 0; transform: translateY(16px) scale(.99); filter: blur(4px); } }
+
+/* ——— Barra de experiencia y menú HUD ——— */
+.xp { position: fixed; inset: 0 0 auto; height: 3px; background: var(--linea); z-index: 30; }
 .xp i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--rara), var(--epica), var(--legendaria)); }
-
-/* Menú tipo HUD: pegado arriba, con fondo translúcido */
 .hud {
-  position: sticky; top: 3px; z-index: 10; display: flex; gap: 20px; align-items: center; overflow-x: auto;
-  padding: 12px 20px; background: rgba(23, 20, 31, .8); backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--linea); font: 500 13px var(--mono); white-space: nowrap;
+  position: sticky; top: 3px; z-index: 20; display: flex; gap: 6px; align-items: center; overflow-x: auto;
+  padding: 10px 20px; background: rgba(20, 17, 28, .82); backdrop-filter: blur(12px) saturate(140%);
+  border-bottom: 1px solid var(--linea); font: 500 13px var(--mono); white-space: nowrap; scrollbar-width: none;
 }
-.hud a { color: var(--suave); text-decoration: none; transition: color .15s; }
-.hud a:hover, .hud a:focus-visible { color: var(--texto); }
-.hud .logo { color: var(--texto); margin-right: auto; }
+.hud a { color: var(--suave); text-decoration: none; padding: 7px 11px; border-radius: 8px; transition: background .15s, color .15s; }
+.hud a:hover { color: var(--texto); background: var(--superficie-2); }
+.hud a[aria-current="page"] { color: var(--fondo); background: var(--texto); }
+.hud .logo { color: var(--texto); margin-right: auto; font-weight: 500; }
+@media (max-width: 700px) { .hud .logo span { display: none; } }
 
-/* Portada: rejilla de fondo y un brillo de neón detrás del título */
-.portada { position: relative; padding: 40px 0 8px; isolation: isolate; }
+/* ——— Botones ——— */
+.botones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.boton {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; cursor: pointer;
+  background: var(--superficie-2); color: var(--texto); border: 1px solid var(--linea); font: 600 15px Inter, sans-serif;
+  text-decoration: none; transition: transform .15s ease, box-shadow .2s ease, background .15s;
+}
+.boton:hover { transform: translateY(-2px); background: var(--linea); }
+.boton:active { transform: translateY(0) scale(.98); }
+.boton.principal { background: var(--texto); color: var(--fondo); border-color: var(--texto); }
+.boton.principal:hover { box-shadow: 0 12px 30px -10px var(--epica); background: #fff; }
+.volver { display: inline-block; font: 500 14px var(--mono); color: var(--suave); text-decoration: none; margin-bottom: 20px; }
+.volver:hover { color: var(--texto); }
+
+/* ——— Portada: rejilla de fondo y brillo de neón ——— */
+.portada { position: relative; padding: 24px 0 8px; isolation: isolate; }
 .portada::before {
-  content: ""; position: absolute; inset: -48px -40vw 0; z-index: -1;
-  background:
-    radial-gradient(ellipse 50% 60% at 30% 30%, rgba(181, 140, 255, .18), transparent 70%),
-    linear-gradient(var(--linea) 1px, transparent 1px) 0 0 / 40px 40px,
-    linear-gradient(90deg, var(--linea) 1px, transparent 1px) 0 0 / 40px 40px;
+  content: ""; position: absolute; inset: -64px -50vw 0; z-index: -1; opacity: .75;
+  background: radial-gradient(ellipse 45% 55% at 30% 30%, rgba(181, 140, 255, .2), transparent 70%),
+    radial-gradient(ellipse 30% 40% at 80% 10%, rgba(79, 179, 255, .12), transparent 70%),
+    linear-gradient(var(--linea) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, var(--linea) 1px, transparent 1px) 0 0 / 44px 44px;
   mask-image: radial-gradient(ellipse 70% 80% at 40% 30%, #000 30%, transparent 75%);
-  opacity: .7;
 }
-.empezar {
-  display: inline-flex; gap: 10px; align-items: center; margin-top: 28px; padding: 12px 22px;
-  background: var(--texto); color: var(--fondo); border-radius: 999px; font-weight: 500; text-decoration: none;
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.empezar:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -10px var(--epica); }
-.empezar span { animation: rebote 1.4s ease-in-out infinite; }
-@keyframes rebote { 50% { transform: translateY(4px); } }
+.aviso { display: inline-block; background: #2B2412; color: var(--legendaria); border: 1px solid #5A4A1A; border-radius: 10px; padding: 9px 14px; font-size: 15px; }
+.hallazgos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 28px; }
+.hallazgo { background: rgba(30, 26, 41, .88); border: 1px solid var(--linea); border-radius: var(--radio); padding: 18px; backdrop-filter: blur(6px); }
+.hallazgo strong { display: block; font: 800 42px/1 var(--titulo); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+.hallazgo p { margin: 0; color: var(--suave); }
+.pasos { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.pasos li { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 20px; }
+.pasos b { font: 500 14px var(--mono); color: var(--epica); display: block; margin-bottom: 8px; }
+.pasos p { color: var(--suave); margin: 0; }
 
-/* Kill feed: tira de frases reales que desfila sin parar (se para al pasar el ratón) */
-.feed {
-  margin: 40px -20px 0; padding: 12px 0; overflow: hidden; border-block: 1px solid var(--linea);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-.feed-pista { display: flex; gap: 32px; width: max-content; animation: desfilar 120s linear infinite; }
+/* ——— Kill feed: tira de frases reales que desfila (se para al pasar el ratón) ——— */
+.feed { margin: 48px -20px 0; padding: 14px 0; overflow: hidden; border-block: 1px solid var(--linea);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.feed-pista { display: flex; gap: 36px; width: max-content; animation: desfilar 120s linear infinite; }
 .feed:hover .feed-pista { animation-play-state: paused; }
 @keyframes desfilar { to { transform: translateX(-50%); } }
-.baja { white-space: nowrap; font-size: 14px; color: var(--suave); }
+.baja { white-space: nowrap; font-size: 15px; color: var(--suave); }
 .baja b { color: var(--r); font: 500 13px var(--mono); margin-right: 6px; }
-.baja small { font-family: var(--mono); font-size: 11px; margin-left: 6px; opacity: .7; }
+.baja small { font: 500 12px var(--mono); color: var(--tenue); margin-left: 6px; }
 
-/* Patch notes: una nota de parche por juego */
-.parches { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
-.parche { background: var(--superficie); border-top: 3px solid var(--r); border-radius: 0 0 12px 12px; padding: 16px; }
-.parche header { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
-.parche header img { border-radius: 8px; }
-.parche h3 { font-size: 18px; margin: 0; }
-.parche small { font: 500 11px var(--mono); color: var(--suave); }
-.parche ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
-.tag { font: 500 11px var(--mono); padding: 2px 6px; border-radius: 4px; margin-right: 4px; }
-.tag.hotfix { background: rgba(255, 107, 107, .15); color: var(--mal); }
-.tag.buff { background: rgba(61, 220, 151, .15); color: var(--bien); }
-.subtitulo { color: var(--suave); max-width: 60ch; }
-
-/* Hallazgos de la portada: número grande + frase corta */
-.hallazgos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 24px; }
-.hallazgo { background: rgba(31, 27, 42, .85); border: 1px solid var(--linea); border-radius: 12px; padding: 16px; backdrop-filter: blur(6px); }
-.hallazgo strong { display: block; font: 700 36px/1 var(--titulo); margin-bottom: 8px; }
-
-/* Cartas coleccionables: se inclinan siguiendo el ratón y se giran al pulsarlas */
-.cartas { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; }
-.carta {
-  --r: var(--comun); --brillo: 0; --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%;
-  perspective: 900px; background: none; border: 0; padding: 0; cursor: pointer;
-  color: inherit; font: inherit; text-align: left;
-}
-.carta:focus-visible { outline: 2px solid var(--r); outline-offset: 4px; border-radius: 16px; }
-.carta-int {
-  position: relative; aspect-ratio: 5 / 7.5; transform-style: preserve-3d;
-  transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--giro, 0deg)));
-  transition: transform .5s cubic-bezier(.2, .8, .2, 1);
-}
-.carta.girada { --giro: 180deg; }
-.carta[aria-pressed="true"] .cara { box-shadow: 0 0 0 2px var(--fondo), 0 0 0 4px var(--r); }
-.carta:hover .cara { box-shadow: 0 14px 30px -14px var(--r); }
-
-/* Las dos caras de la carta: delante el emblema, detrás los stats */
-.cara {
-  position: absolute; inset: 0; backface-visibility: hidden; overflow: hidden;
-  display: flex; flex-direction: column; gap: 6px; padding: 10px;
-  background: var(--superficie); border: 2px solid var(--r); border-radius: 14px;
-}
-.cara img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
-.cara h3 { font-size: 17px; margin: 4px 0 0; }
-.cara small { color: var(--suave); font-size: 12px; }
-.dorso { transform: rotateY(180deg); justify-content: center; }
-.dorso .nivel { display: flex; justify-content: space-between; font-size: 13px; }
-.dorso .nivel b { font-family: var(--titulo); }
-.rareza { align-self: flex-start; background: var(--r); color: var(--fondo); font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+/* ——— Colores de rareza ——— */
 .legendaria { --r: var(--legendaria); }
 .epica { --r: var(--epica); }
 .rara { --r: var(--rara); }
 .comun { --r: var(--comun); }
+.rareza { align-self: flex-start; background: var(--r); color: var(--fondo); font: 600 12px Inter, sans-serif; padding: 3px 9px; border-radius: 6px; letter-spacing: .02em; }
+.chip { display: inline-block; font: 500 13px var(--mono); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--r, var(--linea)); color: var(--r, var(--suave)); margin: 2px; }
 
-/* Brillo holográfico que sigue al ratón: más intenso cuanto más rara es la carta */
-.carta.legendaria { --brillo: .55; }
-.carta.epica { --brillo: .4; }
-.carta.rara { --brillo: .25; }
+/* ——— Cartas coleccionables: se inclinan con el ratón y se giran al pasar por encima ——— */
+.cartas { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+.cartas.grandes { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.carta { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%; --brillo: 0; display: block; perspective: 1000px; color: inherit; text-decoration: none; }
+.carta-int {
+  position: relative; aspect-ratio: 5 / 7.4; transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--giro, 0deg))); transition: transform .55s cubic-bezier(.2, .8, .2, 1);
+}
+@media (hover: hover) { .carta:hover, .carta:focus-visible { --giro: 180deg; } }
+.cara {
+  position: absolute; inset: 0; backface-visibility: hidden; overflow: hidden; display: flex; flex-direction: column; gap: 8px;
+  padding: 10px; background: var(--superficie); border: 2px solid var(--r); border-radius: var(--radio); box-shadow: var(--sombra);
+}
+.cara img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
+.cara h3 { font-size: 18px; margin: 2px 0 0; }
+.dorso { transform: rotateY(180deg); justify-content: center; padding: 18px; background: linear-gradient(160deg, var(--superficie-2), var(--superficie)); }
+.dorso small { font: 500 11px var(--mono); color: var(--tenue); text-transform: uppercase; letter-spacing: .08em; }
+.dorso .nivel { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; margin: 0 0 6px; }
+.nivel b { font: 800 16px var(--titulo); white-space: nowrap; }
+.rojo { color: var(--mal); }
+.ver { margin-top: auto; font: 500 13px var(--mono); color: var(--r); }
+.carta.legendaria { --brillo: .5; }
+.carta.epica { --brillo: .35; }
+.carta.rara { --brillo: .2; }
+/* Brillo holográfico: solo aparece al pasar el ratón, para que el arte se vea nítido el resto del tiempo */
 .frente::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--brillo);
-  mix-blend-mode: color-dodge;
-  background:
-    radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .55), transparent 45%),
-    linear-gradient(125deg, #ff6b6b33, #ffc93c33, #3ddc9733, #4fb3ff33, #b58cff33);
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge;
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .5), transparent 45%),
+    linear-gradient(125deg, #ff6b6b40, #ffc93c40, #3ddc9740, #4fb3ff40, #b58cff40);
+}
+.carta:hover .frente::after { opacity: var(--brillo); }
+
+/* ——— Barras de stats ——— */
+.stat { margin-bottom: 16px; }
+.stat-nombre { display: flex; justify-content: space-between; gap: 12px; font-size: 16px; }
+.stat-nombre b { font-variant-numeric: tabular-nums; }
+.barra { height: 10px; background: var(--linea); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.barra i { display: block; height: 100%; width: 0; border-radius: 4px; transition: width .9s cubic-bezier(.2, .8, .2, 1); }
+
+/* ——— Ficha de un juego ——— */
+.ficha-cabecera { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 32px; align-items: center; }
+.ficha-emblema { border-radius: 20px; border: 3px solid var(--r); box-shadow: 0 20px 60px -20px var(--r); view-transition-name: emblema; }
+.ficha-cabecera h1 { margin-top: 10px; }
+.gran-cifra { font-size: 19px; color: var(--suave); }
+.gran-cifra b { font: 800 32px var(--titulo); color: var(--r); }
+@media (max-width: 640px) { .ficha-cabecera { grid-template-columns: 1fr; } .ficha-emblema { max-width: 220px; } }
+.notas { list-style: none; padding: 0; display: grid; gap: 12px; }
+.notas li { background: var(--superficie); border-radius: 10px; padding: 14px 16px; }
+.tag { display: inline-block; font: 500 12px var(--mono); padding: 2px 8px; border-radius: 5px; margin: 2px 4px 2px 0; background: var(--superficie-2); color: var(--suave); }
+.tag.hotfix, .tag.neg { background: rgba(255, 107, 107, .15); color: #FF8A8A; }
+.tag.buff, .tag.pos { background: rgba(61, 220, 151, .15); color: var(--bien); }
+.voces { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.voz-card { margin: 0; background: var(--superficie); border-left: 3px solid var(--epica); padding: 16px 18px; border-radius: 0 10px 10px 0; }
+.voz-card blockquote { margin: 0 0 10px; font-style: italic; color: var(--texto); }
+.voz-card figcaption { font: 500 12px var(--mono); color: var(--tenue); }
+.pasar { display: flex; justify-content: space-between; margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--linea); font: 500 14px var(--mono); }
+.pasar a { color: var(--suave); text-decoration: none; }
+.pasar a:hover { color: var(--texto); }
+
+/* ——— Encuentra tu shooter ——— */
+.deseos { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.deseo { background: var(--superficie); color: var(--texto); font: 500 15px Inter, sans-serif; cursor: pointer;
+  border: 1px solid var(--linea); border-radius: 999px; padding: 10px 16px; transition: all .15s ease; }
+.deseo:hover { border-color: var(--suave); transform: translateY(-1px); }
+.deseo[aria-pressed="true"] { background: var(--texto); color: var(--fondo); border-color: var(--texto); box-shadow: 0 6px 20px -8px var(--epica); }
+.recomendados { display: grid; gap: 12px; }
+.recomendado { display: grid; grid-template-columns: 40px 64px 1fr auto; align-items: center; gap: 14px; color: inherit; text-decoration: none;
+  background: var(--superficie); border: 1px solid var(--linea); border-left: 4px solid var(--r); border-radius: 0 var(--radio) var(--radio) 0;
+  padding: 12px 18px; animation: entrar .45s cubic-bezier(.2, .8, .2, 1) both; transition: transform .15s, background .15s; }
+.recomendado:hover { transform: translateX(4px); background: var(--superficie-2); }
+.recomendado img { border-radius: 10px; }
+.recomendado h3 { margin: 0; }
+.recomendado small { color: var(--suave); font-size: 14px; }
+.recomendado strong { font: 800 28px/1 var(--titulo); color: var(--r); text-align: right; }
+.recomendado strong small { display: block; font: 500 11px var(--mono); color: var(--tenue); }
+.puesto { font-size: 26px; text-align: center; }
+
+/* ——— Comparar ——— */
+.versus-elegir { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; margin-bottom: 28px; }
+select, input[type="search"] { width: 100%; font: 500 15px Inter, sans-serif; color: var(--texto); background: var(--superficie);
+  border: 1px solid var(--linea); border-radius: 10px; padding: 11px 14px; }
+.vs { font: 800 30px var(--titulo); color: var(--legendaria); text-shadow: 0 0 24px rgba(255, 201, 60, .5); }
+.marcador { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-bottom: 28px; text-align: center; }
+.luchador { color: inherit; text-decoration: none; background: var(--superficie); border: 2px solid var(--r); border-radius: var(--radio); padding: 18px; }
+.luchador img { border-radius: 12px; }
+.luchador h3 { margin: 8px 0 0; }
+.luchador small { color: var(--suave); }
+.luchador strong { display: block; font: 800 44px/1.1 var(--titulo); color: var(--r); margin-top: 6px; }
+.fila-vs { display: grid; grid-template-columns: 1fr 130px 1fr; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--linea); }
+.fila-vs > span { text-align: center; font-size: 14px; color: var(--suave); }
+.fila-vs .izq, .fila-vs .der { display: flex; align-items: center; gap: 10px; }
+.fila-vs .izq { flex-direction: row-reverse; }
+.fila-vs .izq .barra { transform: scaleX(-1); }
+.fila-vs .barra { flex: 1; margin: 0; }
+.fila-vs .barra.gana { box-shadow: 0 0 0 2px var(--legendaria); }
+
+/* ——— Explorar reseñas ——— */
+.filtros { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+@media (max-width: 860px) { .filtros { grid-template-columns: 1fr 1fr; } .filtros input { grid-column: 1 / -1; } }
+.lista { display: grid; gap: 12px; }
+.resena { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 16px 18px; animation: entrar .35s ease both; }
+.resena header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font: 500 13px var(--mono); color: var(--tenue); margin-bottom: 8px; }
+.resena p { margin-bottom: 10px; }
+mark { background: rgba(255, 201, 60, .3); color: var(--texto); border-radius: 3px; padding: 0 2px; }
+.cargando { animation: latir 1s ease-in-out infinite; }
+@keyframes latir { 50% { opacity: .4; } }
+#mas { margin: 20px auto 0; display: flex; }
+#mas[hidden] { display: none; }
+
+/* ——— Conclusiones y método ——— */
+.ideas { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.ideas li { position: relative; background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 22px; overflow: hidden; }
+.idea-num { position: absolute; top: 12px; right: 16px; font: 800 48px var(--titulo); color: var(--linea); }
+.ideas strong { display: block; font: 800 40px/1 var(--titulo); color: var(--legendaria); margin-bottom: 10px; }
+.ideas p { color: var(--suave); margin: 0; }
+.dos-columnas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.panel { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 22px; }
+.panel ul, .lista-limpia { padding-left: 0; list-style: none; display: grid; gap: 10px; color: var(--suave); }
+.panel li::before { content: "› "; color: var(--epica); font-weight: 700; }
+.cta-final { text-align: center; margin-top: 72px; padding: 40px 20px; background: var(--superficie); border-radius: 20px; border: 1px solid var(--linea); }
+.cta-final h2::before { content: ""; }
+.cta-final .boton { margin-top: 8px; }
+.metodo { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+
+footer { text-align: center; color: var(--suave); font-size: 15px; padding: 48px 20px 56px; border-top: 1px solid var(--linea); margin-top: 72px; }
+footer .nota { font-size: 13px; color: var(--tenue); }
+
+/* ——— En el móvil: todo a una columna y textos algo más pequeños ——— */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .recomendado { grid-template-columns: 32px 48px 1fr auto; gap: 10px; padding: 10px 12px; }
+  .recomendado img { width: 48px; height: 48px; }
+  .fila-vs { grid-template-columns: 1fr 90px 1fr; gap: 8px; }
+  .marcador { gap: 8px; } .luchador { padding: 10px; } .luchador strong { font-size: 32px; }
 }
 
-/* Ficha del juego: una barra de "stats" por aspecto */
-.ficha { margin-top: 32px; background: var(--superficie); border: 2px solid var(--r, var(--linea)); border-radius: 16px; padding: 24px; }
-.ficha:empty { display: none; }
-.stat { margin-bottom: 14px; }
-.stat-nombre { display: flex; justify-content: space-between; font-size: 14px; }
-.barra { height: 10px; background: var(--linea); border-radius: 3px; overflow: hidden; margin-top: 4px; }
-.barra i { display: block; height: 100%; width: 0; border-radius: 3px; transition: width .8s cubic-bezier(.2, .8, .2, 1); }
-.voz { border-left: 3px solid var(--r); margin: 24px 0 0; padding: 4px 0 4px 16px; color: var(--suave); font-style: italic; }
-
-/* Encuentra tu shooter: botones de deseos y ranking de juegos */
-.deseos { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
-.deseo {
-  background: var(--superficie); color: var(--texto); font: inherit; font-size: 14px; cursor: pointer;
-  border: 1px solid var(--linea); border-radius: 999px; padding: 8px 14px; transition: all .15s ease;
-}
-.deseo:hover { border-color: var(--suave); }
-.deseo[aria-pressed="true"] { background: var(--texto); color: var(--fondo); border-color: var(--texto); }
-.recomendados { display: grid; gap: 10px; }
-.recomendado {
-  display: grid; grid-template-columns: 36px 64px 1fr auto; align-items: center; gap: 12px;
-  background: var(--superficie); border-left: 4px solid var(--r); border-radius: 0; padding: 10px 14px;
-  animation: aparecer .4s ease both;
-}
-.recomendado img { width: 64px; height: 64px; border-radius: 8px; }
-.recomendado h3 { font-size: 17px; margin: 0; }
-.recomendado strong { font: 700 24px var(--titulo); color: var(--r); }
-.puesto { font: 700 18px var(--titulo); color: var(--suave); }
-
-/* Aviso de datos provisionales mientras la IA sigue leyendo */
-.aviso { display: inline-block; background: #2B2412; color: var(--legendaria); border: 1px solid #5A4A1A; border-radius: 8px; padding: 8px 12px; font-size: 14px; }
-.aviso[hidden] { display: none; }
-
-/* Novatos vs. veteranos: tres barras por juego con el color de su rareza */
-.perfiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-.perfil { background: var(--superficie); border-radius: 12px; padding: 16px; }
-.perfil h3 { font-size: 17px; }
-.fila { display: grid; grid-template-columns: 76px 1fr 40px; align-items: center; gap: 8px; font-size: 13px; margin-top: 6px; }
-.fila .barra { margin: 0; }
-.fila span:last-child { text-align: right; }
-
-/* Las secciones aparecen suavemente al cargar */
-.aparece { animation: aparecer .6s ease both; }
-.aparece:nth-child(2) { animation-delay: .15s; }
-@keyframes aparecer { from { opacity: 0; transform: translateY(12px); } }
-
-footer { text-align: center; color: var(--suave); font-size: 14px; padding: 32px 20px 48px; }
-
-/* Si la persona prefiere menos movimiento, quitamos las animaciones */
+/* ——— Si la persona prefiere menos movimiento, quitamos las animaciones ——— */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
   .feed { overflow-x: auto; }
-  *, *::after { animation: none !important; transition: none !important; }
 }

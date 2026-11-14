@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- La voz del jugador: reseñas de Steam de shooters free-to-play analizadas con IA, para jugadores y estudios.
-     El contenido lo dibujan app.js, selector.js y extras.js a partir de data.json. -->
+     Es una "app" de una sola página: app.js cambia de pantalla según el enlace (#/juegos, #/comparar…)
+     y vistas.js, herramientas.js y textos.js dibujan cada pantalla a partir de data.json. -->
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -14,79 +15,50 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="preload" href="data.json" as="fetch" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Pantalla de carga, como la de un videojuego: barra de progreso y consejos -->
+  <div class="carga" id="carga" role="status" aria-live="polite">
+    <div class="carga-caja">
+      <span class="carga-logo" aria-hidden="true">🃏</span>
+      <p class="carga-titulo">La voz del jugador</p>
+      <div class="carga-barra"><i></i></div>
+      <p class="carga-consejo" id="consejo">Cargando miles de opiniones de jugadores…</p>
+    </div>
+  </div>
+
   <!-- Barra de experiencia: se llena según lo que llevas leído -->
   <div class="xp" aria-hidden="true"><i id="xp"></i></div>
 
   <!-- Menú tipo HUD, siempre a mano -->
   <nav class="hud" aria-label="Secciones">
-    <a href="#inicio" class="logo">🃏 La voz del jugador</a>
-    <a href="#titulo-selector">Encuentra</a>
-    <a href="#titulo-cartas">Cartas</a>
-    <a href="#titulo-parches">Patch notes</a>
-    <a href="#titulo-perfiles">Veteranos</a>
+    <a href="#/" data-ruta="" class="logo">🃏 <span>La voz del jugador</span></a>
+    <a href="#/encuentra" data-ruta="encuentra">Encuentra</a>
+    <a href="#/juegos" data-ruta="juegos">Juegos</a>
+    <a href="#/comparar" data-ruta="comparar">Comparar</a>
+    <a href="#/explorar" data-ruta="explorar">Explorar</a>
+    <a href="#/conclusiones" data-ruta="conclusiones">Conclusiones</a>
+    <a href="#/metodo" data-ruta="metodo">Método</a>
   </nav>
 
-  <main>
-    <!-- Portada: la pregunta y los hallazgos principales -->
-    <header class="portada aparece" id="inicio">
-      <p class="etiqueta">// Reseñas de Steam analizadas con IA</p>
-      <h1>¿Por qué los jugadores recomiendan o abandonan un free‑to‑play?</h1>
-      <p class="subtitulo" id="resumen"></p>
-      <p class="aviso" id="aviso" hidden></p>
-      <div class="hallazgos" id="hallazgos"></div>
-      <a class="empezar" href="#titulo-selector">Empezar <span aria-hidden="true">▼</span></a>
-    </header>
-
-    <!-- Kill feed: frases reales de jugadores, como el registro de bajas de un shooter -->
-    <section class="feed" aria-label="Frases reales de jugadores">
-      <div class="feed-pista" id="feed"></div>
-    </section>
-
-    <!-- Encuentra tu shooter: herramienta para jugadores -->
-    <section class="aparece" aria-labelledby="titulo-selector">
-      <h2 id="titulo-selector">Encuentra tu shooter</h2>
-      <p class="nota">Marca lo que te importa y te decimos qué juego encaja mejor, según lo que opinan miles de jugadores.</p>
-      <div class="deseos" id="deseos"></div>
-      <div class="recomendados" id="recomendados" aria-live="polite"></div>
-    </section>
-
-    <!-- Selección de personaje: una carta por juego -->
-    <section class="aparece" aria-labelledby="titulo-cartas">
-      <h2 id="titulo-cartas">Elige tu juego</h2>
-      <p class="nota">La rareza de cada carta depende del % de jugadores que lo recomiendan. Pulsa una carta para girarla.</p>
-      <div class="cartas" id="cartas"></div>
-    </section>
-
-    <!-- Ficha del juego elegido -->
-    <section class="ficha aparece" id="ficha" aria-live="polite"></section>
-
-    <!-- Patch notes: recomendaciones para diseño y marketing -->
-    <section aria-labelledby="titulo-parches">
-      <h2 id="titulo-parches">Patch notes</h2>
-      <p class="nota">Lo que cambiaríamos en cada juego según sus propios jugadores:
-        🔧 <b>Hotfix</b> para el equipo de diseño y ⬆️ <b>Buff</b> para marketing (qué destacar en la tienda).</p>
-      <div class="parches" id="parches"></div>
-    </section>
-
-    <!-- Novatos vs. veteranos: cómo cambia la opinión con las horas jugadas -->
-    <section aria-labelledby="titulo-perfiles">
-      <h2 id="titulo-perfiles">Novatos vs. veteranos</h2>
-      <p class="nota">% de jugadores que recomiendan el juego según lo que habían jugado al escribir la reseña:
-        novatos (menos de 10 h), medios y veteranos (100 h o más).</p>
-      <div class="perfiles" id="perfiles"></div>
-    </section>
-  </main>
+  <!-- Aquí se dibuja la pantalla en la que estás -->
+  <main id="vista" tabindex="-1"></main>
 
   <footer>
-    Hecho por <a href="https://www.linkedin.com/in/nacho-egea/">Ignacio Egea Villalba</a> ·
-    <a href="https://github.com/IgnacioEgea/voz-del-jugador">Código y método en GitHub</a>
+    <p>Hecho por <a href="https://www.linkedin.com/in/nacho-egea/">Ignacio Egea Villalba</a> ·
+      <a href="https://github.com/IgnacioEgea/voz-del-jugador">Código y datos en GitHub</a> ·
+      <a href="#/metodo">Cómo está hecho</a></p>
+    <p class="nota">Proyecto independiente. No está afiliado a Valve ni a los estudios de los juegos.
+      Los emblemas son ilustraciones originales, no arte oficial.</p>
   </footer>
+
   <script src="app.js"></script>
-  <script src="selector.js"></script>
-  <script src="extras.js"></script>
+  <script src="vistas.js"></script>
+  <script src="ficha.js"></script>
+  <script src="herramientas.js"></script>
+  <script src="textos.js"></script>
 </body>
 </html>

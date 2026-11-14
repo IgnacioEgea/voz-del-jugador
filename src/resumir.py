@@ -3,6 +3,7 @@
 # Uso: python src/resumir.py
 
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -20,7 +21,9 @@ def pct(condicion):
 
 
 def recortar(texto, limite=240):
-    # Cortamos la reseña al final de una palabra, para no dejar palabras a medias
+    # Quitamos las etiquetas de formato de Steam ([b], [h2]…) y los espacios de más
+    texto = " ".join(re.sub(r"\[/?[a-z0-9*]+[^\]]*\]", "", texto).split())
+    # Cortamos al final de una palabra, para no dejar palabras a medias
     return texto if len(texto) <= limite else texto[:limite].rsplit(" ", 1)[0] + "…"
 
 
@@ -47,6 +50,14 @@ def resumir_juego(nombre, todas, clasificadas):
             "aspectos": {a: resumir_aspecto(clasificadas, a) for a in ASPECTOS}}
 
 
+def muestra_resenas(clasificadas, por_juego=150):
+    # Para el explorador de la web: las reseñas más votadas como útiles de cada juego, con sus aspectos
+    muestra = clasificadas.sort_values("votos_util", ascending=False).groupby("juego").head(por_juego)
+    return [{"j": r["juego"], "t": recortar(r["texto"], 320), "r": bool(r["recomienda"]),
+             "h": round(float(r["horas"])), "v": int(r["votos_util"]),
+             "a": {a: r[a] for a in ASPECTOS if r[a]}} for _, r in muestra.iterrows()]
+
+
 def resumir():
     resenas = pd.read_csv(RAIZ / "data" / "resenas.csv", dtype={"id": str})
     ia = pd.read_csv(RAIZ / "data" / "resenas_clasificadas.csv", dtype=str).fillna("")
@@ -59,6 +70,9 @@ def resumir():
 
     datos = {"total": len(resenas), "clasificadas": len(clasificadas), "juegos": juegos}
     (RAIZ / "web" / "data.json").write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
+    # El explorador carga este archivo aparte, solo cuando alguien entra en esa pantalla
+    (RAIZ / "web" / "resenas.json").write_text(
+        json.dumps(muestra_resenas(clasificadas), ensure_ascii=False), encoding="utf-8")
     print(f"data.json listo: {len(clasificadas)} de {len(resenas)} reseñas clasificadas")
 
 
