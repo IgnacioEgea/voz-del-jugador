@@ -34,10 +34,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.API_GEMINI_P1_NACHO }}
 
       # Guardamos lo clasificado aunque el paso anterior se corte a medias
+      # (antes nos ponemos al día por si alguien ha subido cambios mientras tanto)
       - if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/resenas_clasificadas.csv
           git commit -m "Datos: reseñas clasificadas con IA" || echo "Sin cambios"
-          git push
+          git pull --rebase -q && git push
