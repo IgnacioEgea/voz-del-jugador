@@ -29,7 +29,7 @@ jobs:
       # Clasificamos; la clave sale de la "caja fuerte" de GitHub, nunca del código
       - run: python src/clasificar.py ${{ inputs.limite }}
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.API_GEMINI_P1_NACHO }}
 
       # Guardamos lo clasificado aunque el paso anterior se corte a medias
       - if: always()
