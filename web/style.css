@@ -37,31 +37,51 @@ a { color: var(--rara); }
 .hallazgo { background: var(--superficie); border-radius: 12px; padding: 16px; }
 .hallazgo strong { display: block; font: 700 36px/1 var(--titulo); margin-bottom: 8px; }
 
-/* Cartas de los juegos: el borde lleva el color de su rareza */
-.cartas { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+/* Cartas coleccionables: se inclinan siguiendo el ratón y se giran al pulsarlas */
+.cartas { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; }
 .carta {
-  --r: var(--comun);
-  position: relative; text-align: left; cursor: pointer;
-  background: var(--superficie); color: inherit; font: inherit;
-  border: 2px solid var(--r); border-radius: 14px; padding: 14px;
-  transition: transform .2s ease, box-shadow .2s ease;
+  --r: var(--comun); --brillo: 0; --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%;
+  perspective: 900px; background: none; border: 0; padding: 0; cursor: pointer;
+  color: inherit; font: inherit; text-align: left;
 }
-.carta:hover, .carta:focus-visible { transform: translateY(-4px); box-shadow: 0 10px 24px -12px var(--r); outline: none; }
-.carta[aria-pressed="true"] { outline: 2px solid var(--r); outline-offset: 3px; }
-.carta h3 { font-size: 18px; margin-bottom: 8px; }
-.rareza { display: inline-block; background: var(--r); color: var(--fondo); font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
-.carta small { display: block; color: var(--suave); margin-top: 8px; }
+.carta:focus-visible { outline: 2px solid var(--r); outline-offset: 4px; border-radius: 16px; }
+.carta-int {
+  position: relative; aspect-ratio: 5 / 7; transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--giro, 0deg)));
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1);
+}
+.carta.girada { --giro: 180deg; }
+.carta[aria-pressed="true"] .cara { box-shadow: 0 0 0 2px var(--fondo), 0 0 0 4px var(--r); }
+.carta:hover .cara { box-shadow: 0 14px 30px -14px var(--r); }
+
+/* Las dos caras de la carta: delante el emblema, detrás los stats */
+.cara {
+  position: absolute; inset: 0; backface-visibility: hidden; overflow: hidden;
+  display: flex; flex-direction: column; gap: 6px; padding: 10px;
+  background: var(--superficie); border: 2px solid var(--r); border-radius: 14px;
+}
+.cara img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
+.cara h3 { font-size: 17px; margin: 4px 0 0; }
+.cara small { color: var(--suave); font-size: 12px; }
+.dorso { transform: rotateY(180deg); justify-content: center; }
+.dorso .nivel { display: flex; justify-content: space-between; font-size: 13px; }
+.dorso .nivel b { font-family: var(--titulo); }
+.rareza { align-self: flex-start; background: var(--r); color: var(--fondo); font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
 .legendaria { --r: var(--legendaria); }
 .epica { --r: var(--epica); }
 .rara { --r: var(--rara); }
 
-/* Brillo holográfico que recorre las cartas legendarias */
-.carta.legendaria::after {
-  content: ""; position: absolute; inset: 0; border-radius: 12px; pointer-events: none;
-  background: linear-gradient(115deg, transparent 40%, rgba(255, 220, 120, .18) 50%, transparent 60%) 0 0 / 250% 100%;
-  animation: brillo 4s linear infinite;
+/* Brillo holográfico que sigue al ratón: más intenso cuanto más rara es la carta */
+.carta.legendaria { --brillo: .55; }
+.carta.epica { --brillo: .4; }
+.carta.rara { --brillo: .25; }
+.frente::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--brillo);
+  mix-blend-mode: color-dodge;
+  background:
+    radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .55), transparent 45%),
+    linear-gradient(125deg, #ff6b6b33, #ffc93c33, #3ddc9733, #4fb3ff33, #b58cff33);
 }
-@keyframes brillo { to { background-position: -250% 0; } }
 
 /* Ficha del juego: una barra de "stats" por aspecto */
 .ficha { margin-top: 32px; background: var(--superficie); border: 2px solid var(--r, var(--linea)); border-radius: 16px; padding: 24px; }

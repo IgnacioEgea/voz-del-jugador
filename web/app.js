@@ -53,22 +53,62 @@ function pintarPortada(datos) {
     .map(([num, frase, color]) => `<div class="hallazgo"><strong style="color:${color}">${num}</strong>${frase}</div>`).join("");
 }
 
+// Nombre del archivo del emblema: "THE FINALS" → "the-finals"
+const emblema = (juego) => `img/${juego.toLowerCase().replace(/ /g, "-")}.webp`;
+// Nivel del 1 al 10 a partir del % de menciones positivas, como el nivel de un personaje
+const nivel = (pos) => Math.max(1, Math.round(pos / 10));
+
+function dorso(j) {
+  // Detrás de la carta: su mejor y su peor aspecto, en niveles
+  const aspectos = aspectosDe(j);
+  if (!aspectos.length) return `<small>La IA está leyendo sus reseñas…</small>`;
+  const [mejor, peor] = [aspectos[0], aspectos[aspectos.length - 1]];
+  return `<small>Punto fuerte</small><div class="nivel"><span>${NOMBRES[mejor.clave]}</span><b>Lv. ${nivel(mejor.pos)}</b></div>
+    <small>Punto débil</small><div class="nivel"><span>${NOMBRES[peor.clave]}</span><b style="color:var(--mal)">Lv. ${nivel(peor.pos)}</b></div>
+    <small>Pulsa para ver la ficha completa ↓</small>`;
+}
+
 function pintarCartas(datos) {
-  // Una carta por juego; las que aún no tienen reseñas clasificadas lo indican
+  // Una carta por juego: delante el emblema y la rareza, detrás sus puntos fuerte y débil
   $("cartas").innerHTML = datos.juegos.map((j, i) => `
-    <button class="carta ${j.rareza}" data-i="${i}" aria-pressed="false">
-      <h3>${j.juego}</h3>
-      <span class="rareza">${RAREZAS[j.rareza]} · ${j.recomienda} %</span>
-      <small>${j.clasificadas ? `${miles(j.clasificadas)} reseñas analizadas` : "La IA las está leyendo…"}</small>
+    <button class="carta ${j.rareza}" data-i="${i}" aria-pressed="false" aria-label="${j.juego}, carta ${RAREZAS[j.rareza]}">
+      <div class="carta-int">
+        <div class="cara frente">
+          <img src="${emblema(j.juego)}" alt="" width="512" height="512" loading="lazy">
+          <h3>${j.juego}</h3>
+          <span class="rareza">${RAREZAS[j.rareza]} · ${j.recomienda} %</span>
+          <small>${j.clasificadas ? `${miles(j.clasificadas)} reseñas analizadas` : "La IA las está leyendo…"}</small>
+        </div>
+        <div class="cara dorso">${dorso(j)}</div>
+      </div>
     </button>`).join("");
 
-  // Al pulsar una carta, se abre su ficha
+  // Al pulsar una carta: se gira y se abre su ficha debajo
   $("cartas").addEventListener("click", (e) => {
     const carta = e.target.closest(".carta");
     if (!carta) return;
     document.querySelectorAll(".carta").forEach((c) => c.setAttribute("aria-pressed", c === carta));
     pintarFicha(datos.juegos[carta.dataset.i]);
-    if (e.isTrusted) $("ficha").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (!e.isTrusted) return;
+    carta.classList.toggle("girada");
+    $("ficha").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  // La carta se inclina y el brillo sigue al ratón (salvo si la persona prefiere menos movimiento)
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  $("cartas").addEventListener("pointermove", (e) => {
+    const carta = e.target.closest(".carta");
+    if (!carta) return;
+    const caja = carta.getBoundingClientRect();
+    const x = (e.clientX - caja.left) / caja.width, y = (e.clientY - caja.top) / caja.height;
+    carta.style.setProperty("--ry", `${(x - 0.5) * 16}deg`);
+    carta.style.setProperty("--rx", `${(0.5 - y) * 16}deg`);
+    carta.style.setProperty("--mx", `${x * 100}%`);
+    carta.style.setProperty("--my", `${y * 100}%`);
+  });
+  $("cartas").addEventListener("pointerout", (e) => {
+    const carta = e.target.closest(".carta");
+    if (carta && !carta.contains(e.relatedTarget)) ["--rx", "--ry"].forEach((v) => carta.style.removeProperty(v));
   });
 }
 
