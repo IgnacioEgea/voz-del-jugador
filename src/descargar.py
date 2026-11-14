@@ -3,6 +3,7 @@
 # Uso: python src/descargar.py        (los 6 juegos)
 #      python src/descargar.py 440    (solo un juego, para probar)
 
+import json
 import sys
 import time
 from pathlib import Path
@@ -16,16 +17,17 @@ JUEGOS = {2767030: "Marvel Rivals", 2357570: "Overwatch 2", 1172470: "Apex Legen
 OBJETIVO = 1800       # Cuántas reseñas queremos de cada juego
 IDIOMA = "english"
 CARPETA = Path(__file__).resolve().parent.parent / "data" / "raw"
-URL = "https://store.steampowered.com/appreviews/{}"
+URL = "https://api.steampowered.com/IUserReviewsService/GetAppReviews/v1/"
 
 
 def pedir_pagina(appid, cursor):
     # Pedimos a Steam 100 reseñas cada vez, como pasar páginas de un libro
-    params = {"json": 1, "filter": "recent", "language": IDIOMA,
-              "purchase_type": "all", "num_per_page": 100, "cursor": cursor}
-    respuesta = requests.get(URL.format(appid), params=params, timeout=30)
+    # (filter 1 = las más recientes; purchase_type 1 = compradas en Steam y fuera)
+    peticion = {"appid": appid, "filter": 1, "languages": [IDIOMA],
+                "purchase_type": 1, "num_per_page": 100, "cursor": cursor}
+    respuesta = requests.get(URL, params={"input_json": json.dumps(peticion)}, timeout=30)
     respuesta.raise_for_status()
-    return respuesta.json()
+    return respuesta.json()["response"]
 
 
 def a_filas(appid, resenas):
