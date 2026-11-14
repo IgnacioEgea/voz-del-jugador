@@ -38,18 +38,27 @@
   <!-- Barra de experiencia: se llena según lo que llevas leído -->
   <div class="xp" aria-hidden="true"><i id="xp"></i></div>
 
-  <!-- Menú tipo HUD, siempre a mano -->
-  <nav class="hud" aria-label="Secciones">
-    <a href="#/" data-ruta="" class="logo">🃏 <span>La voz del jugador</span></a>
-    <a href="#/encuentra" data-ruta="encuentra">Encuentra</a>
-    <a href="#/juegos" data-ruta="juegos">Juegos</a>
-    <a href="#/comparar" data-ruta="comparar">Comparar</a>
-    <a href="#/explorar" data-ruta="explorar">Explorar</a>
-    <a href="#/conclusiones" data-ruta="conclusiones">Conclusiones</a>
-    <a href="#/metodo" data-ruta="metodo">Método</a>
-    <button class="hud-boton" id="abrir-buscar" aria-label="Buscar (atajo: /)">🔎 <kbd>/</kbd></button>
-    <button class="hud-boton" id="abrir-logros" aria-label="Ver tus logros">🏆 <span id="cuenta-logros">0/6</span></button>
+  <!-- Menú tipo HUD, siempre a mano: cada sección es una "ranura" con su icono (en el móvil, barra inferior) -->
+  <header class="hud">
+    <a href="#/" class="logo" data-ruta=""><img src="img/iconos/logros.webp" alt="" width="28" height="28"><span>La voz del jugador</span></a>
+    <span class="directo" id="directo" hidden><i></i> EN DIRECTO</span>
+    <button class="hud-boton" id="abrir-buscar" aria-label="Buscar (atajo: /)"><img src="img/iconos/explorar.webp" alt="" width="20" height="20"> <kbd>/</kbd></button>
+    <button class="hud-boton" id="abrir-logros" aria-label="Ver tus logros"><img src="img/iconos/logros.webp" alt="" width="20" height="20"> <span id="cuenta-logros">0/6</span></button>
+  </header>
+  <nav class="ranuras" aria-label="Secciones">
+    <a href="#/" data-ruta=""><img src="img/iconos/inicio.webp" alt="" width="30" height="30"><span>Inicio</span></a>
+    <a href="#/encuentra" data-ruta="encuentra"><img src="img/iconos/encuentra.webp" alt="" width="30" height="30"><span>Encuentra</span></a>
+    <a href="#/juegos" data-ruta="juegos"><img src="img/iconos/juegos.webp" alt="" width="30" height="30"><span>Juegos</span></a>
+    <a href="#/comparar" data-ruta="comparar"><img src="img/iconos/comparar.webp" alt="" width="30" height="30"><span>Comparar</span></a>
+    <a href="#/explorar" data-ruta="explorar"><img src="img/iconos/explorar.webp" alt="" width="30" height="30"><span>Explorar</span></a>
+    <a href="#/conclusiones" data-ruta="conclusiones"><img src="img/iconos/conclusiones.webp" alt="" width="30" height="30"><span>Informe</span></a>
+    <a href="#/metodo" data-ruta="metodo"><img src="img/iconos/metodo.webp" alt="" width="30" height="30"><span>Método</span></a>
+    <a href="#/sobre" data-ruta="sobre"><img src="img/iconos/jugabilidad.webp" alt="" width="30" height="30"><span>Sobre</span></a>
   </nav>
+
+  <!-- Asistente: botón flotante que abre el chat de recomendaciones -->
+  <button class="fab" id="abrir-chat" aria-label="Habla con el asistente"><img src="img/iconos/chat.webp" alt="" width="44" height="44"></button>
+  <canvas class="particulas" id="particulas" aria-hidden="true"></canvas>
 
   <!-- Aquí se dibuja la pantalla en la que estás -->
   <main id="vista" tabindex="-1"></main>
@@ -69,5 +78,7 @@
   <script src="herramientas.js"></script>
   <script src="textos.js"></script>
   <script src="logros.js"></script>
+  <script src="chat.js"></script>
+  <script src="vida.js"></script>
 </body>
 </html>

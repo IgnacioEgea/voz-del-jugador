@@ -6,10 +6,9 @@ const NOMBRES = {
   contenido_actualizaciones: "Contenido y actualizaciones", graficos_arte: "Gráficos y arte",
   comunidad_toxicidad: "Comunidad", matchmaking_balance: "Matchmaking y balance",
 };
-const ICONOS = {
-  jugabilidad: "🎮", monetizacion: "💸", bugs_rendimiento: "🛠️", contenido_actualizaciones: "🆕",
-  graficos_arte: "✨", comunidad_toxicidad: "🤝", matchmaking_balance: "⚖️",
-};
+// Iconos de interfaz (ilustraciones originales generadas con IA, en img/iconos/)
+const icono = (nombre, tam = 22) => `<img class="icono" src="img/iconos/${nombre}.webp" alt="" width="${tam}" height="${tam}" loading="lazy">`;
+const ICONOS = Object.fromEntries(Object.keys(NOMBRES).map((k) => [k, icono(k)]));
 const RAREZAS = { legendaria: "Legendaria", epica: "Épica", rara: "Rara", comun: "Común" };
 const datos = { juegos: [] };  // Se rellena al cargar data.json
 const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -55,7 +54,7 @@ function crecer(zona = document) {
 // Cada ruta del enlace (#/algo) corresponde a una pantalla: vistaAlgo() la dibuja y activarAlgo() le da vida
 const RUTAS = {
   "": "Inicio", encuentra: "Encuentra", juegos: "Juegos", juego: "Juego", comparar: "Comparar",
-  explorar: "Explorar", conclusiones: "Conclusiones", metodo: "Metodo",
+  explorar: "Explorar", conclusiones: "Conclusiones", metodo: "Metodo", sobre: "Sobre",
 };
 
 function navegar() {
@@ -67,7 +66,7 @@ function navegar() {
     window.logro?.(ruta, parametro);  // Logros por visitar secciones (logros.js)
     crecer($("vista"));
     // Marcamos en el menú la sección en la que estás
-    document.querySelectorAll(".hud a").forEach((a) =>
+    document.querySelectorAll(".ranuras a").forEach((a) =>
       a.dataset.ruta === (ruta === "juego" ? "juegos" : ruta) ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     scrollTo({ top: 0, behavior: "instant" });
     $("vista").focus({ preventScroll: true });

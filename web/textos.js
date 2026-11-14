@@ -84,3 +84,50 @@ function vistaMetodo() {
     <div class="botones"><a class="boton principal" href="https://github.com/IgnacioEgea/voz-del-jugador">💻 Ver el código</a>
       <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador/blob/main/DIARIO_DECISIONES.md">📓 Diario de decisiones</a></div></section>`;
 }
+
+// Sobre el proyecto: qué es, por qué, cómo está montado, quién lo hizo y cómo encaja con sus habilidades
+function vistaSobre() {
+  const habilidades = [
+    ["metodo", "Datos", "Python y pandas para descargar, limpiar y resumir miles de reseñas desde la API oficial de Steam."],
+    ["chat", "IA aplicada", "Un modelo de lenguaje clasifica cada reseña; se valida a mano y se publica su acierto. La IA ayuda, las decisiones son mías."],
+    ["conclusiones", "Marketing", "Las conclusiones se traducen en acciones: qué destacar en la ficha de tienda y cómo responder a las quejas."],
+    ["juegos", "Diseño y UX", "Concepto de cartas coleccionables, arte, animaciones, accesibilidad y diseño adaptado al móvil."],
+    ["encuentra", "Producto", "No es solo un informe: los jugadores pueden usarlo para elegir juego, y eso lo hace útil de verdad."],
+    ["comparar", "Automatización", "Robots de GitHub descargan, clasifican, traducen y publican solos. Coste: 0 €."],
+  ];
+  return `<header class="cabecera"><p class="etiqueta">// Sobre el proyecto</p><h1>La voz del jugador</h1>
+    <p class="subtitulo">Un proyecto de portfolio que junta mis tres mundos: el diseño de productos interactivos,
+      el marketing digital y el análisis de datos con IA.</p></header>
+
+  <section aria-labelledby="t-porque"><h2 id="t-porque">Por qué existe</h2>
+    <p>Los juegos gratuitos viven de que la gente los recomiende y siga jugando. Las reseñas de Steam son la opinión
+      más honesta que existe sobre ellos, pero nadie lee miles de reseñas. Quería responder con datos a una pregunta
+      sencilla: <b>¿qué hace que un jugador recomiende o abandone un free-to-play?</b> Y que la respuesta sirviera a la vez
+      a un estudio (qué arreglar) y a un jugador (a qué jugar).</p></section>
+
+  <section aria-labelledby="t-como"><h2 id="t-como">Cómo está montado</h2>
+    <ol class="pasos">
+      <li><b>01 · Datos</b><p>La API oficial de Steam da las reseñas recientes de cada juego. Python las limpia y quita el spam.</p></li>
+      <li><b>02 · IA</b><p>Gemini separa cada reseña en 7 temas con su tono, por lotes y de forma reanudable, sin coste.</p></li>
+      <li><b>03 · Web</b><p>Una app estática (HTML, CSS y JavaScript sin frameworks) en GitHub Pages, ligera y rápida.</p></li>
+      <li><b>04 · Robots</b><p>GitHub Actions lo actualiza todo automáticamente: los datos de la web nunca se quedan viejos.</p></li>
+    </ol></section>
+
+  <section aria-labelledby="t-yo"><h2 id="t-yo">Quién lo ha hecho</h2>
+    <div class="panel autor">
+      <p><b>Ignacio Egea Villalba</b> · Madrid</p>
+      <ul>
+        <li>Grado en Diseño de Productos Interactivos (U-tad).</li>
+        <li>Máster en Marketing Digital (UCM), con premio al mejor TFM.</li>
+        <li>Máster en Big Data, Data Science y Business Analytics (UCM), en curso.</li>
+        <li>Experiencia en marketing digital, UX, e-learning y en el lanzamiento de un videojuego free-to-play con más de 5.000 descargas en Steam.</li>
+      </ul>
+      <div class="botones"><a class="boton principal" href="https://www.linkedin.com/in/nacho-egea/">💼 LinkedIn</a>
+        <a class="boton" href="https://web-portfolio-psi-eosin.vercel.app/">🗂️ Portfolio</a>
+        <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador">💻 Código</a></div>
+    </div></section>
+
+  <section aria-labelledby="t-habilidades"><h2 id="t-habilidades">Cómo encaja con mis habilidades</h2>
+    <div class="habilidades">${habilidades.map(([i, t, p]) => `<div class="panel">${icono(i, 40)}<h3>${t}</h3><p>${p}</p></div>`).join("")}</div>
+  </section>`;
+}
