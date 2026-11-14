@@ -2,7 +2,12 @@
 # Se lanza con un botón: pestaña "Actions" → "Descargar reseñas" → "Run workflow".
 
 name: Descargar reseñas
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      appids:
+        description: "Números de Steam de los juegos a descargar, separados por espacios (vacío = todos)"
+        default: ""
 
 # Le damos permiso al robot para guardar el resultado en el repositorio
 permissions:
@@ -23,7 +28,7 @@ jobs:
       - run: pip install -r requirements.txt
 
       # Descargamos y limpiamos (el resumen de cada juego aparece en el registro)
-      - run: python src/descargar.py && python src/limpiar.py
+      - run: python src/descargar.py ${{ inputs.appids }} && python src/limpiar.py
 
       # Guardamos el CSV limpio en el repositorio
       - run: |
@@ -31,4 +36,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/resenas.csv
           git commit -m "Datos: reseñas descargadas y limpias" || echo "Sin cambios"
-          git push
+          git pull --rebase -q && git push
