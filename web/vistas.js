@@ -45,7 +45,7 @@ function feed() {
   const tira = voces.map(({ j, a }) => `<span class="baja ${j.rareza}"><b>${j.juego}</b> ${a.voz.recomienda ? "👍" : "👎"}
     “${seguro(corta(a.voz.es ?? a.voz.texto))}” <small>${Math.round(a.voz.horas)} h · ${NOMBRES[a.clave]}</small></span>`).join("");
   return voces.length ? `<section class="feed" aria-label="Frases reales de jugadores">
-    <div class="feed-pista" style="animation-duration:${voces.length * 7}s">${tira}${tira}</div></section>` : "";
+    <div class="feed-pista" style="animation-duration:${voces.length * 14}s">${tira}${tira}</div></section>` : "";
 }
 
 function vistaInicio() {

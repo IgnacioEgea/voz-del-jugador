@@ -4,7 +4,7 @@
 // Palabras que suelen usar los jugadores para cada tema y cada género
 const PISTAS = {
   jugabilidad: ["divert", "jugabilidad", "gameplay", "fun", "entreten", "adict"],
-  monetizacion: ["pay", "p2w", "pagar", "dinero", "gratis", "monetiz", "micropago", "gacha", "skins", "tienda", "pase"],
+  monetizacion: ["pay", "p2w", "pagar", "dinero", "gratis", "monetiz", "micropago", "skins", "tienda", "pase"],
   bugs_rendimiento: ["bug", "lag", "fps", "rendimiento", "optimiz", "fino", "crash", "servidor", "cheat", "tramp", "hacker"],
   contenido_actualizaciones: ["contenido", "actualiz", "mapas", "modos", "eventos", "temporada", "nuevo"],
   graficos_arte: ["gráfic", "grafic", "bonito", "arte", "visual", "estética", "ojos"],
@@ -57,7 +57,12 @@ function responder(pregunta) {
     let lista = datos.juegos.filter((j) => !genero || j.genero === genero);
     const nota = (j) => (temas.length ? temas.reduce((s, k) => s + (j.aspectos[k]?.pos ?? 0), 0) / temas.length : j.recomienda);
     lista = lista.filter((j) => !temas.length || temas.every((k) => j.aspectos[k])).sort((x, y) => nota(y) - nota(x)).slice(0, 3);
-    if (!lista.length) return "Con esos filtros aún no tengo datos suficientes. Prueba con otro tema o género.";
+    if (!lista.length) {
+      // Si la IA aún no ha leído esos temas, recomendamos por el % general de jugadores que lo recomiendan
+      const general = datos.juegos.filter((j) => !genero || j.genero === genero).sort((x, y) => y.recomienda - x.recomienda).slice(0, 3);
+      return general.length ? `La IA aún no ha leído ese tema en estos juegos, así que te digo los más recomendados${genero ? ` (${genero})` : ""}:<ol>${
+        general.map((j) => `<li>${enlace(j)} · ${j.recomienda} % lo recomienda</li>`).join("")}</ol>` : "No encuentro juegos con ese filtro.";
+    }
     const por = temas.length ? ` en ${temas.map((k) => NOMBRES[k].toLowerCase()).join(" y ")}` : "";
     return `Te recomiendo${por}${genero ? ` (${genero})` : ""}:<ol>${lista.map((j) => `<li>${enlace(j)} · ${Math.round(nota(j))} %</li>`).join("")}</ol>`;
   }
