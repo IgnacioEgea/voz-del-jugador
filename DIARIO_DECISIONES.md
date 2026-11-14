@@ -19,6 +19,11 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 | 14 nov 2026 | Modelo `gemini-flash-lite-latest` en vez de `gemini-flash-latest` | El modelo "flash" se quedaba pensando más de 2 min por lote; el "lite" responde en segundos, tiene más cuota gratuita y la validación medirá si acierta lo suficiente | Modelo más grande (lento y con menos cuota) |
 | 14 nov 2026 | El robot se pone al día (`git pull --rebase`) antes de guardar | Una tanda perdió ~1.000 reseñas porque subí la web mientras clasificaba y GitHub rechazó su guardado | Prohibir subir cambios mientras clasifica (frágil) |
 | 14 nov 2026 | Web publicada sola con GitHub Actions + Pages tras cada tanda | Los resultados se ven en vivo y el `data.json` nunca se queda viejo | Publicar a mano |
+| 14 nov 2026 | Web pensada también para jugadores ("Encuentra tu shooter", cartas, kill feed) | Un producto que usan jugadores reales es más único y memorable que un dashboard solo para analistas | Dashboard clásico solo para empresa |
+| 14 nov 2026 | App de una sola página con rutas (#/juegos, #/comparar…) y View Transitions | Navegación rápida sin servidor y transiciones suaves; sigue siendo una web estática gratis en GitHub Pages | Framework (React) o varias páginas HTML: más peso o más código repetido |
+| 14 nov 2026 | Arte generado con IA (Gemini, gratis), solo objetos originales sin armas, logos ni personajes | Derechos de autor y apto para todos; estilo coherente en toda la colección | Arte oficial de los juegos (problemas legales) |
+| 14 nov 2026 | Versión automática en CSS/JS al publicar | Los navegadores guardaban copias viejas y la gente veía la web antigua tras cada cambio | Pedir a la gente que recargue |
+| 14 nov 2026 | Explorador con las 150 reseñas más útiles por juego en un archivo aparte | Funciona como una "base de datos" consultable sin servidor y solo se descarga si alguien lo abre | Base de datos con backend (coste y mantenimiento) |
 | 14 nov 2026 | Concepto visual: "carta coleccionable" con barras de stats tipo HUD | La rareza de la carta sale de los datos (% de reseñas positivas), así que el diseño explica el dato; las barras se leen más rápido que un radar | HUD táctico puro (demasiado parecido a un dashboard típico) y arcade (la letra pixelada se lee mal en el móvil) |
 
 ## Observaciones y hallazgos (ir apuntando)
