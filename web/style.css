@@ -23,7 +23,8 @@
   --sombra: 0 18px 40px -20px rgba(0, 0, 0, .7);
 }
 * { box-sizing: border-box; }
-html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+body { overflow-x: clip; }
 body {
   margin: 0; background: var(--fondo); color: var(--texto);
   font: 400 17px/1.65 Inter, system-ui, sans-serif;
