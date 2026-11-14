@@ -8,7 +8,7 @@ on:
     inputs:
       limite:
         description: "Cuántas reseñas clasificar (vacío = todas las que falten)"
-        default: "20"
+        default: ""
 
 permissions:
   contents: write
@@ -27,7 +27,9 @@ jobs:
       - run: pip install -r requirements.txt
 
       # Clasificamos; la clave sale de la "caja fuerte" de GitHub, nunca del código
+      # Cada tanda dura como mucho 14 minutos; después se guarda lo hecho
       - run: python src/clasificar.py ${{ inputs.limite }}
+        timeout-minutes: 14
         env:
           GEMINI_API_KEY: ${{ secrets.API_GEMINI_P1_NACHO }}
 
