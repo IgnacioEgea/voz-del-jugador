@@ -3,10 +3,10 @@
 
 /* ——— Colores, tipos y medidas que se usan en toda la web ——— */
 :root {
-  --fondo: #14111C;
-  --superficie: #1E1A29;
-  --superficie-2: #272236;
-  --linea: #322B45;
+  --fondo: #19132B;
+  --superficie: #221B35;
+  --superficie-2: #2C2343;
+  --linea: #3B3058;
   --texto: #F4F0FA;
   --suave: #C3BAD3;
   --tenue: #8F86A0;
@@ -25,8 +25,15 @@
 * { box-sizing: border-box; }
 html { scroll-padding-top: 140px; -webkit-text-size-adjust: 100%; overflow-x: clip; }
 body { overflow-x: clip; }
+/* Fondo: morado oscuro con un brillo neón arriba y una cuadrícula que recorre toda la web */
 body {
-  margin: 0; background: var(--fondo); color: var(--texto);
+  margin: 0; color: var(--texto); background-attachment: fixed;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -10%, rgba(181, 140, 255, .22), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(79, 179, 255, .08), transparent 70%),
+    linear-gradient(rgba(181, 140, 255, .075) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, rgba(181, 140, 255, .075) 1px, transparent 1px) 0 0 / 44px 44px,
+    var(--fondo);
   font: 400 17px/1.65 Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
@@ -75,7 +82,7 @@ img { max-width: 100%; height: auto; }
 .xp i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--rara), var(--epica), var(--legendaria)); }
 .hud {
   position: sticky; top: 3px; z-index: 20; display: flex; gap: 10px; align-items: center;
-  padding: 10px 20px; background: rgba(20, 17, 28, .82); backdrop-filter: blur(12px) saturate(140%);
+  padding: 10px 20px; background: rgba(25, 19, 43, .82); backdrop-filter: blur(12px) saturate(140%);
   border-bottom: 1px solid var(--linea); font: 500 13px var(--mono);
 }
 .hud .logo { display: flex; align-items: center; gap: 8px; color: var(--texto); text-decoration: none; margin-right: auto; font-weight: 500; }
@@ -219,6 +226,9 @@ kbd { font: 500 11px var(--mono); border: 1px solid var(--tenue); border-radius:
   background: linear-gradient(transparent, rgba(20, 17, 28, .85) 40%, var(--fondo)); }
 .carta-info h3 { font-size: 18px; margin: 0; text-shadow: 0 2px 8px #000; }
 .carta[hidden] { display: none; }
+.cara .fuente { position: absolute; top: 10px; right: 10px; z-index: 2; font: 500 11px var(--mono); padding: 3px 8px; border-radius: 6px;
+  background: rgba(25, 19, 43, .85); border: 1px solid var(--rara); color: var(--rara); }
+.solo-steam { border-style: dashed; }
 .dorso { transform: rotateY(180deg); justify-content: center; padding: 18px; background: linear-gradient(160deg, var(--superficie-2), var(--superficie)); }
 .dorso small { font: 500 11px var(--mono); color: var(--tenue); text-transform: uppercase; letter-spacing: .08em; }
 .dorso .nivel { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; margin: 0 0 6px; }
@@ -415,5 +425,5 @@ h1 { text-shadow: 0 0 40px rgba(181, 140, 255, .25); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .particulas { display: none; }
-  .feed { overflow-x: auto; }
+  .feed-pista { animation: desfilar 260s linear infinite !important; }  /* El texto sigue desfilando, muy despacio */
 }

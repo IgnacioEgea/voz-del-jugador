@@ -38,10 +38,10 @@ function vistaJuego(s) {
       <h1>${j.juego}</h1>
       <p class="gran-cifra"><b>${j.recomienda} %</b> de ${miles(j.resenas)} jugadores lo recomienda</p>
       <div class="botones">
-        <a class="boton principal" href="#/comparar/${s}">⚔️ Comparar</a>
-        <a class="boton" href="#/explorar/${s}">🔍 Leer sus reseñas</a>
-        <button class="boton" data-compartir="${j.juego}">📤 Compartir</button>
-        <a class="boton" href="https://store.steampowered.com/app/${j.appid}" target="_blank" rel="noopener">🛒 Ver en Steam</a>
+        <a class="boton principal" href="#/comparar/${s}">${icono("comparar")} Comparar</a>
+        <a class="boton" href="#/explorar/${s}">${icono("explorar")} Leer sus reseñas</a>
+        <button class="boton" data-compartir="${j.juego}">${icono("chat")} Compartir</button>
+        <a class="boton" href="${j.tienda}" target="_blank" rel="noopener">${icono("juegos")} Ver en ${j.fuente}</a>
       </div>
     </div>
   </header>
@@ -58,13 +58,13 @@ function vistaJuego(s) {
   ${aspectos.length ? `<section aria-labelledby="t-parche"><h2 id="t-parche">Patch notes</h2>
     <p class="nota">Lo que cambiaríamos según sus propios jugadores.</p>${parche(j)}</section>` : ""}
 
-  <section aria-labelledby="t-perfiles">
+  ${j.perfiles.novato != null ? `  <section aria-labelledby="t-perfiles">
     <h2 id="t-perfiles">Novatos vs. veteranos</h2>
     <p class="nota">${frasePerfiles(j)}</p>
-    ${barra("🐣 Novatos (menos de 10 h)", j.perfiles.novato)}
-    ${barra("🎯 Medios", j.perfiles.medio)}
-    ${barra("🏆 Veteranos (100 h o más)", j.perfiles.veterano)}
-  </section>
+    ${barra(`${icono("inicio")} Novatos (menos de 10 h)`, j.perfiles.novato)}
+    ${barra(`${icono("encuentra")} Medios`, j.perfiles.medio)}
+    ${barra(`${icono("logros")} Veteranos (100 h o más)`, j.perfiles.veterano)}
+  </section>` : `<p class="nota">ℹ️ Las reseñas de la App Store no dicen cuántas horas ha jugado cada persona, así que aquí no hay comparación novatos vs. veteranos.</p>`}
 
   ${aspectos.length ? `<section aria-labelledby="t-voces"><h2 id="t-voces">Voces reales</h2>
     <p class="nota">La reseña más votada como útil sobre cada tema. Traducidas al español con IA: puedes ver el original en inglés.</p>

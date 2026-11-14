@@ -15,7 +15,7 @@ function vistaConclusiones() {
   const [mejor, peor] = [temas[0], temas[temas.length - 1]];
   const conDatos = datos.juegos.filter((j) => aspectosDe(j).length);
   const vecesPeor = conDatos.filter((j) => aspectosDe(j).at(-1).clave === peor.k).length;
-  const quemados = datos.juegos.filter((j) => j.perfiles.novato - j.perfiles.veterano >= 10);
+  const quemados = datos.juegos.filter((j) => j.perfiles.novato - j.perfiles.veterano >= 10);  // Los de App Store no tienen horas
   const puestoMoney = temas.findIndex((t) => t.k === "monetizacion") + 1;
 
   const ideas = [
@@ -56,7 +56,7 @@ function vistaConclusiones() {
 
   <section class="cta-final"><h2>¿Y si solo quieres jugar?</h2>
     <p>Usa el recomendador: marca lo que te importa y te decimos qué juego encaja contigo.</p>
-    <a class="boton principal" href="#/encuentra">🎯 Encuentra tu juego</a></section>`;
+    <a class="boton principal" href="#/encuentra">${icono("encuentra")} Encuentra tu juego</a></section>`;
 }
 
 function vistaMetodo() {
@@ -81,8 +81,8 @@ function vistaMetodo() {
   <section aria-labelledby="t-stack"><h2 id="t-stack">Herramientas</h2>
     <p class="chips">${["Python", "pandas", "API de Steam", "Gemini (IA)", "GitHub Actions", "GitHub Pages", "HTML · CSS · JS", "Arte generado con IA"]
       .map((t) => `<span class="chip">${t}</span>`).join("")}</p>
-    <div class="botones"><a class="boton principal" href="https://github.com/IgnacioEgea/voz-del-jugador">💻 Ver el código</a>
-      <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador/blob/main/DIARIO_DECISIONES.md">📓 Diario de decisiones</a></div></section>`;
+    <div class="botones"><a class="boton principal" href="https://github.com/IgnacioEgea/voz-del-jugador">${icono("metodo")} Ver el código</a>
+      <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador/blob/main/DIARIO_DECISIONES.md">${icono("conclusiones")} Diario de decisiones</a></div></section>`;
 }
 
 // Sobre el proyecto: qué es, por qué, cómo está montado, quién lo hizo y cómo encaja con sus habilidades
@@ -122,9 +122,9 @@ function vistaSobre() {
         <li>Máster en Big Data, Data Science y Business Analytics (UCM), en curso.</li>
         <li>Experiencia en marketing digital, UX, e-learning y en el lanzamiento de un videojuego free-to-play con más de 5.000 descargas en Steam.</li>
       </ul>
-      <div class="botones"><a class="boton principal" href="https://www.linkedin.com/in/nacho-egea/">💼 LinkedIn</a>
-        <a class="boton" href="https://web-portfolio-psi-eosin.vercel.app/">🗂️ Portfolio</a>
-        <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador">💻 Código</a></div>
+      <div class="botones"><a class="boton principal" href="https://www.linkedin.com/in/nacho-egea/">${icono("comunidad_toxicidad")} LinkedIn</a>
+        <a class="boton" href="https://web-portfolio-psi-eosin.vercel.app/">${icono("juegos")} Portfolio</a>
+        <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador">${icono("metodo")} Código</a></div>
     </div></section>
 
   <section aria-labelledby="t-habilidades"><h2 id="t-habilidades">Cómo encaja con mis habilidades</h2>

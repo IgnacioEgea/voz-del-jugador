@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 from clasificar import ASPECTOS
-from juegos import JUEGOS, portada
+from juegos import ficha
 
 RAIZ = Path(__file__).resolve().parent.parent
 RAREZAS = [(80, "legendaria"), (65, "epica"), (50, "rara"), (0, "comun")]
@@ -49,11 +49,9 @@ def resumir_aspecto(resenas, aspecto):
 def resumir_juego(nombre, todas, clasificadas):
     # La rareza de la carta sale del % de jugadores que recomiendan el juego
     recomienda = pct(todas["recomienda"])
-    appid = next(a for a, (n, _) in JUEGOS.items() if n == nombre)
-    return {"juego": nombre, "appid": appid, "genero": JUEGOS[appid][1], "portada": portada(appid),
-            "resenas": len(todas), "recomienda": recomienda,
+    return {"juego": nombre, **ficha(nombre), "resenas": len(todas), "recomienda": recomienda,
             "rareza": next(r for minimo, r in RAREZAS if recomienda >= minimo),
-            "perfiles": {p: pct(g["recomienda"]) for p, g in todas.groupby("perfil")},
+            "perfiles": {p: pct(g["recomienda"]) for p, g in todas.groupby("perfil") if len(g)},  # App Store: sin horas
             "clasificadas": len(clasificadas),
             "aspectos": {a: resumir_aspecto(clasificadas, a) for a in ASPECTOS}}
 

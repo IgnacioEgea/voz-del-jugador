@@ -8,6 +8,10 @@ on:
       appids:
         description: "Números de Steam de los juegos a descargar, separados por espacios (vacío = todos)"
         default: ""
+      appstore:
+        description: "Descargar también las reseñas de la App Store (Genshin Impact, Honkai: Star Rail)"
+        type: boolean
+        default: false
 
 # Le damos permiso al robot para guardar el resultado en el repositorio
 permissions:
@@ -28,7 +32,11 @@ jobs:
       - run: pip install -r requirements.txt
 
       # Descargamos y limpiamos (el resumen de cada juego aparece en el registro)
-      - run: python src/descargar.py ${{ inputs.appids }} && python src/limpiar.py
+      - run: python src/descargar.py ${{ inputs.appids }}
+        if: inputs.appids != '' || !inputs.appstore
+      - run: python src/descargar_appstore.py
+        if: inputs.appstore
+      - run: python src/limpiar.py
 
       # Guardamos el CSV limpio en el repositorio
       - run: |

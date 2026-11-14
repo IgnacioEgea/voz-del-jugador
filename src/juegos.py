@@ -1,4 +1,4 @@
-# Lista única de juegos del proyecto: su número en Steam (appid), nombre, género y portada.
+# Lista única de juegos del proyecto: su número en la tienda, nombre, género y portada.
 # La usan descargar.py, limpiar.py y resumir.py, así que para añadir un juego basta con tocar este archivo.
 
 # appid: (nombre, género)
@@ -20,6 +20,20 @@ JUEGOS = {
     4732690: ("Arknights: Endfield", "Gacha y RPG"),
     3513350: ("Wuthering Waves", "Gacha y RPG"),
     4162040: ("Zenless Zone Zero", "Gacha y RPG"),
+    # 4 más de Steam
+    2694490: ("Path of Exile 2", "Acción y RPG"),
+    1599340: ("Lost Ark", "MMORPG"),
+    236390: ("War Thunder", "Simulación"),
+    1203220: ("NARAKA: BLADEPOINT", "Battle royale"),
+}
+
+# Juegos que no están en Steam: sus reseñas salen de la App Store (móvil, con estrellas en vez de "recomiendo")
+# número en la App Store: (nombre, género, icono oficial de la tienda)
+APPSTORE = {
+    1517783697: ("Genshin Impact", "Gacha y RPG", "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/15/9e/b1/"
+                 "159eb1a7-fc58-2b43-b330-c5e619a77e2d/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg"),
+    1599719154: ("Honkai: Star Rail", "Gacha y RPG", "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b9/19/0a/"
+                 "b9190ac1-9dfc-6d88-5ac4-96dd4e6d6ff4/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg"),
 }
 
 # Portada oficial vertical de la tienda de Steam (la web la enlaza, no se copia).
@@ -34,3 +48,15 @@ RUTAS_ESPECIALES = {
 
 def portada(appid):
     return f"{CDN}{appid}/{RUTAS_ESPECIALES.get(appid, 'library_600x900_2x.jpg')}"
+
+
+def ficha(nombre):
+    # Todo lo que la web necesita saber de un juego a partir de su nombre, venga de Steam o de la App Store
+    for appid, (n, genero) in JUEGOS.items():
+        if n == nombre:
+            return {"appid": appid, "genero": genero, "fuente": "Steam", "portada": portada(appid),
+                    "tienda": f"https://store.steampowered.com/app/{appid}"}
+    for appid, (n, genero, icono) in APPSTORE.items():
+        if n == nombre:
+            return {"appid": appid, "genero": genero, "fuente": "App Store", "portada": icono,
+                    "tienda": f"https://apps.apple.com/app/id{appid}"}

@@ -10,10 +10,11 @@ function carta(j) {
        <small>Punto débil</small><p class="nivel">${ICONOS[peor.clave]} ${NOMBRES[peor.clave]} <b class="rojo">Lv. ${nivel(peor.pos)}</b></p>
        <span class="ver">Ver ficha →</span>`
     : `<small>La IA aún está leyendo sus reseñas…</small><span class="ver">Ver ficha →</span>`;
-  return `<a class="carta ${j.rareza}" data-genero="${j.genero}" href="#/juego/${slug(j.juego)}" aria-label="${j.juego}: carta ${RAREZAS[j.rareza]}, ${j.recomienda} % lo recomienda">
+  return `<a class="carta ${j.rareza}" data-genero="${j.genero}" data-fuente="${j.fuente}" href="#/juego/${slug(j.juego)}" aria-label="${j.juego}: carta ${RAREZAS[j.rareza]}, ${j.recomienda} % lo recomienda">
     <div class="carta-int">
       <div class="cara frente">
         ${portada(j, "carta-portada")}
+        ${j.fuente !== "Steam" ? `<span class="fuente">${j.fuente}</span>` : ""}
         <div class="carta-info"><h3>${j.juego}</h3>
           <span class="rareza">${RAREZAS[j.rareza]} · ${j.recomienda} %</span></div>
       </div>
@@ -61,8 +62,8 @@ function vistaInicio() {
     <div class="hallazgos">${h.map(([num, frase, color]) =>
       `<div class="hallazgo"><strong style="color:${color}" data-contar>${num}</strong><p>${frase}</p></div>`).join("")}</div>
     <div class="botones">
-      <a class="boton principal" href="#/encuentra">🎯 Encuentra tu juego</a>
-      <a class="boton" href="#/conclusiones">📊 Ver conclusiones</a>
+      <a class="boton principal" href="#/encuentra">${icono("encuentra")} Encuentra tu juego</a>
+      <a class="boton" href="#/conclusiones">${icono("conclusiones")} Ver conclusiones</a>
     </div>
   </header>
   ${feed()}
@@ -85,7 +86,7 @@ function vistaInicio() {
 function hallazgos() {
   const todos = datos.juegos.flatMap((j) => aspectosDe(j).map((a) => ({ ...a, juego: j.juego })));
   const peor = todos.sort((x, y) => x.pos - y.pos)[0];
-  const caida = datos.juegos.map((j) => ({ juego: j.juego, d: j.perfiles.novato - j.perfiles.veterano })).sort((x, y) => y.d - x.d)[0];
+  const caida = datos.juegos.filter((j) => j.perfiles.novato != null).map((j) => ({ juego: j.juego, d: j.perfiles.novato - j.perfiles.veterano })).sort((x, y) => y.d - x.d)[0];
   const top = datos.juegos[0];
   return [
     peor && [`${peor.pos} %`, `de las opiniones sobre ${NOMBRES[peor.clave].toLowerCase()} en ${peor.juego} son positivas`, "var(--mal)"],
@@ -117,7 +118,8 @@ function vistaJuegos() {
       <span class="chip legendaria">Legendaria ≥ 80 %</span> <span class="chip epica">Épica ≥ 65 %</span>
       <span class="chip rara">Rara ≥ 50 %</span> <span class="chip comun">Común &lt; 50 %</span></p></header>
     <div class="deseos" id="generos" role="group" aria-label="Filtrar por género">${["Todos", ...new Set(datos.juegos.map((j) => j.genero))]
-      .map((g, i) => `<button class="deseo" data-genero="${g}" aria-pressed="${i === 0}">${g}</button>`).join("")}</div>
+      .map((g, i) => `<button class="deseo" data-genero="${g}" aria-pressed="${i === 0}">${g}</button>`).join("")}
+      <button class="deseo solo-steam" id="solo-steam" aria-pressed="false" title="Para comparar en igualdad de condiciones">Solo Steam</button></div>
     <div class="cartas grandes" id="cartas">${datos.juegos.map(carta).join("")}</div>`;
 }
 function activarJuegos() {
@@ -126,8 +128,12 @@ function activarJuegos() {
   $("generos").addEventListener("click", (e) => {
     const boton = e.target.closest(".deseo");
     if (!boton) return;
-    document.querySelectorAll("#generos .deseo").forEach((b) => b.setAttribute("aria-pressed", b === boton));
+    // "Solo Steam" se enciende y apaga aparte; los géneros se eligen de uno en uno
+    if (boton.id === "solo-steam") boton.setAttribute("aria-pressed", boton.getAttribute("aria-pressed") !== "true");
+    else document.querySelectorAll("#generos .deseo:not(#solo-steam)").forEach((b) => b.setAttribute("aria-pressed", b === boton));
+    const genero = document.querySelector('#generos .deseo[aria-pressed="true"]:not(#solo-steam)')?.dataset.genero ?? "Todos";
+    const soloSteam = $("solo-steam").getAttribute("aria-pressed") === "true";
     document.querySelectorAll("#cartas .carta").forEach((c) =>
-      (c.hidden = boton.dataset.genero !== "Todos" && c.dataset.genero !== boton.dataset.genero));
+      (c.hidden = (genero !== "Todos" && c.dataset.genero !== genero) || (soloSteam && c.dataset.fuente !== "Steam")));
   });
 }
