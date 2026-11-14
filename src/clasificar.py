@@ -55,6 +55,17 @@ def a_tabla(clasificadas):
                          for c in clasificadas if "id" in c])
 
 
+def clasificar_lote(lote):
+    # Si la IA devuelve un JSON roto, lo repetimos reseña a reseña;
+    # la que siga fallando se queda "sin aspectos" para no atascar todo lo demás
+    try:
+        return a_tabla(preguntar_ia(lote))
+    except json.JSONDecodeError:
+        if len(lote) == 1:
+            return a_tabla([{"id": lote["id"].iloc[0]}])
+        return pd.concat([clasificar_lote(lote[i:i + 1]) for i in range(len(lote))])
+
+
 def clasificar(limite=None):
     load_dotenv(RAIZ / ".env")
     df = pd.read_csv(ENTRADA, dtype={"id": str})
@@ -64,7 +75,7 @@ def clasificar(limite=None):
     df = df[:limite]
 
     for inicio in range(0, len(df), LOTE):
-        tabla = a_tabla(preguntar_ia(df[inicio:inicio + LOTE]))
+        tabla = clasificar_lote(df[inicio:inicio + LOTE])
         tabla.to_csv(SALIDA, mode="a", header=not SALIDA.exists(), index=False)
         print(f"{min(inicio + LOTE, len(df))} / {len(df)}")
         time.sleep(ESPERA)
