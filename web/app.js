@@ -162,6 +162,7 @@ fetch("data.json")
     pintarPortada(datos);
     pintarCartas(datos);
     pintarPerfiles(datos);
+    pintarSelector(datos);
     const primero = datos.juegos.findIndex((j) => j.clasificadas);
     if (primero >= 0) document.querySelector(`.carta[data-i="${primero}"]`).click();
   });

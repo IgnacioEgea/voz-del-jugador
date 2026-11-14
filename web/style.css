@@ -70,6 +70,7 @@ a { color: var(--rara); }
 .legendaria { --r: var(--legendaria); }
 .epica { --r: var(--epica); }
 .rara { --r: var(--rara); }
+.comun { --r: var(--comun); }
 
 /* Brillo holográfico que sigue al ratón: más intenso cuanto más rara es la carta */
 .carta.legendaria { --brillo: .55; }
@@ -92,13 +93,32 @@ a { color: var(--rara); }
 .barra i { display: block; height: 100%; width: 0; border-radius: 3px; transition: width .8s cubic-bezier(.2, .8, .2, 1); }
 .voz { border-left: 3px solid var(--r); margin: 24px 0 0; padding: 4px 0 4px 16px; color: var(--suave); font-style: italic; }
 
+/* Encuentra tu shooter: botones de deseos y ranking de juegos */
+.deseos { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.deseo {
+  background: var(--superficie); color: var(--texto); font: inherit; font-size: 14px; cursor: pointer;
+  border: 1px solid var(--linea); border-radius: 999px; padding: 8px 14px; transition: all .15s ease;
+}
+.deseo:hover { border-color: var(--suave); }
+.deseo[aria-pressed="true"] { background: var(--texto); color: var(--fondo); border-color: var(--texto); }
+.recomendados { display: grid; gap: 10px; }
+.recomendado {
+  display: grid; grid-template-columns: 36px 64px 1fr auto; align-items: center; gap: 12px;
+  background: var(--superficie); border-left: 4px solid var(--r); border-radius: 0; padding: 10px 14px;
+  animation: aparecer .4s ease both;
+}
+.recomendado img { width: 64px; height: 64px; border-radius: 8px; }
+.recomendado h3 { font-size: 17px; margin: 0; }
+.recomendado strong { font: 700 24px var(--titulo); color: var(--r); }
+.puesto { font: 700 18px var(--titulo); color: var(--suave); }
+
 /* Aviso de datos provisionales mientras la IA sigue leyendo */
 .aviso { display: inline-block; background: #2B2412; color: var(--legendaria); border: 1px solid #5A4A1A; border-radius: 8px; padding: 8px 12px; font-size: 14px; }
 .aviso[hidden] { display: none; }
 
 /* Novatos vs. veteranos: tres barras por juego con el color de su rareza */
 .perfiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-.perfil { --r: var(--comun); background: var(--superficie); border-radius: 12px; padding: 16px; }
+.perfil { background: var(--superficie); border-radius: 12px; padding: 16px; }
 .perfil h3 { font-size: 17px; }
 .fila { display: grid; grid-template-columns: 76px 1fr 40px; align-items: center; gap: 8px; font-size: 13px; margin-top: 6px; }
 .fila .barra { margin: 0; }
