@@ -46,7 +46,7 @@ a { color: var(--rara); }
 }
 .carta:focus-visible { outline: 2px solid var(--r); outline-offset: 4px; border-radius: 16px; }
 .carta-int {
-  position: relative; aspect-ratio: 5 / 7; transform-style: preserve-3d;
+  position: relative; aspect-ratio: 5 / 7.5; transform-style: preserve-3d;
   transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--giro, 0deg)));
   transition: transform .5s cubic-bezier(.2, .8, .2, 1);
 }
