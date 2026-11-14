@@ -24,6 +24,10 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 | 14 nov 2026 | Arte generado con IA (Gemini, gratis), solo objetos originales sin armas, logos ni personajes | Derechos de autor y apto para todos; estilo coherente en toda la colección | Arte oficial de los juegos (problemas legales) |
 | 14 nov 2026 | Versión automática en CSS/JS al publicar | Los navegadores guardaban copias viejas y la gente veía la web antigua tras cada cambio | Pedir a la gente que recargue |
 | 14 nov 2026 | Explorador con las 150 reseñas más útiles por juego en un archivo aparte | Funciona como una "base de datos" consultable sin servidor y solo se descarga si alguien lo abre | Base de datos con backend (coste y mantenimiento) |
+| 14 nov 2026 | Ampliar a 15 F2P (PUBG, CS2, Dota 2, Warframe, Destiny 2, Delta Force, Arknights: Endfield, Wuthering Waves, Zenless Zone Zero) | Más variedad de géneros y juegos muy conocidos; Genshin, Fortnite y Honkai: Star Rail no están en Steam | Quedarse solo en hero shooters |
+| 14 nov 2026 | Portadas oficiales enlazadas desde la tienda de Steam (no copiadas), con crédito a los estudios | Es el arte promocional que publican los propios estudios y siempre está actualizado | Guardar copias de las imágenes en el repositorio |
+| 14 nov 2026 | Reutilizar los emblemas generados como insignias de logros | No se desecha el arte original y añade un toque de juego | Borrarlos |
+| 14 nov 2026 | Repartir la clasificación en varios días | La cuota gratuita diaria de Gemini se agota (~400 llamadas al día): coste 0 € a cambio de más tiempo | Pagar la API |
 | 14 nov 2026 | Concepto visual: "carta coleccionable" con barras de stats tipo HUD | La rareza de la carta sale de los datos (% de reseñas positivas), así que el diseño explica el dato; las barras se leen más rápido que un radar | HUD táctico puro (demasiado parecido a un dashboard típico) y arcade (la letra pixelada se lee mal en el móvil) |
 
 ## Observaciones y hallazgos (ir apuntando)
