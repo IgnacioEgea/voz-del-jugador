@@ -28,6 +28,9 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 | 14 nov 2026 | Portadas oficiales enlazadas desde la tienda de Steam (no copiadas), con crédito a los estudios | Es el arte promocional que publican los propios estudios y siempre está actualizado | Guardar copias de las imágenes en el repositorio |
 | 14 nov 2026 | Reutilizar los emblemas generados como insignias de logros | No se desecha el arte original y añade un toque de juego | Borrarlos |
 | 14 nov 2026 | Repartir la clasificación en varios días | La cuota gratuita diaria de Gemini se agota (~400 llamadas al día): coste 0 € a cambio de más tiempo | Pagar la API |
+| 14 nov 2026 | Genshin Impact y Honkai: Star Rail desde la App Store (4-5 estrellas = recomienda), marcados con su fuente y con filtro "Solo Steam" | No están en Steam; así entran en la web sin mezclar métodos a escondidas | Dejarlos fuera o mezclarlos sin avisar |
+| 14 nov 2026 | Asistente de chat por reglas en el navegador, sin API | Gratis, instantáneo, sin exponer claves y siempre responde con datos reales | Chatbot con IA externa (coste y riesgo de inventar) |
+| 14 nov 2026 | Iconos de interfaz generados en hojas de 8 y recortados | 2 peticiones de imagen en vez de 16, mismo estilo en todos | Emojis (poco diegéticos) |
 | 14 nov 2026 | Concepto visual: "carta coleccionable" con barras de stats tipo HUD | La rareza de la carta sale de los datos (% de reseñas positivas), así que el diseño explica el dato; las barras se leen más rápido que un radar | HUD táctico puro (demasiado parecido a un dashboard típico) y arcade (la letra pixelada se lee mal en el móvil) |
 
 ## Observaciones y hallazgos (ir apuntando)

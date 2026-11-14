@@ -425,5 +425,5 @@ h1 { text-shadow: 0 0 40px rgba(181, 140, 255, .25); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .particulas { display: none; }
-  .feed-pista { animation: desfilar 260s linear infinite !important; }  /* El texto sigue desfilando, muy despacio */
+  .feed-pista { animation: desfilar 150s linear infinite !important; }  /* El texto sigue desfilando, muy despacio */
 }
