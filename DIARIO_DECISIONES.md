@@ -37,3 +37,8 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 - **14 nov · Los veteranos de Marvel Rivals se queman.** El 61 % de los novatos lo recomienda, pero solo el 36 % de los veteranos (≥100 h). En TF2 y Paladins los veteranos siguen contentos (77-83 %). Pregunta para la IA: ¿qué aspecto explica la caída? ¿Monetización, matchmaking?
 - **14 nov · El que se queja escribe el doble.** Mediana de 114 caracteres en las negativas frente a 63 en las positivas. Bueno para el análisis: las negativas dan más detalle para clasificar.
 - **14 nov · ⚠️ Limitación: ventanas de tiempo distintas.** En 5 juegos, las ~1.800 reseñas más recientes cubren solo 3-4 semanas (oct-nov 2026); en Paladins, 14 meses. Los grandes reflejan "el momento actual" (una temporada o un parche pueden pesar mucho); Paladins, una opinión más asentada. Decirlo siempre al comparar.
+
+## 2026-11-15 · Pulido tras revisión de Ignacio
+- **Emojis → símbolos SVG neón propios.** Cada sistema pinta los emojis distinto (en Windows el ⬆️ salía como "1"). Dibujarlos en SVG es gratis, nítido a cualquier tamaño y sigue la paleta.
+- **Una voz por persona.** Cada reseña solo puede ser "voz real" de un tema por juego.
+- **Portada entera a 2:3 y nombre debajo.** El texto encima tapaba el logo y el brillo holográfico quemaba las portadas claras (Arknights).
