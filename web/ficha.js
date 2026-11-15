@@ -6,7 +6,7 @@ function parche(j) {
   const hotfix = aspectos.filter((a) => a.pos < 35).slice(-2).reverse();
   const buff = aspectos.filter((a) => a.pos >= 60).slice(0, 2);
   const linea = (tipo, a, texto) =>
-    `<li><span class="tag ${tipo}">${tipo === "hotfix" ? "🔧 HOTFIX" : "⬆️ BUFF"}</span> <b>${NOMBRES[a.clave]}</b>: ${texto}</li>`;
+    `<li><span class="tag ${tipo}">${simbolo(tipo)} ${tipo.toUpperCase()}</span> <b>${NOMBRES[a.clave]}</b>: ${texto}</li>`;
   return `<ul class="notas">
     ${hotfix.map((a) => linea("hotfix", a, `solo el ${a.pos} % habla bien. Prioridad para el equipo de diseño.`)).join("")}
     ${buff.map((a) => linea("buff", a, `lo valora el ${a.pos} %. Es lo que hay que destacar en la ficha de tienda.`)).join("")}
@@ -52,7 +52,7 @@ function vistaJuego(s) {
       ${j.clasificadas < j.resenas ? `Basado en ${miles(j.clasificadas)} de ${miles(j.resenas)} reseñas (la IA sigue leyendo).` : ""}</p>
     ${aspectos.length ? aspectos.map((a) => barra(`${ICONOS[a.clave]} ${NOMBRES[a.clave]}`, a.pos,
       `<small class="nota">Lv. ${nivel(a.pos)} · ${miles(a.menciones)} menciones · </small>`)).join("")
-      : `<p class="aviso">⏳ La IA todavía no ha leído las reseñas de este juego. Vuelve en un rato.</p>`}
+      : `<p class="aviso">${simbolo("espera")} La IA todavía no ha leído las reseñas de este juego. Vuelve en un rato.</p>`}
   </section>
 
   ${aspectos.length ? `<section aria-labelledby="t-parche"><h2 id="t-parche">Patch notes</h2>
@@ -64,14 +64,14 @@ function vistaJuego(s) {
     ${barra(`${icono("inicio")} Novatos (menos de 10 h)`, j.perfiles.novato)}
     ${barra(`${icono("encuentra")} Medios`, j.perfiles.medio)}
     ${barra(`${icono("logros")} Veteranos (100 h o más)`, j.perfiles.veterano)}
-  </section>` : `<p class="nota">ℹ️ Las reseñas de la App Store no dicen cuántas horas ha jugado cada persona, así que aquí no hay comparación novatos vs. veteranos.</p>`}
+  </section>` : `<p class="nota">${simbolo("info")} Las reseñas de la App Store no dicen cuántas horas ha jugado cada persona, así que aquí no hay comparación novatos vs. veteranos.</p>`}
 
   ${aspectos.length ? `<section aria-labelledby="t-voces"><h2 id="t-voces">Voces reales</h2>
     <p class="nota">La reseña más votada como útil sobre cada tema. Traducidas al español con IA: puedes ver el original en inglés.</p>
     <div class="voces">${aspectos.map((a) => `<figure class="voz-card">
       <blockquote>“${seguro(a.voz.es ?? a.voz.texto)}”</blockquote>
       ${a.voz.es ? `<details><summary>Ver original en inglés</summary><p>${seguro(a.voz.texto)}</p></details>` : ""}
-      <figcaption>${a.voz.recomienda ? "👍 Lo recomienda" : "👎 No lo recomienda"} · ${Math.round(a.voz.horas)} h · ${ICONOS[a.clave]} ${NOMBRES[a.clave]}</figcaption>
+      <figcaption>${pulgar(a.voz.recomienda)} ${a.voz.recomienda ? "Lo recomienda" : "No lo recomienda"} · ${Math.round(a.voz.horas)} h · ${ICONOS[a.clave]} ${NOMBRES[a.clave]}</figcaption>
     </figure>`).join("")}</div></section>` : ""}
 
   <nav class="pasar" aria-label="Otros juegos">

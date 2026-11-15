@@ -94,7 +94,7 @@ function vistaExplorar(s) {
       <select id="fj" aria-label="Juego"><option value="">Todos los juegos</option>${opciones(juegos, s)}</select>
       <select id="fa" aria-label="Tema"><option value="">Todos los temas</option>${opciones(NOMBRES)}</select>
       <select id="ft" aria-label="Tono"><option value="">Cualquier tono</option>${opciones(TONOS)}</select>
-      <select id="fo" aria-label="Recomienda"><option value="">Recomiende o no</option>${opciones({ true: "👍 Lo recomienda", false: "👎 No lo recomienda" })}</select>
+      <select id="fo" aria-label="Recomienda"><option value="">Recomiende o no</option>${opciones({ true: "Lo recomienda", false: "No lo recomienda" })}</select>
     </div>
     <p class="nota" id="cuenta"></p><div class="lista" id="lista"></div>
     <button class="boton" id="mas" hidden>Ver más reseñas</button>`;
@@ -106,7 +106,7 @@ function tarjeta(r, q) {
   const original = r.e ?? r.t;
   const texto = q ? seguro(original).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), "<mark>$1</mark>") : seguro(original);
   return `<article class="resena"><header><span class="chip ${j?.rareza}">${r.j}</span>
-    <span>${r.r ? "👍" : "👎"} · ${miles(r.h)} h · ${miles(r.v)} votos útiles</span></header><p>${texto}</p>${r.e ? `<details><summary>Ver original en inglés</summary><p>${seguro(r.t)}</p></details>` : ""}
+    <span>${pulgar(r.r)} · ${miles(r.h)} h · ${miles(r.v)} votos útiles</span></header><p>${texto}</p>${r.e ? `<details><summary>Ver original en inglés</summary><p>${seguro(r.t)}</p></details>` : ""}
     <footer>${Object.entries(r.a).map(([k, t]) => `<span class="tag ${t}">${ICONOS[k]} ${NOMBRES[k]} · ${TONOS[t] ?? t}</span>`).join("")}</footer></article>`;
 }
 

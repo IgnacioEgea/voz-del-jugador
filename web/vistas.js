@@ -42,7 +42,7 @@ function inclinar(zona) {
 function feed() {
   const voces = datos.juegos.flatMap((j) => aspectosDe(j).map((a) => ({ j, a })));
   const corta = (t) => (t.length > 90 ? `${t.slice(0, 90).replace(/\s\S*$/, "")}…` : t);
-  const tira = voces.map(({ j, a }) => `<span class="baja ${j.rareza}"><b>${j.juego}</b> ${a.voz.recomienda ? "👍" : "👎"}
+  const tira = voces.map(({ j, a }) => `<span class="baja ${j.rareza}"><b>${j.juego}</b> ${pulgar(a.voz.recomienda)}
     “${seguro(corta(a.voz.es ?? a.voz.texto))}” <small>${Math.round(a.voz.horas)} h · ${NOMBRES[a.clave]}</small></span>`).join("");
   return voces.length ? `<section class="feed" aria-label="Frases reales de jugadores">
     <div class="feed-pista" style="animation-duration:${voces.length * 14}s">${tira}${tira}</div></section>` : "";
@@ -58,7 +58,7 @@ function vistaInicio() {
     <h1>¿Por qué los jugadores recomiendan o abandonan un juego free‑to‑play?</h1>
     <p class="subtitulo">Leímos lo que escriben los jugadores en Steam y una IA lo separó por temas: jugabilidad, monetización,
       bugs, matchmaking… El resultado sirve para elegir a qué jugar y para que los estudios sepan qué arreglar.</p>
-    ${terminado() ? "" : `<p class="aviso">⏳ Datos provisionales: la IA lleva el ${Math.round(datos.clasificadas / datos.total * 100)} % de las reseñas. La web se actualiza sola.</p>`}
+    ${terminado() ? "" : `<p class="aviso">${simbolo("espera")} Datos provisionales: la IA lleva el ${Math.round(datos.clasificadas / datos.total * 100)} % de las reseñas. La web se actualiza sola.</p>`}
     <div class="hallazgos">${h.map(([num, frase, color]) =>
       `<div class="hallazgo"><strong style="color:${color}" data-contar>${num}</strong><p>${frase}</p></div>`).join("")}</div>
     <div class="botones">

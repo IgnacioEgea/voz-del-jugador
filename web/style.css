@@ -214,7 +214,7 @@ kbd { font: 500 12px var(--mono); border: 1px solid var(--tenue); border-radius:
 .cartas.grandes { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 40px 32px; }
 .carta { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%; --brillo: 0; display: block; perspective: 1000px; color: inherit; text-decoration: none; }
 .carta-int {
-  position: relative; aspect-ratio: 5 / 7.4; transform-style: preserve-3d;
+  position: relative; transform-style: preserve-3d;
   transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--giro, 0deg))); transition: transform .55s cubic-bezier(.2, .8, .2, 1);
 }
 @media (hover: hover) { .carta:hover, .carta:focus-visible { --giro: 180deg; } }
@@ -222,11 +222,10 @@ kbd { font: 500 12px var(--mono); border: 1px solid var(--tenue); border-radius:
   position: absolute; inset: 0; backface-visibility: hidden; overflow: hidden; display: flex; flex-direction: column; gap: 8px;
   padding: 10px; background: var(--superficie); border: 2px solid var(--r); border-radius: var(--radio); box-shadow: var(--sombra);
 }
-/* Delante: la portada oficial ocupa toda la carta y el nombre va encima, sobre un degradado */
-.frente { padding: 0; }
-.carta-portada { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.carta-info { position: absolute; inset: auto 0 0; padding: 40px 12px 12px; display: flex; flex-direction: column; gap: 6px;
-  background: linear-gradient(transparent, rgba(42, 33, 71, .85) 40%, var(--fondo)); }
+/* Delante: la portada oficial entera, a su proporción (2:3) y sin nada encima; el nombre va debajo */
+.frente { position: relative; padding: 0; gap: 0; }
+.carta-portada { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+.carta-info { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; background: var(--superficie); }
 .carta-info h3 { font-size: 18px; margin: 0; text-shadow: 0 2px 8px #000; }
 .carta[hidden] { display: none; }
 .cara .fuente { position: absolute; top: 10px; right: 10px; z-index: 2; font: 500 12px var(--mono); padding: 3px 8px; border-radius: 6px;
@@ -238,13 +237,13 @@ kbd { font: 500 12px var(--mono); border: 1px solid var(--tenue); border-radius:
 .nivel b { font: 700 16px var(--titulo); white-space: nowrap; }
 .rojo { color: var(--mal); }
 .ver { margin-top: auto; font: 500 13px var(--mono); color: var(--r); }
-.carta.legendaria { --brillo: .5; }
+.carta.legendaria { --brillo: .35; }
 .carta.epica { --brillo: .35; }
 .carta.rara { --brillo: .2; }
 /* Brillo holográfico: solo aparece al pasar el ratón, para que el arte se vea nítido el resto del tiempo */
 .frente::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge;
-  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .5), transparent 45%),
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; mix-blend-mode: soft-light;
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .35), transparent 45%),
     linear-gradient(125deg, #ff6b6b40, #ffc93c40, #3ddc9740, #4fb3ff40, #b58cff40);
 }
 .carta:hover .frente::after { opacity: var(--brillo); }
@@ -430,3 +429,9 @@ h1 { text-shadow: 0 0 40px rgba(181, 140, 255, .25); }
   .particulas { display: none; }
   .feed-pista { animation: desfilar 320s linear infinite !important; }  /* El texto sigue desfilando, muy despacio */
 }
+
+/* Símbolos neón (pulgares, hotfix, buff, avisos): mismo trazo y brillo que el resto de la interfaz */
+.simbolo { width: 1.15em; height: 1.15em; vertical-align: -.2em; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 3px currentColor); }
+.simbolo.si { color: var(--bien); } .simbolo.no { color: var(--mal); }
+.simbolo.info, .simbolo.espera { color: var(--rara); } .simbolo.aviso { color: var(--legendaria); }

@@ -32,13 +32,17 @@ def recortar(texto, limite=240):
     return texto if len(texto) <= limite else texto[:limite].rsplit(" ", 1)[0] + "…"
 
 
-def resumir_aspecto(resenas, aspecto):
+def resumir_aspecto(resenas, aspecto, usadas):
     # De las reseñas que hablan de este aspecto, ¿cuántas lo hacen bien y cuántas mal?
     hablan = resenas[resenas[aspecto] != ""]
     if len(hablan) < MIN_MENCIONES:
         return None
-    # La "voz real" es la reseña que más gente ha votado como útil
-    voz = hablan.sort_values("votos_util", ascending=False).iloc[0]
+    # La "voz real" es la reseña más votada como útil que no hayamos enseñado ya en otro tema:
+    # así cada persona aparece una sola vez por juego
+    ordenadas = hablan.sort_values("votos_util", ascending=False)
+    libres = ordenadas[~ordenadas["id"].astype(str).isin(usadas)]
+    voz = (libres if len(libres) else ordenadas).iloc[0]
+    usadas.add(str(voz["id"]))
     return {"menciones": len(hablan), "pos": pct(hablan[aspecto] == "pos"),
             "neg": pct(hablan[aspecto] == "neg"),
             "voz": {"texto": recortar(voz["texto"]), "es": TRADUCCIONES.get(recortar(voz["texto"])),
@@ -49,11 +53,12 @@ def resumir_aspecto(resenas, aspecto):
 def resumir_juego(nombre, todas, clasificadas):
     # La rareza de la carta sale del % de jugadores que recomiendan el juego
     recomienda = pct(todas["recomienda"])
+    usadas = set()  # Reseñas ya elegidas como "voz real" de este juego
     return {"juego": nombre, **ficha(nombre), "resenas": len(todas), "recomienda": recomienda,
             "rareza": next(r for minimo, r in RAREZAS if recomienda >= minimo),
             "perfiles": {p: pct(g["recomienda"]) for p, g in todas.groupby("perfil") if len(g)},  # App Store: sin horas
             "clasificadas": len(clasificadas),
-            "aspectos": {a: resumir_aspecto(clasificadas, a) for a in ASPECTOS}}
+            "aspectos": {a: resumir_aspecto(clasificadas, a, usadas) for a in ASPECTOS}}
 
 
 def muestra_resenas(clasificadas, por_juego=150):

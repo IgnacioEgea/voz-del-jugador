@@ -11,7 +11,7 @@ function rankingTemas() {
 
 function vistaConclusiones() {
   const temas = rankingTemas();
-  if (!temas.length) return `<p class="aviso">⏳ Las conclusiones aparecerán cuando la IA haya leído las primeras reseñas.</p>`;
+  if (!temas.length) return `<p class="aviso">${simbolo("espera")} Las conclusiones aparecerán cuando la IA haya leído las primeras reseñas.</p>`;
   const [mejor, peor] = [temas[0], temas[temas.length - 1]];
   const conDatos = datos.juegos.filter((j) => aspectosDe(j).length);
   const vecesPeor = conDatos.filter((j) => aspectosDe(j).at(-1).clave === peor.k).length;
@@ -44,7 +44,7 @@ function vistaConclusiones() {
 
   <section aria-labelledby="t-hacer"><h2 id="t-hacer">Qué haría con esto un estudio</h2>
     <div class="dos-columnas">
-      <div class="panel"><h3>🔧 Para el equipo de diseño</h3><ul>
+      <div class="panel"><h3>${simbolo("hotfix")} Para el equipo de diseño</h3><ul>
         <li>Priorizar <b>${NOMBRES[peor.k].toLowerCase()}</b> en la hoja de ruta: es lo que más hunde las reseñas.</li>
         <li>Medir la satisfacción por horas jugadas para detectar a tiempo el desgaste de los veteranos.</li>
         <li>Proteger <b>${NOMBRES[mejor.k].toLowerCase()}</b> en cada parche: es lo que hace que te recomienden.</li></ul></div>
@@ -77,7 +77,7 @@ function vistaMetodo() {
   return `<header class="cabecera"><p class="etiqueta">// Cómo está hecho</p><h1>Método y limitaciones</h1>
     <p class="subtitulo">Para que puedas fiarte de los números, aquí está todo el proceso y lo que estos datos <b>no</b> pueden decir.</p></header>
   <ol class="pasos metodo">${pasos.map(([i, t, p]) => `<li><b>${i} ${t}</b><p>${p}</p></li>`).join("")}</ol>
-  <section aria-labelledby="t-limites"><h2 id="t-limites">Limitaciones</h2><ul class="lista-limpia">${limites.map((l) => `<li>⚠️ ${l}</li>`).join("")}</ul></section>
+  <section aria-labelledby="t-limites"><h2 id="t-limites">Limitaciones</h2><ul class="lista-limpia">${limites.map((l) => `<li>${simbolo("aviso")} ${l}</li>`).join("")}</ul></section>
   <section aria-labelledby="t-stack"><h2 id="t-stack">Herramientas</h2>
     <p class="chips">${["Python", "pandas", "API de Steam", "Gemini (IA)", "GitHub Actions", "GitHub Pages", "HTML · CSS · JS", "Arte generado con IA"]
       .map((t) => `<span class="chip">${t}</span>`).join("")}</p>
