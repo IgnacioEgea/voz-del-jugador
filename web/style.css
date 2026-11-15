@@ -460,3 +460,6 @@ h1 { text-shadow: 0 0 40px rgba(181, 140, 255, .25); }
   .veredicto { padding: 14px; }
   .ficha-cabecera .chip { margin-top: 4px; }
 }
+
+/* Espacio al final de cada pantalla para que el botón del chat nunca tape el último texto */
+main { padding-bottom: 110px; }
