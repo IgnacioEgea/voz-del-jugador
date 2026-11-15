@@ -7,7 +7,7 @@ const NOMBRES = {
   comunidad_toxicidad: "Comunidad", matchmaking_balance: "Matchmaking y balance",
 };
 // Iconos de interfaz (ilustraciones originales generadas con IA, en img/iconos/)
-const icono = (nombre, tam = 22) => `<img class="icono" src="img/iconos/${nombre}.webp" alt="" width="${tam}" height="${tam}" loading="lazy">`;
+const icono = (nombre, tam = 28) => `<img class="icono" src="img/iconos/${nombre}.webp" alt="" width="${tam}" height="${tam}" loading="lazy">`;
 const ICONOS = Object.fromEntries(Object.keys(NOMBRES).map((k) => [k, icono(k)]));
 const RAREZAS = { legendaria: "Legendaria", epica: "Épica", rara: "Rara", comun: "Común" };
 const datos = { juegos: [] };  // Se rellena al cargar data.json
