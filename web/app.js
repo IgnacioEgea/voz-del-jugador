@@ -47,22 +47,36 @@ const TRAZOS = {
 const simbolo = (n) => `<svg class="simbolo ${n}" viewBox="0 0 24 24" aria-hidden="true"><path d="${TRAZOS[n]}"/></svg>`;
 const pulgar = (si) => simbolo(si ? "si" : "no");
 
+// Barra por celdas, como la vida de un personaje: 10 casillas y se encienden tantas como su nivel (1-10)
+const celdas = (pos, clase = "") => `<div class="barra celdas ${clase}" data-nivel="${nivel(pos)}" style="--color:${colorBarra(pos)}"
+  role="img" aria-label="${pos} %, nivel ${nivel(pos)} de 10">${"<i></i>".repeat(10)}</div>`;
 // Una barra de stats con su nombre, su % y su nivel
 const barra = (texto, pos, extra = "") => `
   <div class="stat">
     <div class="stat-nombre"><span>${texto}</span><span>${extra}<b>${pos} %</b></span></div>
-    <div class="barra" role="img" aria-label="${texto.replace(/<[^>]*>/g, "").trim()}: ${pos} %"><i data-ancho="${pos}" style="background:${colorBarra(pos)}"></i></div>
+    ${celdas(pos)}
   </div>`;
+// Fecha de salida bonita: "6 dic 2024"
+const salida = (j) => (j.salida ? new Date(j.salida).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "");
 
-// Las barras crecen desde cero cuando aparecen en pantalla, como los stats de un personaje
+// Las celdas se encienden una a una cuando la barra aparece en pantalla, como los stats de un personaje
 function crecer(zona = document) {
   const observador = new IntersectionObserver((vistas) => vistas.forEach((v) => {
     if (!v.isIntersecting) return;
-    v.target.style.width = `${v.target.dataset.ancho}%`;
+    [...v.target.children].slice(0, v.target.dataset.nivel).forEach((c, i) => {
+      c.style.transitionDelay = `${i * 60}ms`;
+      c.classList.add("on");
+    });
     observador.unobserve(v.target);
   }));
-  zona.querySelectorAll(".barra i").forEach((b) => observador.observe(b));
+  zona.querySelectorAll(".celdas").forEach((b) => observador.observe(b));
 }
+
+// Todo enlace que sale de la web (tiendas, GitHub, LinkedIn…) se abre en otra pestaña
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="http"]');
+  if (a) Object.assign(a, { target: "_blank", rel: "noopener" });
+});
 
 // Cada ruta del enlace (#/algo) corresponde a una pantalla: vistaAlgo() la dibuja y activarAlgo() le da vida
 const RUTAS = {

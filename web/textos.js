@@ -1,3 +1,6 @@
+// Enlace a mi TFG sobre videojuegos free-to-play (U-tad, 2022)
+const TFG = "";
+
 // Pantallas de texto: conclusiones (calculadas a partir de los datos, se actualizan solas) y método.
 
 // Ranking global de temas: media de opiniones positivas de todos los juegos, pesada por menciones
@@ -103,7 +106,9 @@ function vistaSobre() {
     <p>Los juegos gratuitos viven de que la gente los recomiende y siga jugando. Las reseñas de Steam son la opinión
       más honesta que existe sobre ellos, pero nadie lee miles de reseñas. Quería responder con datos a una pregunta
       sencilla: <b>¿qué hace que un jugador recomiende o abandone un free-to-play?</b> Y que la respuesta sirviera a la vez
-      a un estudio (qué arreglar) y a un jugador (a qué jugar).</p></section>
+      a un estudio (qué arreglar) y a un jugador (a qué jugar).</p>
+    ${TFG ? `<p class="nota">Si quieres conocer más sobre este tema, te invito a ver mi
+      <a href="${TFG}">trabajo de fin de grado sobre la evolución de los videojuegos free-to-play</a>.</p>` : ""}</section>
 
   <section aria-labelledby="t-como"><h2 id="t-como">Cómo está montado</h2>
     <ol class="pasos">

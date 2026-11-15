@@ -443,3 +443,20 @@ h1 { text-shadow: 0 0 40px rgba(181, 140, 255, .25); }
   text-shadow: 0 0 18px rgba(205, 178, 255, .55); }
 .fab img { width: 62px; height: 62px; filter: drop-shadow(0 0 6px rgba(205, 178, 255, .5)); }
 @media (max-width: 760px) { .hud .logo span { font-size: 18px; } .hud .logo img { width: 30px; height: 30px; } }
+
+/* Barras por celdas: 10 casillas, se encienden tantas como el nivel */
+.barra.celdas { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; height: 14px; padding: 2px; overflow: visible; }
+.celdas i { display: block; height: auto; width: auto; border-radius: 2px; background: rgba(205, 178, 255, .12);
+  transition: background .25s ease, box-shadow .25s ease; }
+.celdas i.on { background: var(--color); box-shadow: 0 0 6px -1px var(--color); }
+.fila-vs .barra.gana { box-shadow: 0 0 0 2px var(--legendaria); }
+/* Veredicto del duelo en Comparar */
+.veredicto { margin-top: 28px; background: var(--superficie); border: 2px solid var(--r, var(--epica)); border-radius: var(--radio); padding: 18px 20px; }
+.veredicto h3 { margin: 0 0 8px; color: var(--r, var(--texto)); }
+.veredicto p { margin: 0; }
+.carta-info .salida { font: 500 12px var(--mono); color: var(--tenue); }
+@media (max-width: 760px) {
+  .barra.celdas { gap: 2px; height: 12px; }
+  .veredicto { padding: 14px; }
+  .ficha-cabecera .chip { margin-top: 4px; }
+}

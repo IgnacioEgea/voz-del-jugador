@@ -57,18 +57,39 @@ function vistaComparar(s) {
 
 function duelo(a, b) {
   let [puntosA, puntosB] = [0, 0];
-  const lado = (v, gana) => (v ? `<div class="barra${gana ? " gana" : ""}"><i data-ancho="${v.pos}" style="background:${colorBarra(v.pos)}"></i></div><b>${v.pos} %</b>`
+  const temasA = [], temasB = [];  // En qué temas gana cada uno, para explicar el resultado
+  const lado = (v, gana) => (v ? `${celdas(v.pos, gana ? "gana" : "")}<b>${v.pos} %</b>`
     : `<span class="nota">sin datos</span>`);
   const filas = Object.keys(NOMBRES).map((k) => {
     const [x, y] = [a.aspectos[k], b.aspectos[k]];
     const ganaA = x && y && x.pos > y.pos, ganaB = x && y && y.pos > x.pos;
     puntosA += ganaA; puntosB += ganaB;
+    if (ganaA) temasA.push(NOMBRES[k].toLowerCase());
+    if (ganaB) temasB.push(NOMBRES[k].toLowerCase());
     return `<div class="fila-vs"><div class="izq">${lado(x, ganaA)}</div><span>${ICONOS[k]}<br>${NOMBRES[k]}</span><div class="der">${lado(y, ganaB)}</div></div>`;
   }).join("");
   const luchador = (j, puntos) => `<a class="luchador ${j.rareza}" href="#/juego/${slug(j.juego)}">
     ${portada(j, "luchador-img", 160)}<h3>${j.juego}</h3>
     <small>${j.recomienda} % lo recomienda</small><strong>${puntos}</strong></a>`;
-  return `<div class="marcador">${luchador(a, puntosA)}<span class="vs">VS</span>${luchador(b, puntosB)}</div>${filas}`;
+  return `<div class="marcador">${luchador(a, puntosA)}<span class="vs">VS</span>${luchador(b, puntosB)}</div>${filas}
+    ${veredicto(a, b, puntosA, puntosB, temasA, temasB)}`;
+}
+
+// Texto final del duelo: quién gana y por qué, en lenguaje de jugador
+function veredicto(a, b, puntosA, puntosB, temasA, temasB) {
+  const lista = (t) => (t.length > 1 ? `${t.slice(0, -1).join(", ")} y ${t.at(-1)}` : t[0]);
+  if (!puntosA && !puntosB) return `<div class="veredicto"><h3>${simbolo("info")} Sin veredicto</h3>
+    <p>Todavía no hay datos suficientes de los dos juegos para compararlos tema por tema.</p></div>`;
+  // Si empatan en temas, desempata el % de jugadores que lo recomienda
+  const ganaA = puntosA !== puntosB ? puntosA > puntosB : a.recomienda >= b.recomienda;
+  const [g, p, tg, tp, pg, pp] = ganaA ? [a, b, temasA, temasB, puntosA, puntosB] : [b, a, temasB, temasA, puntosB, puntosA];
+  const empate = puntosA === puntosB;
+  return `<div class="veredicto ${g.rareza}"><h3>${simbolo("buff")} Gana ${g.juego}</h3>
+    <p>${empate ? `Empatan a ${pg} temas, así que desempata la opinión general: <b>${g.juego}</b> lo recomienda el
+      ${g.recomienda} % de sus jugadores frente al ${p.recomienda} % de ${p.juego}.`
+      : `<b>${g.juego}</b> se lleva ${pg} de los ${pg + pp} temas que se pueden comparar.`}
+      ${tg.length ? `Sus jugadores hablan mejor de <b>${lista(tg)}</b>.` : ""}
+      ${tp.length ? `Aun así, ${p.juego} gana en ${lista(tp)}: si eso es lo que más te importa, puede ser tu juego.` : ""}</p></div>`;
 }
 
 function activarComparar() {

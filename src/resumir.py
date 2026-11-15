@@ -77,10 +77,15 @@ def resumir():
     resenas = pd.read_csv(RAIZ / "data" / "resenas.csv", dtype={"id": str})
     ia = pd.read_csv(RAIZ / "data" / "resenas_clasificadas.csv", dtype=str).fillna("")
     clasificadas = resenas.merge(ia, on="id")
+    # Fechas de salida (las busca src/fechas.py antes de publicar; si faltan, la web no las enseña)
+    ruta_fechas = RAIZ / "data" / "fechas.json"
+    fechas = json.loads(ruta_fechas.read_text(encoding="utf-8")) if ruta_fechas.exists() else {}
 
     # Un resumen por juego, de más a menos recomendado
     juegos = [resumir_juego(nombre, grupo, clasificadas[clasificadas["juego"] == nombre])
               for nombre, grupo in resenas.groupby("juego")]
+    for j in juegos:
+        j["salida"] = fechas.get(j["juego"])
     juegos.sort(key=lambda j: -j["recomienda"])
 
     datos = {"total": len(resenas), "clasificadas": len(clasificadas), "juegos": juegos}

@@ -35,6 +35,7 @@ function vistaJuego(s) {
     ${portada(j, "ficha-emblema")}
     <div>
       <span class="rareza">${RAREZAS[j.rareza]}</span> <span class="chip">${j.genero}</span>
+      ${j.salida ? `<span class="chip">Salida: ${salida(j)}</span>` : ""}
       <h1>${j.juego}</h1>
       <p class="gran-cifra"><b>${j.recomienda} %</b> de ${miles(j.resenas)} jugadores lo recomienda</p>
       <div class="botones">
