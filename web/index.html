@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<!-- La voz del jugador: reseñas de Steam de juegos free-to-play analizadas con IA, para jugadores y estudios.
+<!-- La voz del jugador: reseñas de Steam y App Store de juegos free-to-play analizadas con IA, para jugadores y estudios.
      Es una "app" de una sola página: app.js cambia de pantalla según el enlace (#/juegos, #/comparar…)
      y vistas.js, herramientas.js y textos.js dibujan cada pantalla a partir de data.json. -->
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>La voz del jugador · Reseñas de Steam analizadas con IA</title>
-  <meta name="description" content="Miles de reseñas de Steam de juegos free-to-play, analizadas con IA: encuentra tu juego y descubre qué aman y qué odian sus jugadores.">
+  <title>La voz del jugador · Reseñas de Steam y App Store analizadas con IA</title>
+  <meta name="description" content="Miles de reseñas de Steam y App Store de juegos free-to-play, analizadas con IA: encuentra tu juego y descubre qué aman y qué odian sus jugadores.">
   <meta property="og:title" content="La voz del jugador">
-  <meta property="og:description" content="Miles de reseñas de Steam de juegos free-to-play, analizadas con IA.">
+  <meta property="og:description" content="Miles de reseñas de Steam y App Store de juegos free-to-play, analizadas con IA.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ignacioegea.github.io/voz-del-jugador/">
   <meta property="og:image" content="https://ignacioegea.github.io/voz-del-jugador/img/og.jpg">
@@ -54,6 +54,9 @@
     <a href="#/conclusiones" data-ruta="conclusiones"><img src="img/iconos/conclusiones.webp?v=2" alt="" width="30" height="30"><span>Informe</span></a>
     <a href="#/metodo" data-ruta="metodo"><img src="img/iconos/metodo.webp?v=2" alt="" width="30" height="30"><span>Método</span></a>
     <a href="#/sobre" data-ruta="sobre"><img src="img/iconos/jugabilidad.webp?v=2" alt="" width="30" height="30"><span>Sobre</span></a>
+    <!-- Solo en el móvil: abre las secciones que no caben en la barra -->
+    <button class="mas" id="mas" aria-expanded="false" aria-label="Más secciones"><svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span>Más</span></button>
   </nav>
 
   <!-- Asistente: botón flotante que abre el chat de recomendaciones -->

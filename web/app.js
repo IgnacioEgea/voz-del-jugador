@@ -31,6 +31,9 @@ const terminado = () => datos.clasificadas >= datos.total;
 const seguro = (texto) => texto.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // Los aspectos con datos suficientes de un juego, del mejor al peor valorado
+// Con menos de 30 reseñas hablando de un tema, su % puede engañar: lo marcamos como "pocos datos"
+const MINIMO = 30;
+const pocos = (a) => a.menciones < MINIMO;
 const aspectosDe = (juego) =>
   Object.entries(juego.aspectos).filter(([, a]) => a).map(([clave, a]) => ({ clave, ...a })).sort((x, y) => y.pos - x.pos);
 
@@ -72,6 +75,12 @@ function crecer(zona = document) {
   zona.querySelectorAll(".celdas").forEach((b) => observador.observe(b));
 }
 
+// Botón "Más" del móvil: abre y cierra la fila con las secciones que no caben
+$("mas").addEventListener("click", () => {
+  const abierto = document.querySelector(".ranuras").classList.toggle("abierto");
+  $("mas").setAttribute("aria-expanded", abierto);
+});
+
 // Todo enlace que sale de la web (tiendas, GitHub, LinkedIn…) se abre en otra pestaña
 document.addEventListener("click", (e) => {
   const a = e.target.closest('a[href^="http"]');
@@ -95,6 +104,10 @@ function navegar() {
     // Marcamos en el menú la sección en la que estás
     document.querySelectorAll(".ranuras a").forEach((a) =>
       a.dataset.ruta === (ruta === "juego" ? "juegos" : ruta) ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    // En el móvil, "Más" se ilumina si estás en una sección escondida, y el desplegable se cierra al navegar
+    $("mas").classList.toggle("activo", ["conclusiones", "metodo", "sobre"].includes(ruta));
+    $("mas").setAttribute("aria-expanded", "false");
+    document.querySelector(".ranuras").classList.remove("abierto");
     scrollTo({ top: 0, behavior: "instant" });
     $("vista").focus({ preventScroll: true });
   };

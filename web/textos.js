@@ -64,7 +64,7 @@ function vistaConclusiones() {
 
 function vistaMetodo() {
   const pasos = [
-    ["📥", "Datos", `${miles(datos.total)} reseñas recientes en inglés de ${datos.juegos.length} juegos gratuitos, descargadas de la API oficial de Steam (sin scraping).`],
+    ["📥", "Datos", `${miles(datos.total)} reseñas recientes en inglés de ${datos.juegos.length} juegos gratuitos, descargadas de la API oficial de Steam y del RSS público de la App Store (sin scraping).`],
     ["🧹", "Limpieza", "Fuera duplicados, textos de menos de 20 caracteres y spam (dibujos con símbolos o palabras repetidas). Horas jugadas al escribir la reseña."],
     ["🤖", "IA", "Gemini clasifica cada reseña en 7 temas con su tono (positivo, negativo o neutro), en lotes de 20 y con temperatura 0 para respuestas estables."],
     ["✅", "Validación", "200 reseñas al azar se etiquetan a mano para medir cuánto acierta la IA. Resultado: pendiente de publicar."],
@@ -82,7 +82,7 @@ function vistaMetodo() {
   <ol class="pasos metodo">${pasos.map(([i, t, p]) => `<li><b>${i} ${t}</b><p>${p}</p></li>`).join("")}</ol>
   <section aria-labelledby="t-limites"><h2 id="t-limites">Limitaciones</h2><ul class="lista-limpia">${limites.map((l) => `<li>${simbolo("aviso")} ${l}</li>`).join("")}</ul></section>
   <section aria-labelledby="t-stack"><h2 id="t-stack">Herramientas</h2>
-    <p class="chips">${["Python", "pandas", "API de Steam", "Gemini (IA)", "GitHub Actions", "GitHub Pages", "HTML · CSS · JS", "Arte generado con IA"]
+    <p class="chips">${["Python", "pandas", "API de Steam", "RSS de App Store", "Gemini (IA)", "GitHub Actions", "GitHub Pages", "HTML · CSS · JS", "Arte generado con IA"]
       .map((t) => `<span class="chip">${t}</span>`).join("")}</p>
     <div class="botones"><a class="boton principal" href="https://github.com/IgnacioEgea/voz-del-jugador">${icono("metodo")} Ver el código</a>
       <a class="boton" href="https://github.com/IgnacioEgea/voz-del-jugador/blob/main/DIARIO_DECISIONES.md">${icono("conclusiones")} Diario de decisiones</a></div></section>`;
@@ -91,7 +91,7 @@ function vistaMetodo() {
 // Sobre el proyecto: qué es, por qué, cómo está montado, quién lo hizo y cómo encaja con sus habilidades
 function vistaSobre() {
   const habilidades = [
-    ["metodo", "Datos", "Python y pandas para descargar, limpiar y resumir miles de reseñas desde la API oficial de Steam."],
+    ["metodo", "Datos", "Python y pandas para descargar, limpiar y resumir miles de reseñas desde la API oficial de Steam y el RSS de la App Store."],
     ["chat", "IA aplicada", "Un modelo de lenguaje clasifica cada reseña; se valida a mano y se publica su acierto. La IA ayuda, las decisiones son mías."],
     ["conclusiones", "Marketing", "Las conclusiones se traducen en acciones: qué destacar en la ficha de tienda y cómo responder a las quejas."],
     ["juegos", "Diseño y UX", "Concepto de cartas coleccionables, arte, animaciones, accesibilidad y diseño adaptado al móvil."],
@@ -103,7 +103,7 @@ function vistaSobre() {
       el marketing digital y el análisis de datos con IA.</p></header>
 
   <section aria-labelledby="t-porque"><h2 id="t-porque">Por qué existe</h2>
-    <p>Los juegos gratuitos viven de que la gente los recomiende y siga jugando. Las reseñas de Steam son la opinión
+    <p>Los juegos gratuitos viven de que la gente los recomiende y siga jugando. Las reseñas de Steam y la App Store son la opinión
       más honesta que existe sobre ellos, pero nadie lee miles de reseñas. Quería responder con datos a una pregunta
       sencilla: <b>¿qué hace que un jugador recomiende o abandone un free-to-play?</b> Y que la respuesta sirviera a la vez
       a un estudio (qué arreglar) y a un jugador (a qué jugar).</p>
@@ -112,7 +112,7 @@ function vistaSobre() {
 
   <section aria-labelledby="t-como"><h2 id="t-como">Cómo está montado</h2>
     <ol class="pasos">
-      <li><b>01 · Datos</b><p>La API oficial de Steam da las reseñas recientes de cada juego. Python las limpia y quita el spam.</p></li>
+      <li><b>01 · Datos</b><p>La API oficial de Steam y el RSS de la App Store dan las reseñas recientes de cada juego. Python las limpia y quita el spam.</p></li>
       <li><b>02 · IA</b><p>Gemini separa cada reseña en 7 temas con su tono, por lotes y de forma reanudable, sin coste.</p></li>
       <li><b>03 · Web</b><p>Una app estática (HTML, CSS y JavaScript sin frameworks) en GitHub Pages, ligera y rápida.</p></li>
       <li><b>04 · Robots</b><p>GitHub Actions lo actualiza todo automáticamente: los datos de la web nunca se quedan viejos.</p></li>

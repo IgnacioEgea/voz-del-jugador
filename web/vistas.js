@@ -3,7 +3,7 @@
 
 // Una carta coleccionable: delante el emblema, detrás el punto fuerte y el débil (se gira al pasar el ratón)
 function carta(j) {
-  const aspectos = aspectosDe(j);
+  const aspectos = aspectosDe(j).filter((a) => !pocos(a));  // Punto fuerte y débil solo con datos sólidos
   const [mejor, peor] = [aspectos[0], aspectos[aspectos.length - 1]];
   const dorso = aspectos.length
     ? `<small>Punto fuerte</small><p class="nivel">${ICONOS[mejor.clave]} ${NOMBRES[mejor.clave]} <b>Lv. ${nivel(mejor.pos)}</b></p>
@@ -55,7 +55,7 @@ function vistaInicio() {
   <header class="portada">
     <img class="portada-arte" src="img/portada-1600.webp" srcset="img/portada-800.webp 800w, img/portada-1600.webp 1600w"
       sizes="(max-width: 700px) 100vw, 900px" alt="" fetchpriority="high">
-    <p class="etiqueta">// ${miles(datos.total)} reseñas de Steam · ${datos.juegos.length} juegos free-to-play · analizadas con IA</p>
+    <p class="etiqueta">// ${miles(datos.total)} reseñas de Steam y App Store · ${datos.juegos.length} juegos free-to-play · analizadas con IA</p>
     <h1>¿Por qué los jugadores recomiendan o abandonan un juego free‑to‑play?</h1>
     <p class="subtitulo">Leímos lo que escriben los jugadores en Steam y una IA lo separó por temas: jugabilidad, monetización,
       bugs, matchmaking… El resultado sirve para elegir a qué jugar y para que los estudios sepan qué arreglar.</p>
@@ -71,7 +71,7 @@ function vistaInicio() {
   <section aria-labelledby="t-pasos">
     <h2 id="t-pasos">Cómo funciona</h2>
     <ol class="pasos">
-      <li><b>01 · Escuchamos</b><p>Descargamos ${miles(datos.total)} reseñas recientes de Steam de ${datos.juegos.length} juegos gratuitos.</p></li>
+      <li><b>01 · Escuchamos</b><p>Descargamos ${miles(datos.total)} reseñas recientes de Steam y la App Store de ${datos.juegos.length} juegos gratuitos.</p></li>
       <li><b>02 · La IA lee</b><p>Cada reseña se separa en 7 temas y se marca si habla bien o mal de cada uno.</p></li>
       <li><b>03 · Tú decides</b><p>Elige juego como jugador, o descubre qué arreglar si trabajas en un estudio.</p></li>
     </ol>
@@ -86,7 +86,7 @@ function vistaInicio() {
 // Los titulares de la portada se calculan solos a partir de los datos
 function hallazgos() {
   const todos = datos.juegos.flatMap((j) => aspectosDe(j).map((a) => ({ ...a, juego: j.juego })));
-  const peor = todos.sort((x, y) => x.pos - y.pos)[0];
+  const peor = todos.filter((a) => !pocos(a)).sort((x, y) => x.pos - y.pos)[0];  // Titulares solo con datos sólidos
   const caida = datos.juegos.filter((j) => j.perfiles.novato != null).map((j) => ({ juego: j.juego, d: j.perfiles.novato - j.perfiles.veterano })).sort((x, y) => y.d - x.d)[0];
   const top = datos.juegos[0];
   return [

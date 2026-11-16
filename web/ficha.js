@@ -3,8 +3,8 @@
 // Patch notes de un juego: arreglos urgentes (hotfix) y puntos fuertes que destacar (buff)
 function parche(j) {
   const aspectos = aspectosDe(j);
-  const hotfix = aspectos.filter((a) => a.pos < 35).slice(-2).reverse();
-  const buff = aspectos.filter((a) => a.pos >= 60).slice(0, 2);
+  const hotfix = aspectos.filter((a) => a.pos < 35 && !pocos(a)).slice(-2).reverse();
+  const buff = aspectos.filter((a) => a.pos >= 60 && !pocos(a)).slice(0, 2);
   const linea = (tipo, a, texto) =>
     `<li><span class="tag ${tipo}">${simbolo(tipo)} ${tipo.toUpperCase()}</span> <b>${NOMBRES[a.clave]}</b>: ${texto}</li>`;
   return `<ul class="notas">
@@ -52,7 +52,7 @@ function vistaJuego(s) {
     <p class="nota">De las reseñas que hablan de cada tema, % que lo hace en positivo. El nivel va del 1 al 10.
       ${j.clasificadas < j.resenas ? `Basado en ${miles(j.clasificadas)} de ${miles(j.resenas)} reseñas (la IA sigue leyendo).` : ""}</p>
     ${aspectos.length ? aspectos.map((a) => barra(`${ICONOS[a.clave]} ${NOMBRES[a.clave]}`, a.pos,
-      `<small class="nota">Lv. ${nivel(a.pos)} · ${miles(a.menciones)} menciones · </small>`)).join("")
+      `${pocos(a) ? `<small class="pocos" title="Menos de ${MINIMO} reseñas hablan de esto: tómalo con cautela">${simbolo("aviso")} Pocos datos</small> ` : ""}<small class="nota">Lv. ${nivel(a.pos)} · ${miles(a.menciones)} menciones · </small>`)).join("")
       : `<p class="aviso">${simbolo("espera")} La IA todavía no ha leído las reseñas de este juego. Vuelve en un rato.</p>`}
   </section>
 
