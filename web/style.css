@@ -484,3 +484,12 @@ main { padding-bottom: 110px; }
 .tendencia text { fill: var(--tenue); font: 500 11px var(--mono); }
 .tendencia polyline { fill: none; stroke: var(--epica); stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--epica)); }
 .tendencia circle { stroke: var(--fondo); stroke-width: 1.5; }
+@media (max-width: 760px) {
+  /* Las 6 casillas caben siempre: sin desplazamiento lateral y con los nombres recortados si hiciera falta */
+  .ranuras { overflow: visible; gap: 3px; padding-left: 6px; padding-right: 6px; }
+  .ranuras a, .mas { font-size: 9px; letter-spacing: 0; padding-left: 2px; padding-right: 2px; }
+  .ranuras a span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ranuras a img, .mas svg { width: 30px; height: 30px; }
+  .ranuras.abierto ~ .fab { bottom: 150px; }  /* Con la segunda fila abierta, el chat sube para no taparla */
+  .tendencia text { font-size: 16px; }  /* El gráfico se encoge en el móvil: sus textos van más grandes */
+}
