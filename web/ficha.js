@@ -77,6 +77,8 @@ function vistaJuego(s) {
       <figcaption>${pulgar(a.voz.recomienda)} ${a.voz.recomienda ? "Lo recomienda" : "No lo recomienda"} · ${Math.round(a.voz.horas)} h · ${ICONOS[a.clave]} ${NOMBRES[a.clave]}</figcaption>
     </figure>`).join("")}</div></section>` : ""}
 
+  ${parecidos(j)}
+
   <nav class="pasar" aria-label="Otros juegos">
     <a href="#/juego/${slug(anterior.juego)}">← ${anterior.juego}</a>
     <a href="#/juego/${slug(siguiente.juego)}">${siguiente.juego} →</a>
@@ -108,4 +110,21 @@ function tendencia(j) {
       ${meses.map((m, i) => `<circle cx="${x(i)}" cy="${y(m.pct)}" r="4" style="fill:${colorBarra(m.pct)}"><title>${fecha(m.mes)}: ${m.pct} % (${miles(m.votos)} votos)</title></circle>`).join("")}
       <text x="30" y="${al - 2}">${fecha(meses[0].mes)}</text><text x="${an - 10}" y="${al - 2}" text-anchor="end">${fecha(meses.at(-1).mes)}</text>
     </svg></section>`;
+}
+
+// "Si te gusta este, prueba…": los 3 juegos cuyos jugadores opinan más parecido, tema a tema
+function parecidos(j) {
+  const distancia = (otro) => {
+    const comunes = Object.keys(NOMBRES).filter((k) => j.aspectos[k] && otro.aspectos[k]);
+    if (comunes.length < 4) return Infinity;  // Sin bastantes temas en común no se pueden comparar
+    const media = comunes.reduce((t, k) => t + Math.abs(j.aspectos[k].pos - otro.aspectos[k].pos), 0) / comunes.length;
+    return media - (otro.genero === j.genero ? 8 : 0);  // Mismo género: un empujón extra
+  };
+  const lista = datos.juegos.filter((o) => o !== j).map((o) => ({ o, d: distancia(o) }))
+    .filter((x) => x.d < Infinity).sort((a, b) => a.d - b.d).slice(0, 3);
+  if (!lista.length) return "";
+  return `<section aria-labelledby="t-parecidos"><h2 id="t-parecidos">Si te gusta este, prueba…</h2>
+    <p class="nota">Juegos cuyos jugadores opinan parecido tema por tema (y, si coinciden, del mismo género).</p>
+    <div class="parecidos">${lista.map(({ o }) => `<a class="parecido ${o.rareza}" href="#/juego/${slug(o.juego)}">
+      ${portada(o, "parecido-img", 300)}<span><b>${o.juego}</b><small>${o.genero} · ${o.recomienda} % lo recomienda</small></span></a>`).join("")}</div></section>`;
 }

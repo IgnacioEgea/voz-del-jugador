@@ -511,3 +511,12 @@ main { padding-bottom: 110px; }
 .val-op[data-v="neg"].elegida { background: var(--mal); border-color: var(--mal); }
 .val-nav { display: flex; flex-wrap: wrap; gap: 10px; }
 @media (max-width: 760px) { .val-temas { grid-template-columns: 1fr; } .val-nav .boton { flex: 1 1 100%; } }
+/* "Si te gusta este, prueba…": tres mini-cartas en fila (una columna en el móvil) */
+.parecidos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.parecido { display: flex; gap: 12px; align-items: center; padding: 10px; color: var(--texto); text-decoration: none;
+  background: var(--superficie); border: 2px solid var(--r); border-radius: var(--radio); transition: transform .2s ease; }
+.parecido:hover { transform: translateY(-3px); }
+.parecido-img { width: 64px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.parecido span { display: grid; gap: 4px; min-width: 0; }
+.parecido small { color: var(--suave); font-size: 13px; }
+@media (max-width: 760px) { .parecidos { grid-template-columns: 1fr; } }
