@@ -435,8 +435,8 @@ h1 { text-shadow: 0 0 40px rgba(181, 140, 255, .25); }
 /* Símbolos neón (pulgares, hotfix, buff, avisos): mismo trazo y brillo que el resto de la interfaz */
 .simbolo { width: 1.15em; height: 1.15em; vertical-align: -.2em; fill: none; stroke: currentColor; stroke-width: 2;
   stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 3px currentColor); }
-.simbolo.si { color: var(--bien); } .simbolo.no { color: var(--mal); }
-.simbolo.info, .simbolo.espera { color: var(--rara); } .simbolo.aviso { color: var(--legendaria); }
+.s-si { color: var(--bien); } .s-no { color: var(--mal); }
+.s-info, .s-espera { color: var(--rara); } .s-aviso { color: var(--legendaria); }
 
 /* Nombre de la web en la barra fija: en mayúsculas y grande, como el título de un juego */
 .hud .logo span { font: 700 26px/1 var(--titulo); text-transform: uppercase; letter-spacing: .04em;

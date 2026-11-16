@@ -47,7 +47,7 @@ const TRAZOS = {
   espera: "M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2",
   aviso: "M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01",
 };
-const simbolo = (n) => `<svg class="simbolo ${n}" viewBox="0 0 24 24" aria-hidden="true"><path d="${TRAZOS[n]}"/></svg>`;
+const simbolo = (n) => `<svg class="simbolo s-${n}" viewBox="0 0 24 24" aria-hidden="true"><path d="${TRAZOS[n]}"/></svg>`;
 const pulgar = (si) => simbolo(si ? "si" : "no");
 
 // Barra por celdas, como la vida de un personaje: 10 casillas y se encienden tantas como su nivel (1-10)
@@ -76,9 +76,9 @@ function crecer(zona = document) {
 }
 
 // Botón "Más" del móvil: abre y cierra la fila con las secciones que no caben
-$("mas").addEventListener("click", () => {
+$("mas-secciones").addEventListener("click", () => {
   const abierto = document.querySelector(".ranuras").classList.toggle("abierto");
-  $("mas").setAttribute("aria-expanded", abierto);
+  $("mas-secciones").setAttribute("aria-expanded", abierto);
 });
 
 // Todo enlace que sale de la web (tiendas, GitHub, LinkedIn…) se abre en otra pestaña
@@ -105,8 +105,8 @@ function navegar() {
     document.querySelectorAll(".ranuras a").forEach((a) =>
       a.dataset.ruta === (ruta === "juego" ? "juegos" : ruta) ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     // En el móvil, "Más" se ilumina si estás en una sección escondida, y el desplegable se cierra al navegar
-    $("mas").classList.toggle("activo", ["conclusiones", "metodo", "sobre"].includes(ruta));
-    $("mas").setAttribute("aria-expanded", "false");
+    $("mas-secciones").classList.toggle("activo", ["conclusiones", "metodo", "sobre"].includes(ruta));
+    $("mas-secciones").setAttribute("aria-expanded", "false");
     document.querySelector(".ranuras").classList.remove("abierto");
     scrollTo({ top: 0, behavior: "instant" });
     $("vista").focus({ preventScroll: true });
