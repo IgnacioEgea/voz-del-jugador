@@ -80,6 +80,9 @@ function vistaMetodo() {
   return `<header class="cabecera"><p class="etiqueta">// Cómo está hecho</p><h1>Método y limitaciones</h1>
     <p class="subtitulo">Para que puedas fiarte de los números, aquí está todo el proceso y lo que estos datos <b>no</b> pueden decir.</p></header>
   <ol class="pasos metodo">${pasos.map(([i, t, p]) => `<li><b>${i} ${t}</b><p>${p}</p></li>`).join("")}</ol>
+  <section aria-labelledby="t-validar"><h2 id="t-validar">¿Cuánto acierta la IA?</h2>
+    <p>Para medirlo, una persona etiqueta a mano 200 reseñas al azar y comparamos sus respuestas con las de la IA, tema por tema.
+      <a class="boton" href="#/validar">Etiquetar las reseñas de control →</a></p></section>
   <section aria-labelledby="t-limites"><h2 id="t-limites">Limitaciones</h2><ul class="lista-limpia">${limites.map((l) => `<li>${simbolo("aviso")} ${l}</li>`).join("")}</ul></section>
   <section aria-labelledby="t-stack"><h2 id="t-stack">Herramientas</h2>
     <p class="chips">${["Python", "pandas", "API de Steam", "RSS de App Store", "Gemini (IA)", "GitHub Actions", "GitHub Pages", "HTML · CSS · JS", "Arte generado con IA"]

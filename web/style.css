@@ -498,3 +498,16 @@ main { padding-bottom: 110px; }
   .ranuras { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .ranuras.abierto a:nth-of-type(n+6) { grid-column: span 2; flex: none; }
 }
+/* Pantalla de validación: una reseña y, debajo, los 7 temas con 4 opciones cada uno */
+.val-progreso { display: grid; gap: 6px; margin: 18px 0; font: 500 13px var(--mono); color: var(--suave); }
+.val-resena blockquote { font-size: 18px; }
+.val-temas { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; margin: 18px 0; }
+.val-tema { border: 2px solid var(--linea); border-radius: var(--radio); padding: 10px 12px 12px; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.val-tema legend { padding: 0 6px; font-weight: 600; }
+.val-op { flex: 1 1 auto; padding: 8px 10px; border-radius: 8px; border: 1.5px solid rgba(205, 178, 255, .45);
+  background: var(--superficie-2); color: var(--suave); font: 500 13px var(--texto-fuente); cursor: pointer; }
+.val-op.elegida { background: var(--epica); color: var(--fondo); border-color: var(--epica); font-weight: 700; }
+.val-op[data-v="pos"].elegida { background: var(--bien); border-color: var(--bien); }
+.val-op[data-v="neg"].elegida { background: var(--mal); border-color: var(--mal); }
+.val-nav { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 760px) { .val-temas { grid-template-columns: 1fr; } .val-nav .boton { flex: 1 1 100%; } }

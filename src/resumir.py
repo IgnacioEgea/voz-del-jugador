@@ -93,6 +93,10 @@ def resumir():
 
     datos = {"total": len(resenas), "clasificadas": len(clasificadas), "juegos": juegos}
     (RAIZ / "web" / "data.json").write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
+    # Las 200 reseñas de control, sin las etiquetas de la IA, para etiquetarlas a mano en la web (#/validar)
+    manual = pd.read_csv(RAIZ / "data" / "validacion_manual.csv", sep=";", encoding="utf-8-sig", dtype=str)
+    (RAIZ / "web" / "validacion.json").write_text(
+        manual[["id", "juego", "texto"]].to_json(orient="records", force_ascii=False), encoding="utf-8")
     # El explorador carga este archivo aparte, solo cuando alguien entra en esa pantalla
     (RAIZ / "web" / "resenas.json").write_text(
         json.dumps(muestra_resenas(clasificadas), ensure_ascii=False), encoding="utf-8")

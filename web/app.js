@@ -90,7 +90,7 @@ document.addEventListener("click", (e) => {
 // Cada ruta del enlace (#/algo) corresponde a una pantalla: vistaAlgo() la dibuja y activarAlgo() le da vida
 const RUTAS = {
   "": "Inicio", encuentra: "Encuentra", juegos: "Juegos", juego: "Juego", comparar: "Comparar",
-  explorar: "Explorar", conclusiones: "Conclusiones", metodo: "Metodo", sobre: "Sobre",
+  explorar: "Explorar", conclusiones: "Conclusiones", metodo: "Metodo", sobre: "Sobre", validar: "Validar",
 };
 
 function navegar() {
