@@ -59,6 +59,8 @@ function vistaJuego(s) {
   ${aspectos.length ? `<section aria-labelledby="t-parche"><h2 id="t-parche">Patch notes</h2>
     <p class="nota">Lo que cambiaríamos según sus propios jugadores.</p>${parche(j)}</section>` : ""}
 
+  ${tendencia(j)}
+
   ${j.perfiles.novato != null ? `  <section aria-labelledby="t-perfiles">
     <h2 id="t-perfiles">Novatos vs. veteranos</h2>
     <p class="nota">${frasePerfiles(j)}</p>
@@ -79,4 +81,31 @@ function vistaJuego(s) {
     <a href="#/juego/${slug(anterior.juego)}">← ${anterior.juego}</a>
     <a href="#/juego/${slug(siguiente.juego)}">${siguiente.juego} →</a>
   </nav>`;
+}
+
+// "¿Mejora o empeora?": % de votos positivos en Steam mes a mes, dibujado como una línea de vida
+function tendencia(j) {
+  // Solo meses con al menos 20 votos, para que un mes flojo no dé picos falsos
+  const meses = j.historial.filter(([, si, no]) => si + no >= 20).map(([mes, si, no]) => ({ mes, pct: Math.round((100 * si) / (si + no)), votos: si + no }));
+  if (meses.length < 4) return "";
+  const [an, al] = [600, 180];
+  const x = (i) => 30 + (i * (an - 40)) / (meses.length - 1);
+  const y = (p) => 10 + ((100 - p) * (al - 30)) / 100;
+  const linea = meses.map((m, i) => `${x(i)},${y(m.pct)}`).join(" ");
+  const media = (lista) => Math.round(lista.reduce((t, m) => t + m.pct, 0) / lista.length);
+  const cambio = media(meses.slice(-3)) - media(meses.slice(-6, -3));
+  const peor = meses.reduce((a, b) => (b.pct < a.pct ? b : a));
+  const fecha = (mes) => new Date(`${mes}-01`).toLocaleDateString("es-ES", { month: "short", year: "numeric" });
+  const veredicto = Math.abs(cambio) < 3 ? `Estable: en los últimos 3 meses se mueve menos de 3 puntos.`
+    : cambio > 0 ? `${simbolo("buff")} Mejorando: +${cambio} puntos en los últimos 3 meses frente a los 3 anteriores.`
+      : `${simbolo("aviso")} Empeorando: ${cambio} puntos en los últimos 3 meses frente a los 3 anteriores.`;
+  return `<section aria-labelledby="t-tendencia"><h2 id="t-tendencia">¿Mejora o empeora?</h2>
+    <p class="nota">% de votos positivos en Steam cada mes (historial oficial de la tienda). ${veredicto}
+      Su peor mes fue ${fecha(peor.mes)}, con un ${peor.pct} %.</p>
+    <svg class="tendencia" viewBox="0 0 ${an} ${al}" role="img" aria-label="Evolución mensual del % de votos positivos de ${j.juego}">
+      ${[0, 50, 100].map((p) => `<line x1="30" x2="${an - 10}" y1="${y(p)}" y2="${y(p)}"/><text x="0" y="${y(p) + 4}">${p}%</text>`).join("")}
+      <polyline points="${linea}"/>
+      ${meses.map((m, i) => `<circle cx="${x(i)}" cy="${y(m.pct)}" r="4" style="fill:${colorBarra(m.pct)}"><title>${fecha(m.mes)}: ${m.pct} % (${miles(m.votos)} votos)</title></circle>`).join("")}
+      <text x="30" y="${al - 2}">${fecha(meses[0].mes)}</text><text x="${an - 10}" y="${al - 2}" text-anchor="end">${fecha(meses.at(-1).mes)}</text>
+    </svg></section>`;
 }

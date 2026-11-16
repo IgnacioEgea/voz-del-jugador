@@ -5,7 +5,7 @@ name: Publicar web
 on:
   push:
     branches: [main]
-    paths: ["web/**", "src/resumir.py", "src/fechas.py", ".github/workflows/publicar.yml"]
+    paths: ["web/**", "src/resumir.py", "src/fechas.py", "src/historial.py", ".github/workflows/publicar.yml"]
   workflow_run:
     workflows: ["Clasificar reseñas", "Traducir reseñas", "Descargar reseñas"]
     types: [completed]
@@ -40,6 +40,9 @@ jobs:
 
       # Buscamos la fecha de salida de cada juego en su tienda (si falla, la web sigue sin fechas)
       - run: python src/fechas.py
+        continue-on-error: true
+      # Y el historial de valoraciones por mes de Steam, para el gráfico de "¿mejora o empeora?"
+      - run: python src/historial.py
         continue-on-error: true
 
       # Resumimos las reseñas en data.json

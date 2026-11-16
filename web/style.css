@@ -478,3 +478,9 @@ main { padding-bottom: 110px; }
   .mas.activo, .mas[aria-expanded="true"] { color: var(--legendaria); border-color: var(--legendaria); }
 }
 .pocos { font: 500 11px var(--mono); color: var(--legendaria); margin-right: 6px; white-space: nowrap; }
+/* Gráfico "¿Mejora o empeora?": rejilla tenue, línea neón y puntos coloreados según lo bueno que fue ese mes */
+.tendencia { width: 100%; height: auto; background: var(--superficie); border: 2px solid var(--linea); border-radius: var(--radio); padding: 12px; }
+.tendencia line { stroke: rgba(205, 178, 255, .18); stroke-dasharray: 4 4; }
+.tendencia text { fill: var(--tenue); font: 500 11px var(--mono); }
+.tendencia polyline { fill: none; stroke: var(--epica); stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--epica)); }
+.tendencia circle { stroke: var(--fondo); stroke-width: 1.5; }
