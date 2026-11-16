@@ -493,3 +493,8 @@ main { padding-bottom: 110px; }
   .ranuras.abierto ~ .fab { bottom: 150px; }  /* Con la segunda fila abierta, el chat sube para no taparla */
   .tendencia text { font-size: 16px; }  /* El gráfico se encoge en el móvil: sus textos van más grandes */
 }
+@media (max-width: 760px) {
+  /* Rejilla de 6 columnas: 5 secciones + "Más". Al abrir, las 3 escondidas ocupan 2 columnas cada una en una fila encima */
+  .ranuras { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .ranuras.abierto a:nth-of-type(n+6) { grid-column: span 2; flex: none; }
+}
