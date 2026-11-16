@@ -520,3 +520,5 @@ main { padding-bottom: 110px; }
 .parecido span { display: grid; gap: 4px; min-width: 0; }
 .parecido small { color: var(--suave); font-size: 13px; }
 @media (max-width: 760px) { .parecidos { grid-template-columns: 1fr; } }
+/* Juegos con los servidores cerrados (Highguard): aviso en ámbar */
+.cerrado { color: var(--legendaria) !important; border-color: var(--legendaria) !important; }

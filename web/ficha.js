@@ -36,6 +36,7 @@ function vistaJuego(s) {
     <div>
       <span class="rareza">${RAREZAS[j.rareza]}</span> <span class="chip">${j.genero}</span>
       ${j.salida ? `<span class="chip">En ${j.fuente} desde ${salida(j)}</span>` : ""}
+      ${j.cerrado ? `<span class="chip cerrado">${simbolo("aviso")} Servidores cerrados el ${salida({ salida: j.cerrado })}</span>` : ""}
       <h1>${j.juego}</h1>
       <p class="gran-cifra"><b>${j.recomienda} %</b> de ${miles(j.resenas)} jugadores lo recomienda</p>
       <div class="botones">

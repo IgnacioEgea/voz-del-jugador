@@ -3,6 +3,7 @@
 # Uso: python src/descargar_appstore.py
 
 import time
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -43,7 +44,10 @@ def a_fila(nombre, e):
 
 def descargar_appstore():
     CARPETA.mkdir(parents=True, exist_ok=True)
+    pedidos = {int(a) for a in sys.argv[1:]}  # Si se piden juegos concretos, solo esos
     for app, (nombre, _, _) in APPSTORE.items():
+        if pedidos and app not in pedidos:
+            continue
         filas = []
         for pais in PAISES:
             for pagina in range(1, 11):

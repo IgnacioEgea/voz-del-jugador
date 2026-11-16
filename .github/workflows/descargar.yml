@@ -9,7 +9,7 @@ on:
         description: "Números de Steam de los juegos a descargar, separados por espacios (vacío = todos)"
         default: ""
       appstore:
-        description: "Descargar también las reseñas de la App Store (Genshin Impact, Honkai: Star Rail)"
+        description: "Descargar también las reseñas de la App Store (de los números indicados, o de todos si está vacío)"
         type: boolean
         default: false
 
@@ -34,7 +34,7 @@ jobs:
       # Descargamos y limpiamos (el resumen de cada juego aparece en el registro)
       - run: python src/descargar.py ${{ inputs.appids }}
         if: inputs.appids != '' || !inputs.appstore
-      - run: python src/descargar_appstore.py
+      - run: python src/descargar_appstore.py ${{ inputs.appids }}
         if: inputs.appstore
       - run: python src/limpiar.py
 

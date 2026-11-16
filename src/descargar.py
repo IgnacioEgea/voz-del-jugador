@@ -65,6 +65,7 @@ def descargar(appid):
 if __name__ == "__main__":
     CARPETA.mkdir(parents=True, exist_ok=True)
     # Si escribimos un appid al lanzar el script, solo baja ese juego
-    elegidos = [int(a) for a in sys.argv[1:]] or JUEGOS
+    # Sin números se descargan todos; con números, solo los que son de Steam
+    elegidos = [int(a) for a in sys.argv[1:] if int(a) in JUEGOS] if sys.argv[1:] else JUEGOS
     for appid in elegidos:
         descargar(appid)

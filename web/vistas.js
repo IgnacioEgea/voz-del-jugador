@@ -17,7 +17,8 @@ function carta(j) {
         ${j.fuente !== "Steam" ? `<span class="fuente">${j.fuente}</span>` : ""}
         <div class="carta-info"><h3>${j.juego}</h3>
           <span class="rareza">${RAREZAS[j.rareza]} · ${j.recomienda} %</span>
-          ${j.salida ? `<small class="salida">En ${j.fuente} desde ${salida(j)}</small>` : ""}</div>
+          ${j.cerrado ? `<small class="salida cerrado">${simbolo("aviso")} Fuera de servicio</small>`
+            : j.salida ? `<small class="salida">En ${j.fuente} desde ${salida(j)}</small>` : ""}</div>
       </div>
       <div class="cara dorso">${dorso}</div>
     </div></a>`;
