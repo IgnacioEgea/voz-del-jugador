@@ -42,3 +42,11 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 - **Emojis → símbolos SVG neón propios.** Cada sistema pinta los emojis distinto (en Windows el ⬆️ salía como "1"). Dibujarlos en SVG es gratis, nítido a cualquier tamaño y sigue la paleta.
 - **Una voz por persona.** Cada reseña solo puede ser "voz real" de un tema por juego.
 - **Portada entera a 2:3 y nombre debajo.** El texto encima tapaba el logo y el brillo holográfico quemaba las portadas claras (Arknights).
+
+## 2026-11-16 · Revisión completa de la web
+- **Menú móvil 5 + «Más».** Ocho secciones no caben en 375 px; un desplegable es más claro que deslizar a ciegas.
+- **Umbral de 30 menciones.** Por debajo, el % se marca como «pocos datos» y no alimenta titulares, patch notes ni puntos fuertes.
+- **Tendencia con el historial oficial de Steam**, no con nuestra muestra: la mayoría de juegos solo tiene reseñas del último mes, y un gráfico mensual con eso engañaría.
+- **Validación desde la web.** Etiquetar 200 reseñas en Excel es incómodo; la web guarda el progreso y exporta el mismo CSV que lee `validar.py`.
+- **Juegos parecidos** por distancia media entre sus % por tema (con un pequeño extra si comparten género).
+- **README con capturas**: es lo primero que ve quien abre el repositorio.

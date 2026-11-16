@@ -102,7 +102,7 @@ function tendencia(j) {
     : cambio > 0 ? `${simbolo("buff")} Mejorando: +${cambio} puntos en los últimos 3 meses frente a los 3 anteriores.`
       : `${simbolo("aviso")} Empeorando: ${cambio} puntos en los últimos 3 meses frente a los 3 anteriores.`;
   return `<section aria-labelledby="t-tendencia"><h2 id="t-tendencia">¿Mejora o empeora?</h2>
-    <p class="nota">% de votos positivos en Steam cada mes (historial oficial de la tienda). ${veredicto}
+    <p class="nota">% de votos positivos en Steam cada mes, en todos los idiomas (historial oficial de la tienda; por eso puede no coincidir con el % de arriba, que sale de reseñas recientes en inglés). ${veredicto}
       Su peor mes fue ${fecha(peor.mes)}, con un ${peor.pct} %.</p>
     <svg class="tendencia" viewBox="0 0 ${an} ${al}" role="img" aria-label="Evolución mensual del % de votos positivos de ${j.juego}">
       ${[0, 50, 100].map((p) => `<line x1="30" x2="${an - 10}" y1="${y(p)}" y2="${y(p)}"/><text x="0" y="${y(p) + 4}">${p}%</text>`).join("")}
