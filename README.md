@@ -1,7 +1,7 @@
 # La voz del jugador
 
 **¿Por qué los jugadores recomiendan o abandonan un juego free-to-play?**
-Más de 25.000 reseñas de Steam y la App Store de 21 juegos gratuitos, clasificadas con IA por temas (jugabilidad, monetización, bugs, matchmaking…) y convertidas en una web pensada para jugadores y para estudios.
+Más de 44.000 reseñas de Steam y la App Store de 35 juegos gratuitos, clasificadas con IA por temas (jugabilidad, monetización, bugs, matchmaking…) y convertidas en una web pensada para jugadores y para estudios.
 
 ### 👉 [Ver la web en directo](https://ignacioegea.github.io/voz-del-jugador/)
 
@@ -36,7 +36,7 @@ Steam API + RSS App Store ──► descargar.py / descargar_appstore.py ──�
 - **Validación:** 200 reseñas al azar (semilla 42) se etiquetan a mano en la web (`#/validar`) y `src/validar.py` calcula el % de acierto de la IA por tema.
 - Con **menos de 30 menciones**, un tema se marca como «pocos datos» y no se usa para titulares.
 - Solo reseñas en inglés y recientes: es una foto del momento, no la historia del juego (para eso está el historial de Steam).
-- La App Store no da horas jugadas ni historial mensual, así que Genshin Impact y Honkai: Star Rail no tienen esas secciones.
+- La App Store no da horas jugadas ni historial mensual, así que los 7 juegos de móvil (Genshin, Honkai, Honor of Kings, Brawl Stars, Clash Royale, PUBG MOBILE y Pokémon TCG Pocket) no tienen esas secciones.
 
 ## Estructura
 

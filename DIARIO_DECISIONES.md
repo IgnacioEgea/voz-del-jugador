@@ -50,3 +50,10 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 - **Validación desde la web.** Etiquetar 200 reseñas en Excel es incómodo; la web guarda el progreso y exporta el mismo CSV que lee `validar.py`.
 - **Juegos parecidos** por distancia media entre sus % por tema (con un pequeño extra si comparten género).
 - **README con capturas**: es lo primero que ve quien abre el repositorio.
+
+## 2026-11-16 · De 21 a 35 juegos
+- **9 de Steam:** AION 2, Where Winds Meet, Rainbow Six Siege, Path of Exile, SMITE 2, The First Descendant, Throne and Liberty, Brawlhalla y Highguard.
+- **5 de la App Store:** Honor of Kings, Brawl Stars, Clash Royale, PUBG MOBILE y Pokémon TCG Pocket.
+- **Highguard se incluye aunque cerró** el 12 de marzo de 2026: sus reseñas siguen en Steam y es el mejor ejemplo de lanzamiento fallido. La web lo marca «fuera de servicio».
+- **Descartados:** Fortnite, LoL y Valorant (no están en Steam), Warzone (comparte reseñas con los Call of Duty de pago), Deadlock (no es un lanzamiento F2P) y juegos idle.
+- Los iconos de la App Store ya no se escriben a mano: `fechas.py` los busca al publicar.
