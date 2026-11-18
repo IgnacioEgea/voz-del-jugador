@@ -127,7 +127,7 @@ function tarjeta(r, q) {
   const original = r.e ?? r.t;
   const texto = q ? seguro(original).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), "<mark>$1</mark>") : seguro(original);
   return `<article class="resena"><header><span class="chip ${j?.rareza}">${r.j}</span>
-    <span>${pulgar(r.r)} · ${miles(r.h)} h · ${miles(r.v)} votos útiles</span></header><p>${texto}</p>${r.e ? `<details><summary>Ver original en inglés</summary><p>${seguro(r.t)}</p></details>` : ""}
+    <span>${pulgar(r.r)}${r.h == null ? "" : ` · ${miles(r.h)} h`} · ${miles(r.v)} votos útiles</span></header><p>${texto}</p>${r.e ? `<details><summary>Ver original en inglés</summary><p>${seguro(r.t)}</p></details>` : ""}
     <footer>${Object.entries(r.a).map(([k, t]) => `<span class="tag ${t}">${ICONOS[k]} ${NOMBRES[k]} · ${TONOS[t] ?? t}</span>`).join("")}</footer></article>`;
 }
 

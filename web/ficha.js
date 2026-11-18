@@ -75,7 +75,7 @@ function vistaJuego(s) {
     <div class="voces">${aspectos.map((a) => `<figure class="voz-card">
       <blockquote>“${seguro(a.voz.es ?? a.voz.texto)}”</blockquote>
       ${a.voz.es ? `<details><summary>Ver original en inglés</summary><p>${seguro(a.voz.texto)}</p></details>` : ""}
-      <figcaption>${pulgar(a.voz.recomienda)} ${a.voz.recomienda ? "Lo recomienda" : "No lo recomienda"} · ${Math.round(a.voz.horas)} h · ${ICONOS[a.clave]} ${NOMBRES[a.clave]}</figcaption>
+      <figcaption>${pulgar(a.voz.recomienda)} ${a.voz.recomienda ? "Lo recomienda" : "No lo recomienda"} · ${a.voz.horas == null ? "" : `${Math.round(a.voz.horas)} h · `}${ICONOS[a.clave]} ${NOMBRES[a.clave]}</figcaption>
     </figure>`).join("")}</div></section>` : ""}
 
   ${parecidos(j)}

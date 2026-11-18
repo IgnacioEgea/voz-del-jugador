@@ -47,7 +47,7 @@ def resumir_aspecto(resenas, aspecto, usadas):
             "neg": pct(hablan[aspecto] == "neg"),
             "voz": {"texto": recortar(voz["texto"]), "es": TRADUCCIONES.get(recortar(voz["texto"])),
                     "recomienda": bool(voz["recomienda"]),
-                    "horas": float(voz["horas"])}}
+                    "horas": None if pd.isna(voz["horas"]) else float(voz["horas"])}}
 
 
 def resumir_juego(nombre, todas, clasificadas):
@@ -66,7 +66,8 @@ def muestra_resenas(clasificadas, por_juego=150):
     muestra = clasificadas.sort_values("votos_util", ascending=False).groupby("juego").head(por_juego)
     return [{"j": r["juego"], "t": recortar(r["texto"], 320), "e": TRADUCCIONES.get(recortar(r["texto"], 320)),
              "r": bool(r["recomienda"]),
-             "h": round(float(r["horas"])), "v": int(r["votos_util"]),
+             "h": None if pd.isna(r["horas"]) else round(float(r["horas"])),  # La App Store no da horas
+             "v": int(r["votos_util"]),
              "a": {a: r[a] for a in ASPECTOS if r[a]}} for _, r in muestra.iterrows()]
 
 
