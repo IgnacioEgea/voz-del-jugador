@@ -9,3 +9,11 @@ data/raw/*
 
 # Claves privadas (la de la IA): nunca se suben
 .env
+
+# Se generan solos al publicar (base de datos y CSV del dashboard)
+data/voz.db
+web/datos/
+data/fechas.json
+data/historial.json
+data/actualizaciones.json
+data/iconos.json

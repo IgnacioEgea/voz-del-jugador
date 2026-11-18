@@ -5,7 +5,7 @@ name: Publicar web
 on:
   push:
     branches: [main]
-    paths: ["web/**", "src/resumir.py", "src/fechas.py", "src/historial.py", ".github/workflows/publicar.yml"]
+    paths: ["web/**", "src/resumir.py", "src/fechas.py", "src/historial.py", "src/actualizaciones.py", "src/base_datos.py", "sql/**", ".github/workflows/publicar.yml"]
   workflow_run:
     workflows: ["Clasificar reseñas", "Traducir reseñas", "Descargar reseñas"]
     types: [completed]
@@ -45,8 +45,15 @@ jobs:
       - run: python src/historial.py
         continue-on-error: true
 
+      # Y los parches y temporadas anunciados en Steam, para medir su efecto en la valoración
+      - run: python src/actualizaciones.py
+        continue-on-error: true
+
       # Resumimos las reseñas en data.json
       - run: python src/resumir.py
+
+      # Base de datos SQLite + consultas de sql/ → CSV para el dashboard (se publican en web/datos/)
+      - run: python src/base_datos.py && cp data/voz.db web/datos/voz.db
 
       # Ponemos una "versión" a los archivos CSS y JS para que los navegadores no usen copias viejas
       - run: sed -i -E "s/\.(css|js)\"/.\1?v=${GITHUB_SHA::7}-${{ github.run_number }}\"/g" web/index.html
