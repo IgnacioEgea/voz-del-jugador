@@ -57,3 +57,6 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 - **Highguard se incluye aunque cerró** el 12 de marzo de 2026: sus reseñas siguen en Steam y es el mejor ejemplo de lanzamiento fallido. La web lo marca «fuera de servicio».
 - **Descartados:** Fortnite, LoL y Valorant (no están en Steam), Warzone (comparte reseñas con los Call of Duty de pago), Deadlock (no es un lanzamiento F2P) y juegos idle.
 - Los iconos de la App Store ya no se escriben a mano: `fechas.py` los busca al publicar.
+
+## 2026-11-24 · Botón de idiomas
+- Mismo selector que el portfolio (bandera + código, 10 idiomas, Google Translate oculto). Alternativa descartada: traducir los textos a mano (mucho trabajo y no escala con las reseñas).

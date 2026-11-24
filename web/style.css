@@ -522,3 +522,23 @@ main { padding-bottom: 110px; }
 @media (max-width: 760px) { .parecidos { grid-template-columns: 1fr; } }
 /* Juegos con los servidores cerrados (Highguard): aviso en ámbar */
 .cerrado { color: var(--legendaria) !important; border-color: var(--legendaria) !important; }
+
+/* Botón de idiomas (como en el portfolio) y Google Translate oculto */
+.idioma { position: relative; }
+.idioma-boton { gap: 8px; }
+.idioma-flecha { font-size: 10px; opacity: .7; }
+.idioma-menu { position: absolute; right: 0; top: calc(100% + 8px); min-width: 200px; padding: 8px; display: grid; z-index: 30;
+  background: var(--superficie); border: 2px solid var(--linea); border-radius: 10px; box-shadow: 0 12px 30px rgba(0, 0, 0, .45); }
+.idioma-menu[hidden] { display: none; }
+.idioma-menu button { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border: 0; border-radius: 6px; text-align: left;
+  background: none; color: var(--texto); font: 500 14px var(--texto-fuente); cursor: pointer; }
+.idioma-menu button:hover, .idioma-menu .activo { background: var(--superficie-2); }
+.bandera { display: block; flex: none; border-radius: 3px; object-fit: cover; box-shadow: 0 0 0 1px var(--linea); }
+.bandera-txt { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 17px; font-size: 9px;
+  border-radius: 3px; background: var(--superficie-2); }
+#google_translate_element, .skiptranslate, .goog-te-banner-frame, .goog-te-gadget, .goog-te-balloon-frame, .goog-tooltip,
+.goog-tooltip:hover, #goog-gt-tt, .VIpgJd-ZVi9od-aZ2wEe-wOHMyf, .VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-yAWNEb-L7lbkb
+  { display: none !important; visibility: hidden !important; }
+body { top: 0 !important; }
+.goog-text-highlight { background: none !important; box-shadow: none !important; }
+@media (max-width: 700px) { .idioma-boton .idioma-flecha { display: none; } .idioma-menu { position: fixed; right: 10px; top: 60px; } }
