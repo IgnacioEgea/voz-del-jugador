@@ -8,7 +8,7 @@ const DESEOS = {
 };
 
 function vistaEncuentra() {
-  return `<header class="cabecera"><p class="etiqueta">// Recomendador</p><h1>Encuentra tu juego</h1>
+  return `<header class="cabecera"><p class="etiqueta">Recomendador</p><h1>Encuentra tu juego</h1>
     <p class="subtitulo">Marca lo que más te importa. Ordenamos los juegos según lo que opinan miles de jugadores sobre esas cosas.</p></header>
     <div class="deseos" id="deseos">${Object.entries(DESEOS).map(([k, t]) =>
       `<button class="deseo" data-clave="${k}" aria-pressed="${k === "jugabilidad" || k === "matchmaking_balance"}">${t}</button>`).join("")}</div>
@@ -48,7 +48,7 @@ function vistaComparar(s) {
   const b = conDatos.find((j) => j !== a) ?? datos.juegos.find((j) => j !== a);
   const opciones = (elegido) => datos.juegos.map((j) =>
     `<option value="${slug(j.juego)}" ${j === elegido ? "selected" : ""}>${j.juego}</option>`).join("");
-  return `<header class="cabecera"><p class="etiqueta">// Versus</p><h1>Comparar</h1>
+  return `<header class="cabecera"><p class="etiqueta">Versus</p><h1>Comparar</h1>
     <p class="subtitulo">Enfrenta dos juegos tema por tema. En cada uno gana el que tiene más opiniones positivas.</p></header>
     <div class="versus-elegir"><select id="va" aria-label="Primer juego">${opciones(a)}</select>
       <span class="vs" aria-hidden="true">VS</span><select id="vb" aria-label="Segundo juego">${opciones(b)}</select></div>
@@ -108,7 +108,7 @@ const TONOS = { pos: "positivo", neg: "negativo", neu: "neutro" };
 function vistaExplorar(s) {
   const opciones = (obj, elegido) => Object.entries(obj).map(([k, t]) => `<option value="${k}" ${k === elegido ? "selected" : ""}>${t}</option>`).join("");
   const juegos = Object.fromEntries(datos.juegos.map((j) => [slug(j.juego), j.juego]));
-  return `<header class="cabecera"><p class="etiqueta">// Base de datos</p><h1>Explorar reseñas</h1>
+  return `<header class="cabecera"><p class="etiqueta">Base de datos</p><h1>Explorar reseñas</h1>
     <p class="subtitulo">Las reseñas más votadas como útiles de cada juego, ya clasificadas por la IA. Filtra y busca lo que quieras: se buscan tanto en español (traducción con IA) como en el inglés original.</p></header>
     <div class="filtros">
       <input id="q" type="search" placeholder="Buscar: lag, skins, ranked…" aria-label="Buscar en las reseñas">

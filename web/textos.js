@@ -35,7 +35,7 @@ function vistaConclusiones() {
         : `Confirma el tópico: la monetización está entre los temas peor valorados (puesto ${puestoMoney} de ${temas.length}).`],
   ];
 
-  return `<header class="cabecera"><p class="etiqueta">// Informe</p><h1>Conclusiones</h1>
+  return `<header class="cabecera"><p class="etiqueta">Informe</p><h1>Conclusiones</h1>
     <p class="subtitulo">Qué hace que un jugador recomiende o abandone un juego gratuito, contado con datos.
     ${terminado() ? "" : `<br><b>Provisional:</b> basado en ${miles(datos.clasificadas)} de ${miles(datos.total)} reseñas.`}</p></header>
   <ol class="ideas">${ideas.map(([cifra, titulo, texto], i) => `<li><span class="idea-num">0${i + 1}</span>
@@ -77,7 +77,7 @@ function vistaMetodo() {
     "Steam filtra las «bombas de reseñas» (ataques coordinados), así que no aparecen aquí.",
     "La IA se equivoca a veces, sobre todo con la ironía: por eso se valida a mano y se publica su acierto.",
   ];
-  return `<header class="cabecera"><p class="etiqueta">// Cómo está hecho</p><h1>Método y limitaciones</h1>
+  return `<header class="cabecera"><p class="etiqueta">Cómo está hecho</p><h1>Método y limitaciones</h1>
     <p class="subtitulo">Para que puedas fiarte de los números, aquí está todo el proceso y lo que estos datos <b>no</b> pueden decir.</p></header>
   <ol class="pasos metodo">${pasos.map(([i, t, p]) => `<li><b>${i} ${t}</b><p>${p}</p></li>`).join("")}</ol>
   <section aria-labelledby="t-validar"><h2 id="t-validar">¿Cuánto acierta la IA?</h2>
@@ -101,7 +101,7 @@ function vistaSobre() {
     ["encuentra", "Producto", "No es solo un informe: los jugadores pueden usarlo para elegir juego, y eso lo hace útil de verdad."],
     ["comparar", "Automatización", "Robots de GitHub descargan, clasifican, traducen y publican solos. Coste: 0 €."],
   ];
-  return `<header class="cabecera"><p class="etiqueta">// Sobre el proyecto</p><h1>La voz del jugador</h1>
+  return `<header class="cabecera"><p class="etiqueta">Sobre el proyecto</p><h1>La voz del jugador</h1>
     <p class="subtitulo">Un proyecto de portfolio que junta mis tres mundos: el diseño de productos interactivos,
       el marketing digital y el análisis de datos con IA.</p></header>
 

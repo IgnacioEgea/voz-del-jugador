@@ -56,7 +56,7 @@ function vistaInicio() {
   <header class="portada">
     <img class="portada-arte" src="img/portada-1600.webp" srcset="img/portada-800.webp 800w, img/portada-1600.webp 1600w"
       sizes="(max-width: 700px) 100vw, 900px" alt="" fetchpriority="high">
-    <p class="etiqueta">// ${miles(datos.total)} reseñas de Steam y App Store · ${datos.juegos.length} juegos free-to-play · analizadas con IA</p>
+    <p class="etiqueta">${miles(datos.total)} reseñas de Steam y App Store · ${datos.juegos.length} juegos free-to-play · analizadas con IA</p>
     <h1>¿Por qué los jugadores recomiendan o abandonan un juego free‑to‑play?</h1>
     <p class="subtitulo">Leímos lo que escriben los jugadores en Steam y una IA lo separó por temas: jugabilidad, monetización,
       bugs, matchmaking… El resultado sirve para elegir a qué jugar y para que los estudios sepan qué arreglar.</p>
@@ -115,7 +115,7 @@ function activarInicio() {
 }
 
 function vistaJuegos() {
-  return `<header class="cabecera"><p class="etiqueta">// Selección de personaje</p><h1>Elige tu juego</h1>
+  return `<header class="cabecera"><p class="etiqueta">Selección de personaje</p><h1>Elige tu juego</h1>
     <p class="subtitulo">Cada juego es una carta. Su rareza depende del % de jugadores que lo recomiendan:
       <span class="chip legendaria">Legendaria ≥ 80 %</span> <span class="chip epica">Épica ≥ 65 %</span>
       <span class="chip rara">Rara ≥ 50 %</span> <span class="chip comun">Común &lt; 50 %</span></p></header>

@@ -4,7 +4,7 @@
 // Partículas: chispas de colores flotando muy despacio al fondo (pocas, para que vaya fluido)
 function particulas() {
   const lienzo = $("particulas"), ctx = lienzo.getContext("2d");
-  const colores = ["#B58CFF", "#FFC93C", "#4FB3FF", "#3DDC97"];
+  const colores = ["#FFD666", "#8FA6D6"];  // Dorado (acento) y azul grisáceo: discretas, no compiten con el texto
   let chispas = [];
   const medir = () => {
     lienzo.width = innerWidth; lienzo.height = innerHeight;
