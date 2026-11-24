@@ -60,3 +60,8 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 
 ## 2026-11-24 · Botón de idiomas
 - Mismo selector que el portfolio (bandera + código, 10 idiomas, Google Translate oculto). Alternativa descartada: traducir los textos a mano (mucho trabajo y no escala con las reseñas).
+
+## 2026-11-24 · Rediseño «gamer, pero sobrio»
+- Elegido por Ignacio entre 3 opciones (gamer sobrio / panel de datos limpio / solo legibilidad).
+- Fondo gris-azulado liso (sin cuadrícula), acento único dorado para acciones, texto en Inter, mínimo 14 px (salvo etiquetas del menú móvil, 11 px).
+- Menú: 5 secciones + «Más» también en ordenador. Inicio: «¿Qué quieres hacer?» con 3 caminos, datos con etiqueta y frase completa, leyenda de rarezas.
