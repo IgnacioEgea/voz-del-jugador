@@ -458,8 +458,19 @@ h1 { text-shadow: none; }
 /* Espacio al final de cada pantalla para que el botón del chat nunca tape el último texto */
 main { padding-bottom: 110px; }
 
-/* Botón "Más": solo existe en el móvil. Allí la barra enseña 5 secciones + "Más", y "Más" abre una segunda fila con el resto */
-.mas { display: none; }
+/* Menú con 5 secciones principales + "Más" (Informe, Método, Sobre). En el ordenador "Más" las despliega en la misma barra;
+   en el móvil abre una segunda fila encima de la barra inferior */
+@media (min-width: 761px) {
+  .ranuras a:nth-of-type(n+6) { display: none; }
+  .ranuras.abierto a:nth-of-type(n+6) { display: grid; animation: entrar .25s ease both; }
+  .mas { --corte: 10px; display: grid; justify-items: center; align-content: center; gap: 2px; min-width: 76px; padding: 8px 10px 6px;
+    color: var(--suave); font: 500 14px var(--texto-fuente); cursor: pointer; border: 1px solid var(--linea);
+    background: linear-gradient(160deg, var(--superficie-2), var(--superficie));
+    clip-path: polygon(var(--corte) 0, 100% 0, 100% calc(100% - var(--corte)), calc(100% - var(--corte)) 100%, 0 100%, 0 var(--corte)); }
+  .mas svg { width: 40px; height: 40px; fill: currentColor; }
+  .mas:hover { color: var(--texto); }
+  .mas.activo, .mas[aria-expanded="true"] { color: var(--legendaria); border-color: var(--legendaria); }
+}
 @media (max-width: 760px) {
   .ranuras { flex-wrap: wrap; justify-content: space-between; }
   .ranuras a, .mas { flex: 1 1 0; min-width: 0; }
@@ -481,7 +492,7 @@ main { padding-bottom: 110px; }
 @media (max-width: 760px) {
   /* Las 6 casillas caben siempre: sin desplazamiento lateral y con los nombres recortados si hiciera falta */
   .ranuras { overflow: visible; gap: 3px; padding-left: 6px; padding-right: 6px; }
-  .ranuras a, .mas { font-size: 9px; letter-spacing: 0; padding-left: 2px; padding-right: 2px; }
+  .ranuras a, .mas { font-size: 11px; letter-spacing: 0; padding-left: 2px; padding-right: 2px; }
   .ranuras a span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ranuras a img, .mas svg { width: 30px; height: 30px; }
   .ranuras.abierto ~ .fab { bottom: 150px; }  /* Con la segunda fila abierta, el chat sube para no taparla */
