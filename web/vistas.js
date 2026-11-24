@@ -58,28 +58,40 @@ function vistaInicio() {
       sizes="(max-width: 700px) 100vw, 900px" alt="" fetchpriority="high">
     <p class="etiqueta">${miles(datos.total)} reseñas de Steam y App Store · ${datos.juegos.length} juegos free-to-play · analizadas con IA</p>
     <h1>¿Por qué los jugadores recomiendan o abandonan un juego free‑to‑play?</h1>
-    <p class="subtitulo">Leímos lo que escriben los jugadores en Steam y una IA lo separó por temas: jugabilidad, monetización,
-      bugs, matchmaking… El resultado sirve para elegir a qué jugar y para que los estudios sepan qué arreglar.</p>
+    <p class="subtitulo">Una IA ha leído miles de reseñas de jugadores y las ha ordenado por temas (jugabilidad, monetización,
+      bugs, matchmaking…). Aquí ves, juego a juego, <b>qué gusta y qué no</b>.</p>
     ${terminado() ? "" : `<p class="aviso">${simbolo("espera")} Datos provisionales: la IA lleva el ${Math.round(datos.clasificadas / datos.total * 100)} % de las reseñas. La web se actualiza sola.</p>`}
-    <div class="hallazgos">${h.map(([num, frase, color]) =>
-      `<div class="hallazgo"><strong style="color:${color}" data-contar>${num}</strong><p>${frase}</p></div>`).join("")}</div>
-    <div class="botones">
-      <a class="boton principal" href="#/encuentra">${icono("encuentra")} Encuentra tu juego</a>
-      <a class="boton" href="#/conclusiones">${icono("conclusiones")} Ver conclusiones</a>
-    </div>
   </header>
-  ${feed()}
+  <section aria-labelledby="t-empieza" class="empieza">
+    <h2 id="t-empieza">¿Qué quieres hacer?</h2>
+    <div class="caminos">
+      <a class="camino principal" href="#/encuentra">${icono("encuentra", 40)}<b>Elegir a qué jugar</b>
+        <span>Dime qué te importa y te recomiendo juegos.</span><i aria-hidden="true">→</i></a>
+      <a class="camino" href="#/comparar">${icono("comparar", 40)}<b>Comparar dos juegos</b>
+        <span>Frente a frente, tema por tema.</span><i aria-hidden="true">→</i></a>
+      <a class="camino" href="#/conclusiones">${icono("conclusiones", 40)}<b>Ver qué arreglar</b>
+        <span>Para estudios: los problemas que más cuestan.</span><i aria-hidden="true">→</i></a>
+    </div>
+  </section>
+  <section aria-labelledby="t-datos">
+    <h2 id="t-datos">Tres datos para empezar</h2>
+    <div class="hallazgos">${h.map(([tipo, num, frase, color]) =>
+      `<div class="hallazgo"><small>${tipo}</small><strong style="color:${color}" data-contar>${num}</strong><p>${frase}</p></div>`).join("")}</div>
+  </section>
   <section aria-labelledby="t-pasos">
     <h2 id="t-pasos">Cómo funciona</h2>
     <ol class="pasos">
-      <li><b>01 · Escuchamos</b><p>Descargamos ${miles(datos.total)} reseñas recientes de Steam y la App Store de ${datos.juegos.length} juegos gratuitos.</p></li>
-      <li><b>02 · La IA lee</b><p>Cada reseña se separa en 7 temas y se marca si habla bien o mal de cada uno.</p></li>
-      <li><b>03 · Tú decides</b><p>Elige juego como jugador, o descubre qué arreglar si trabajas en un estudio.</p></li>
+      <li><b>1. Recogemos</b><p>${miles(datos.total)} reseñas recientes de Steam y la App Store de ${datos.juegos.length} juegos gratuitos.</p></li>
+      <li><b>2. La IA lee</b><p>Separa cada reseña en 7 temas y marca si habla bien o mal de cada uno.</p></li>
+      <li><b>3. Tú decides</b><p>Elige juego como jugador, o descubre qué arreglar si trabajas en un estudio.</p></li>
     </ol>
   </section>
+  ${feed()}
   <section aria-labelledby="t-cartas">
-    <h2 id="t-cartas">Elige tu juego</h2>
-    <p class="nota">Pasa el ratón por una carta para girarla. Púlsala para ver su ficha completa.</p>
+    <h2 id="t-cartas">Todos los juegos</h2>
+    <p class="nota">Cada carta es un juego. Su color dice cuánta gente lo recomienda:
+      <span class="chip legendaria">Legendaria ≥ 80 %</span> <span class="chip epica">Épica ≥ 65 %</span> <span class="chip rara">Rara ≥ 50 %</span> <span class="chip comun">Común</span>
+      Pulsa una para ver su ficha.</p>
     <div class="cartas" id="cartas">${datos.juegos.map(carta).join("")}</div>
   </section>`;
 }
@@ -89,21 +101,18 @@ function hallazgos() {
   const todos = datos.juegos.flatMap((j) => aspectosDe(j).map((a) => ({ ...a, juego: j.juego })));
   const peor = todos.filter((a) => !pocos(a)).sort((x, y) => x.pos - y.pos)[0];  // Titulares solo con datos sólidos
   const caida = datos.juegos.filter((j) => j.perfiles.novato != null).map((j) => ({ juego: j.juego, d: j.perfiles.novato - j.perfiles.veterano })).sort((x, y) => y.d - x.d)[0];
-  const top = datos.juegos[0];
   return [
-    peor && [`${peor.pos} %`, `de las opiniones sobre ${NOMBRES[peor.clave].toLowerCase()} en ${peor.juego} son positivas`, "var(--mal)"],
-    [`−${caida.d} pts`, `recomiendan los veteranos de ${caida.juego} frente a los novatos`, "var(--legendaria)"],
-    [`${top.recomienda} %`, `de los jugadores recomienda ${top.juego}, el mejor valorado`, "var(--bien)"],
+    peor && ["Lo peor valorado", `${peor.pos} %`, `de las opiniones sobre ${NOMBRES[peor.clave].toLowerCase()} en ${peor.juego} son positivas: es el tema con peor nota de toda la web`, "var(--mal)"],
+    ["Novatos frente a veteranos", `−${caida.d} puntos`, `Los jugadores veteranos de ${caida.juego} lo recomiendan bastante menos que los que acaban de empezar`, "var(--legendaria)"],
+    ["Lo mejor valorado", `${datos.juegos[0].recomienda} %`, `de los jugadores recomienda ${datos.juegos[0].juego}, el juego mejor valorado`, "var(--bien)"],
   ].filter(Boolean);
 }
 
 function activarInicio() {
   inclinar($("cartas"));
-  // Las cifras grandes cuentan desde cero, como un marcador
-  if (quieto) return;
+  if (quieto) return;  // Las cifras grandes cuentan desde cero, como un marcador
   document.querySelectorAll("[data-contar]").forEach((el) => {
-    const final = el.textContent, numero = parseInt(final.replace(/\D/g, ""), 10);
-    let inicio;
+    const final = el.textContent, numero = parseInt(final.replace(/\D/g, ""), 10); let inicio;
     const paso = (t) => {
       inicio ??= t;
       const avance = Math.min((t - inicio) / 1100, 1);

@@ -547,3 +547,20 @@ main { padding-bottom: 110px; }
 body { top: 0 !important; }
 .goog-text-highlight { background: none !important; box-shadow: none !important; }
 @media (max-width: 700px) { .idioma-boton .idioma-flecha { display: none; } .idioma-menu { position: fixed; right: 10px; top: 60px; } }
+
+/* Inicio: "¿Qué quieres hacer?" — tres caminos grandes y claros; el principal en dorado */
+.empieza h2 { margin-top: 48px; }
+.caminos { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+.camino { position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 4px; align-items: center;
+  padding: 18px 44px 18px 18px; border-radius: var(--radio); text-decoration: none; color: var(--texto);
+  background: var(--superficie); border: 1px solid var(--linea); transition: transform .15s ease, border-color .15s, background .15s; }
+.camino .icono { grid-row: span 2; }
+.camino b { font: 700 18px var(--titulo); }
+.camino span { color: var(--suave); font-size: 15px; line-height: 1.45; }
+.camino i { position: absolute; right: 18px; top: 50%; translate: 0 -50%; font-style: normal; font-size: 22px; color: var(--tenue); transition: translate .15s; }
+.camino:hover { transform: translateY(-2px); border-color: var(--acento); background: var(--superficie-2); }
+.camino:hover i { color: var(--acento); translate: 4px -50%; }
+.camino.principal { border-color: var(--acento); box-shadow: inset 0 0 0 1px var(--acento); }
+.camino.principal i { color: var(--acento); }
+.hallazgo small { display: block; font: 600 14px var(--texto-fuente); color: var(--tenue); margin-bottom: 8px; }
+.hallazgos { margin-top: 0; }
