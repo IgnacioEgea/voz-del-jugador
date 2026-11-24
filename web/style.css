@@ -191,7 +191,7 @@ kbd { font: 500 12px var(--mono); border: 1px solid var(--tenue); border-radius:
 /* ——— Kill feed: tira de frases reales que desfila (se para al pasar el ratón) ——— */
 .feed { margin: 48px -20px 0; padding: 14px 0; overflow: hidden; border-block: 1px solid var(--linea);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-.feed-pista { display: flex; gap: 36px; width: max-content; animation: desfilar 120s linear infinite; }
+.feed-pista { display: flex; gap: 36px; width: max-content; animation: desfilar var(--duracion, 600s) linear infinite; }  /* app.js calcula --duracion */
 .feed:hover .feed-pista { animation-play-state: paused; }
 @keyframes desfilar { to { transform: translateX(-50%); } }
 .baja { white-space: nowrap; font-size: 15px; color: var(--suave); }
@@ -424,7 +424,7 @@ h1 { text-shadow: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .particulas { display: none; }
-  .feed-pista { animation: desfilar 320s linear infinite !important; }  /* El texto sigue desfilando, muy despacio */
+  .feed-pista { animation: desfilar var(--duracion, 600s) linear infinite !important; }  /* Sigue desfilando a velocidad de lectura */
 }
 
 /* Símbolos neón (pulgares, hotfix, buff, avisos): mismo trazo y brillo que el resto de la interfaz */

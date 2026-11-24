@@ -101,7 +101,7 @@ function navegar() {
     window.logro?.(ruta, parametro);  // Logros por visitar secciones (logros.js)
     crecer($("vista"));
     const pista = document.querySelector(".feed-pista");  // Kill feed a velocidad de lectura (≈30 px/s)
-    if (pista) pista.style.animationDuration = `${Math.round(pista.scrollWidth / 2 / 30)}s`;
+    if (pista) pista.style.setProperty("--duracion", `${Math.round(pista.scrollWidth / 2 / 30)}s`);
     // Marcamos en el menú la sección en la que estás
     document.querySelectorAll(".ranuras a").forEach((a) =>
       a.dataset.ruta === (ruta === "juego" ? "juegos" : ruta) ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
