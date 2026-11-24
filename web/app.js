@@ -12,7 +12,6 @@ const ICONOS = Object.fromEntries(Object.keys(NOMBRES).map((k) => [k, icono(k)])
 const RAREZAS = { legendaria: "Legendaria", epica: "Épica", rara: "Rara", comun: "Común" };
 const datos = { juegos: [] };  // Se rellena al cargar data.json
 const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 // Piezas pequeñas que se usan en todas partes
 const $ = (id) => document.getElementById(id);
 const miles = (n) => n.toLocaleString("es-ES");
@@ -101,6 +100,8 @@ function navegar() {
     window[`activar${nombre}`]?.(parametro);
     window.logro?.(ruta, parametro);  // Logros por visitar secciones (logros.js)
     crecer($("vista"));
+    const pista = document.querySelector(".feed-pista");  // Kill feed a velocidad de lectura (≈30 px/s)
+    if (pista) pista.style.animationDuration = `${Math.round(pista.scrollWidth / 2 / 30)}s`;
     // Marcamos en el menú la sección en la que estás
     document.querySelectorAll(".ranuras a").forEach((a) =>
       a.dataset.ruta === (ruta === "juego" ? "juegos" : ruta) ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
