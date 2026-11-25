@@ -76,8 +76,9 @@ def resumir():
     global TRADUCCIONES
     TRADUCCIONES = json.loads(CACHE.read_text(encoding="utf-8")) if CACHE.exists() else {}
     resenas = pd.read_csv(RAIZ / "data" / "resenas.csv", dtype={"id": str})
-    ia = pd.read_csv(RAIZ / "data" / "resenas_clasificadas.csv", dtype=str).fillna("")
-    clasificadas = resenas.merge(ia, on="id")
+    # Si una tanda cortada guardó dos veces la misma reseña, nos quedamos con la última
+    ia = pd.read_csv(RAIZ / "data" / "resenas_clasificadas.csv", dtype=str).fillna("").drop_duplicates("id", keep="last")
+    clasificadas = resenas.merge(ia, on="id")  # Solo cuentan las reseñas que siguen tras la limpieza
     # Fechas de salida (las busca src/fechas.py antes de publicar; si faltan, la web no las enseña)
     ruta_fechas = RAIZ / "data" / "fechas.json"
     fechas = json.loads(ruta_fechas.read_text(encoding="utf-8")) if ruta_fechas.exists() else {}

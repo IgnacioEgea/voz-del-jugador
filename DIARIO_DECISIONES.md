@@ -21,11 +21,11 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 | 14 nov 2026 | Web publicada sola con GitHub Actions + Pages tras cada tanda | Los resultados se ven en vivo y el `data.json` nunca se queda viejo | Publicar a mano |
 | 14 nov 2026 | Web pensada también para jugadores ("Encuentra tu shooter", cartas, kill feed) | Un producto que usan jugadores reales es más único y memorable que un dashboard solo para analistas | Dashboard clásico solo para empresa |
 | 14 nov 2026 | App de una sola página con rutas (#/juegos, #/comparar…) y View Transitions | Navegación rápida sin servidor y transiciones suaves; sigue siendo una web estática gratis en GitHub Pages | Framework (React) o varias páginas HTML: más peso o más código repetido |
-| 14 nov 2026 | Arte generado con IA (Gemini, gratis), solo objetos originales sin armas, logos ni personajes | Derechos de autor y apto para todos; estilo coherente en toda la colección | Arte oficial de los juegos (problemas legales) |
+| 14 nov 2026 | Arte generado con IA (Gemini, gratis), solo objetos originales sin armas, logos ni personajes | Derechos de autor y apto para todos; estilo coherente en toda la colección | Copiar arte oficial de los juegos en el repositorio (problemas legales). *Cambio posterior: las portadas oficiales se enlazan desde la tienda, ver más abajo* |
 | 14 nov 2026 | Versión automática en CSS/JS al publicar | Los navegadores guardaban copias viejas y la gente veía la web antigua tras cada cambio | Pedir a la gente que recargue |
 | 14 nov 2026 | Explorador con las 150 reseñas más útiles por juego en un archivo aparte | Funciona como una "base de datos" consultable sin servidor y solo se descarga si alguien lo abre | Base de datos con backend (coste y mantenimiento) |
 | 14 nov 2026 | Ampliar a 15 F2P (PUBG, CS2, Dota 2, Warframe, Destiny 2, Delta Force, Arknights: Endfield, Wuthering Waves, Zenless Zone Zero) | Más variedad de géneros y juegos muy conocidos; Genshin, Fortnite y Honkai: Star Rail no están en Steam | Quedarse solo en hero shooters |
-| 14 nov 2026 | Portadas oficiales enlazadas desde la tienda de Steam (no copiadas), con crédito a los estudios | Es el arte promocional que publican los propios estudios y siempre está actualizado | Guardar copias de las imágenes en el repositorio |
+| 14 nov 2026 | Portadas oficiales enlazadas desde la tienda de Steam (no copiadas), con crédito a los estudios | Es el arte promocional que publican los propios estudios y siempre está actualizado. Cambia la decisión del arte: el arte de IA se queda para iconos y logros, y la portada de cada juego es la oficial | Guardar copias de las imágenes en el repositorio |
 | 14 nov 2026 | Reutilizar los emblemas generados como insignias de logros | No se desecha el arte original y añade un toque de juego | Borrarlos |
 | 14 nov 2026 | Repartir la clasificación en varios días | La cuota gratuita diaria de Gemini se agota (~400 llamadas al día): coste 0 € a cambio de más tiempo | Pagar la API |
 | 14 nov 2026 | Genshin Impact y Honkai: Star Rail desde la App Store (4-5 estrellas = recomienda), marcados con su fuente y con filtro "Solo Steam" | No están en Steam; así entran en la web sin mezclar métodos a escondidas | Dejarlos fuera o mezclarlos sin avisar |
@@ -65,3 +65,7 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 - Elegido por Ignacio entre 3 opciones (gamer sobrio / panel de datos limpio / solo legibilidad).
 - Fondo gris-azulado liso (sin cuadrícula), acento único dorado para acciones, texto en Inter, mínimo 14 px (salvo etiquetas del menú móvil, 11 px).
 - Menú: 5 secciones + «Más» también en ordenador. Inicio: «¿Qué quieres hacer?» con 3 caminos, datos con etiqueta y frase completa, leyenda de rarezas.
+
+## 2026-11-25 · Revisión antes de publicarlo en LinkedIn
+- **Reseñas clasificadas dos veces.** Una tanda cortada guardó 2 reseñas por duplicado y la web contaba 44.512 clasificadas de 44.510. Se borran del CSV y `resumir.py` y `validar.py` se quedan siempre con la última.
+- **README con hallazgos y SQL.** Quien abre el repositorio ve primero qué se ha descubierto y qué recomendaría a un estudio, y después cómo está hecho.

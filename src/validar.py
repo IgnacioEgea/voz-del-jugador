@@ -30,7 +30,7 @@ def comparar():
     # Leemos tus etiquetas (sin mayúsculas ni espacios de más) y las de la IA, en el mismo orden
     humano = pd.read_csv(MANUAL, dtype=str, **EXCEL).fillna("").set_index("id")
     humano[ASPECTOS] = humano[ASPECTOS].apply(lambda col: col.str.strip().str.lower())
-    ia = pd.read_csv(IA, dtype=str).fillna("").set_index("id").loc[humano.index, ASPECTOS]
+    ia = pd.read_csv(IA, dtype=str).fillna("").drop_duplicates("id", keep="last").set_index("id").loc[humano.index, ASPECTOS]
     iguales = humano[ASPECTOS] == ia
 
     # Dos notas por aspecto: acierto total y acierto solo cuando la reseña sí habla de él

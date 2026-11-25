@@ -7,6 +7,20 @@ Más de 44.000 reseñas de Steam y la App Store de 35 juegos gratuitos, clasific
 
 ![Portada de la web](docs/inicio.jpg)
 
+## Hallazgos clave
+
+*Datos de noviembre de 2026: 44.510 reseñas de 35 juegos.*
+
+1. **El juego gusta; lo que falla es lo de alrededor.** La jugabilidad es el tema del que más se habla (27.625 reseñas) y solo el 25 % lo critica. En cambio, cuando alguien menciona el **matchmaking o el balance**, el 88 % es para quejarse; con los **bugs y el rendimiento**, el 85 %; con la **comunidad**, el 76 %.
+2. **La monetización no tiene por qué ser odiada.** En Clash Royale solo el 3 % habla bien de ella y en Genshin Impact, el 5 %. En Warframe, el 70 %: se puede cobrar sin enfadar a los jugadores.
+3. **Los veteranos se queman.** En Marvel Rivals lo recomienda el 61 % de los novatos (menos de 10 h), pero solo el 36 % de los veteranos (100 h o más). Pasa en 10 de los 28 juegos con horas registradas.
+4. **Mucha diferencia entre juegos.** De media lo recomienda el 60 %, pero va del 86 % de Arknights: Endfield al 27 % de Honor of Kings.
+
+**Recomendaciones para un estudio F2P**
+- Antes de añadir contenido, **arreglar el matchmaking y los bugs**: son las quejas más duras. La consulta [`06_prioridades_estudio.sql`](sql/06_prioridades_estudio.sql) ordena, juego a juego, qué tema le quita más recomendaciones.
+- **Tomar como referencia a Warframe** para monetizar: se puede cobrar dejando contentos a los jugadores.
+- **Vigilar a los veteranos**, no solo la captación: son los jugadores más fieles y, en algunos juegos, los menos contentos.
+
 ## Qué puedes hacer en la web
 
 | | |
@@ -23,6 +37,7 @@ También tiene un buscador de juego según lo que te importa, un explorador de r
 ```
 Steam API + RSS App Store ──► descargar.py / descargar_appstore.py ──► limpiar.py
         ──► clasificar.py (Gemini, en tandas) ──► traducir.py ──► resumir.py ──► web/ (GitHub Pages)
+                                                               └──► base_datos.py (SQLite + SQL) ──► CSV
 ```
 
 1. **Datos:** reseñas recientes en inglés desde la API oficial de Steam y el RSS público de la App Store (sin scraping).
@@ -30,6 +45,21 @@ Steam API + RSS App Store ──► descargar.py / descargar_appstore.py ──�
 3. **IA:** Gemini lee cada reseña y marca qué opina de 7 temas (positivo, negativo o neutro) con un prompt fijo y temperatura 0.
 4. **Automatización:** GitHub Actions clasifica en tandas de 14 minutos con la cuota gratuita, guarda el avance y vuelve a publicar la web sola.
 5. **Web:** HTML, CSS y JavaScript sin frameworks, que lee un `data.json` generado por Python.
+6. **SQL:** `base_datos.py` guarda todo en una base **SQLite** con 5 tablas relacionadas (juegos, reseñas, temas de la IA, historial mensual y actualizaciones) y ejecuta las consultas de `sql/`.
+
+## Análisis en SQL
+
+| Consulta | Pregunta de negocio |
+|---|---|
+| [`01_resumen_por_juego`](sql/01_resumen_por_juego.sql) | ¿Cuántas reseñas tiene cada juego y qué % lo recomienda? |
+| [`02_positivas_por_mes`](sql/02_positivas_por_mes.sql) | ¿Cómo evoluciona la valoración mes a mes? |
+| [`03_horas_vs_recomendacion`](sql/03_horas_vs_recomendacion.sql) | ¿Recomiendan más los novatos o los veteranos? |
+| [`04_temas_en_negativas`](sql/04_temas_en_negativas.sql) | ¿De qué se quejan las reseñas negativas? |
+| [`05_tras_actualizaciones`](sql/05_tras_actualizaciones.sql) | ¿Sube o baja la valoración después de un parche? |
+| [`06_prioridades_estudio`](sql/06_prioridades_estudio.sql) | ¿Qué debería arreglar primero cada estudio? |
+| [`07_sentimiento_por_tema`](sql/07_sentimiento_por_tema.sql) | ¿Qué % habla bien o mal de cada tema? |
+
+Cada consulta se exporta como CSV al publicar la web (en `web/datos/`, junto a la base `voz.db`), listo para abrirlo en Excel, Looker Studio o Power BI.
 
 ## Calidad y límites
 
@@ -44,6 +74,8 @@ Steam API + RSS App Store ──► descargar.py / descargar_appstore.py ──�
 |---|---|
 | `src/` | Scripts de Python: descarga, limpieza, clasificación, traducción, validación y resumen |
 | `data/` | Reseñas limpias, clasificaciones de la IA y muestra de validación |
+| `sql/` | Consultas SQL de análisis sobre la base SQLite |
+| `notebooks/` | Exploración inicial de los datos |
 | `web/` | La web estática que se publica en GitHub Pages |
 | `.github/workflows/` | Las automatizaciones: descargar, clasificar, traducir y publicar |
 | `DIARIO_DECISIONES.md` | Cada decisión del proyecto y por qué se tomó |
@@ -54,7 +86,7 @@ Steam API + RSS App Store ──► descargar.py / descargar_appstore.py ──�
 pip install -r requirements.txt
 echo "GEMINI_API_KEY=tu_clave" > .env      # clave gratuita de Google AI Studio
 python src/descargar.py && python src/limpiar.py
-python src/clasificar.py && python src/resumir.py
+python src/clasificar.py && python src/resumir.py && python src/base_datos.py
 python -m http.server -d web               # y abre http://localhost:8000
 ```
 
