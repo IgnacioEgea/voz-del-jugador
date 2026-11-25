@@ -22,11 +22,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # 1) Preparar la web y empaquetarla
   publicar:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.despliegue.outputs.page_url }}
     steps:
       # Copiamos el repositorio con los datos más recientes
       - uses: actions/checkout@v4
@@ -63,5 +61,15 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web
+
+  # 2) Desplegarla en un paso aparte: si va justo detrás de la subida, a veces GitHub aún no
+  #    "ve" el paquete y falla con "No artifacts named github-pages" (pasó el 24 y el 25 de nov)
+  desplegar:
+    needs: publicar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
       - id: despliegue
         uses: actions/deploy-pages@v4

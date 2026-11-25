@@ -69,3 +69,4 @@ Tu chuleta para las entrevistas. Una línea por decisión importante: **qué** y
 ## 2026-11-25 · Revisión antes de publicarlo en LinkedIn
 - **Reseñas clasificadas dos veces.** Una tanda cortada guardó 2 reseñas por duplicado y la web contaba 44.512 clasificadas de 44.510. Se borran del CSV y `resumir.py` y `validar.py` se quedan siempre con la última.
 - **README con hallazgos y SQL.** Quien abre el repositorio ve primero qué se ha descubierto y qué recomendaría a un estudio, y después cómo está hecho.
+- **Publicación en dos pasos (preparar y desplegar).** A veces el despliegue arrancaba antes de que GitHub registrara la web empaquetada y fallaba. Separarlos es el patrón oficial de GitHub Pages y evita esa carrera.
